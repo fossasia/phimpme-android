@@ -111,7 +111,7 @@ public class SplashScreen extends SharedMediaActivity {
           if (ab != null) {
             new PrefetchPhotosData().execute();
           }
-        } else SnackBarHandler.show(parentView, R.string.album_not_found);
+        } else SnackBarHandler.create(parentView, R.string.album_not_found).show();
       } else // default intent
       new PrefetchAlbumsData().execute();
     } else {
@@ -165,7 +165,7 @@ public class SplashScreen extends SharedMediaActivity {
           new PrefetchAlbumsData()
               .execute(SP.getBoolean(getString(R.string.preference_auto_update_media), false));
         else {
-          SnackBarHandler.show(parentView, R.string.storage_permission_denied);
+          SnackBarHandler.create(parentView, R.string.storage_permission_denied).show();
           showPermissionAlertDialog();
         }
         break;

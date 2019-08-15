@@ -971,10 +971,9 @@ public class SingleMediaActivity extends SharedMediaActivity
       if (size_all > 0) {
         adapter.notifyDataSetChanged();
         getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
-        Snackbar snackbar =
-            SnackBarHandler.show(
-                parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
-        snackbar.show();
+        SnackBarHandler.create(
+                parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg))
+            .show();
       } else {
         onBackPressed();
       }
@@ -1005,10 +1004,9 @@ public class SingleMediaActivity extends SharedMediaActivity
       if (size_all > 0) {
         adapter.notifyDataSetChanged();
         getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
-        Snackbar snackbar =
-            SnackBarHandler.show(
-                parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
-        snackbar.show();
+        SnackBarHandler.create(
+                parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg))
+            .show();
       } else {
         onBackPressed();
       }
@@ -1297,8 +1295,7 @@ public class SingleMediaActivity extends SharedMediaActivity
           editIntent.putExtra("requestCode", ACTION_REQUEST_EDITIMAGE);
           startActivity(editIntent);
         } else {
-          Snackbar snackbar = SnackBarHandler.show(parentView, getString(R.string.image_invalid));
-          snackbar.show();
+          SnackBarHandler.create(parentView, getString(R.string.image_invalid)).show();
         }
         break;
 
@@ -1711,7 +1708,7 @@ public class SingleMediaActivity extends SharedMediaActivity
           } else if (!allPhotoMode && favphotomode) {
             mediacompress = new Media(new File(favouriteslist.get(current_image_pos).getPath()));
           }
-        } else SnackBarHandler.show(parentView, R.string.image_invalid);
+        } else SnackBarHandler.create(parentView, R.string.image_invalid).show();
         break;
 
       case R.id.action_delete:

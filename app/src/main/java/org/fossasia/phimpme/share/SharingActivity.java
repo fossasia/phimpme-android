@@ -370,9 +370,7 @@ public class SharingActivity extends ThemedActivity
                   break;
 
                 default:
-                  Snackbar snackbar =
-                      SnackBarHandler.show(parent, getString(R.string.feature_not_present));
-                  snackbar.show();
+                  SnackBarHandler.create(parent, getString(R.string.feature_not_present)).show();
               }
             }
           });
@@ -456,8 +454,7 @@ public class SharingActivity extends ThemedActivity
       sessionBox = new BoxSession(this);
       new UploadToBox().execute();
     } else {
-      Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.login_box));
-      snackbar.show();
+      SnackBarHandler.create(parent, getString(R.string.login_box)).show();
     }
   }
 
@@ -516,8 +513,7 @@ public class SharingActivity extends ThemedActivity
     protected void onPostExecute(Void result) {
       if (success) {
         NotificationHandler.actionPassed(R.string.upload_complete);
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.uploaded_box));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.uploaded_box)).show();
         sendResult(Constants.SUCCESS);
       } else {
         NotificationHandler.actionFailed();
@@ -565,8 +561,7 @@ public class SharingActivity extends ThemedActivity
 
   private void shareToFlickr() {
     if (Utils.checkAlreadyExist(FLICKR)) {
-      Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.uploading));
-      snackbar.show();
+      SnackBarHandler.create(parent, getString(R.string.uploading)).show();
       InputStream is = null;
       File file = new File(saveFilePath);
       try {
@@ -599,8 +594,7 @@ public class SharingActivity extends ThemedActivity
       new UploadToDropbox().execute();
 
     } catch (ArrayIndexOutOfBoundsException e) {
-      Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.login_dropbox_account));
-      snackbar.show();
+      SnackBarHandler.create(parent, getString(R.string.login_dropbox_account)).show();
     }
   }
 
@@ -640,13 +634,11 @@ public class SharingActivity extends ThemedActivity
     protected void onPostExecute(Void result) {
       if (success) {
         NotificationHandler.actionPassed(R.string.upload_complete);
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.uploaded_dropbox));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.uploaded_dropbox)).show();
         sendResult(Constants.SUCCESS);
       } else {
         NotificationHandler.actionFailed();
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.upload_failed));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.upload_failed)).show();
         sendResult(FAIL);
       }
     }
@@ -724,13 +716,11 @@ public class SharingActivity extends ThemedActivity
 
       if (success) {
         NotificationHandler.actionPassed(R.string.upload_complete);
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.uploaded_googledrive));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.uploaded_googledrive)).show();
         sendResult(Constants.SUCCESS);
       } else {
         NotificationHandler.actionFailed();
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.upload_failed));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.upload_failed)).show();
         sendResult(FAIL);
       }
     }
@@ -987,8 +977,7 @@ public class SharingActivity extends ThemedActivity
   }
 
   private void postToPinterest(final String boardID) {
-    Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.pinterest_image_uploading));
-    snackbar.show();
+    SnackBarHandler.create(parent, getString(R.string.pinterest_image_uploading)).show();
     NotificationHandler.make(
         R.string.pinterest, R.string.upload_progress, R.drawable.ic_cloud_upload_black_24dp);
     Bitmap image = getBitmapFromPath(saveFilePath);
@@ -1003,9 +992,7 @@ public class SharingActivity extends ThemedActivity
               public void onSuccess(PDKResponse response) {
                 NotificationHandler.actionPassed(R.string.upload_complete);
                 Log.d(getClass().getName(), response.getData().toString());
-                Snackbar snackbar =
-                    SnackBarHandler.show(parent, getString(R.string.pinterest_post));
-                snackbar.show();
+                SnackBarHandler.create(parent, getString(R.string.pinterest_post)).show();
                 sendResult(Constants.SUCCESS);
               }
 
@@ -1013,9 +1000,7 @@ public class SharingActivity extends ThemedActivity
               public void onFailure(PDKException exception) {
                 NotificationHandler.actionFailed();
                 Log.e(getClass().getName(), exception.getDetailMessage());
-                Snackbar snackbar =
-                    SnackBarHandler.show(parent, getString(R.string.Pinterest_fail));
-                snackbar.show();
+                SnackBarHandler.create(parent, getString(R.string.Pinterest_fail)).show();
                 sendResult(FAIL);
               }
             });
@@ -1036,14 +1021,12 @@ public class SharingActivity extends ThemedActivity
                 }
               });
     } else {
-      Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.sign_from_account));
-      snackbar.show();
+      SnackBarHandler.create(parent, getString(R.string.sign_from_account)).show();
     }
   }
 
   private void uploadOnTwitter(String token, String secret) {
-    Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.twitter_uploading));
-    snackbar.show();
+    SnackBarHandler.create(parent, getString(R.string.twitter_uploading)).show();
     final File f3 = new File(Environment.getExternalStorageDirectory() + "/twitter_upload/");
     final File file =
         new File(Environment.getExternalStorageDirectory() + "/twitter_upload/" + "temp" + ".png");
@@ -1178,7 +1161,9 @@ public class SharingActivity extends ThemedActivity
           @Override
           public void onClick(DialogInterface dialogInterface, int i) {
             if (!isPersonal) {
-              Snackbar.make(parent, R.string.sign_from_account, Snackbar.LENGTH_SHORT).show();
+              SnackBarHandler.create(
+                      parent, getString(R.string.sign_from_account), Snackbar.LENGTH_SHORT)
+                  .show();
               return;
             } else {
               isPersonal = true;
@@ -1284,9 +1269,7 @@ public class SharingActivity extends ThemedActivity
                         getAccentColor(),
                         alertDialog);
                   } else {
-                    Snackbar snackbar =
-                        SnackBarHandler.show(parent, getString(R.string.error_on_imgur));
-                    snackbar.show();
+                    SnackBarHandler.create(parent, getString(R.string.error_on_imgur)).show();
                     sendResult(FAIL);
                   }
                 } catch (JSONException e) {
@@ -1298,10 +1281,8 @@ public class SharingActivity extends ThemedActivity
               @Override
               public void onErrorResponse(VolleyError volleyError) {
                 dialog.dismiss();
-                Snackbar snackbar =
-                    SnackBarHandler.show(
-                        parent, getString(R.string.error_volly)); // add volleyError to check error
-                snackbar.show();
+                SnackBarHandler.create(parent, getString(R.string.error_volly))
+                    .show(); // add volleyError to check error
               }
             }) {
           @Override
@@ -1365,9 +1346,7 @@ public class SharingActivity extends ThemedActivity
         is.close();
         fos.close();
       } catch (IOException e) {
-        Snackbar snackbar =
-            SnackBarHandler.show(parent, getString(R.string.error_copying_sample_file));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.error_copying_sample_file)).show();
         Log.e(LOG_TAG, getString(R.string.error_copying_sample_file), e);
       }
 
@@ -1390,13 +1369,12 @@ public class SharingActivity extends ThemedActivity
       phimpmeProgressBarHandler.show();
 
     } else {
-      Snackbar snackbar =
-          SnackBarHandler.show(
+      SnackBarHandler.create(
               parent,
               context.getString(R.string.please_sign_into)
                   + str
-                  + context.getString(R.string.from_account_manager));
-      snackbar.show();
+                  + context.getString(R.string.from_account_manager))
+          .show();
     }
   }
 
@@ -1405,12 +1383,14 @@ public class SharingActivity extends ThemedActivity
     if (requestCode == REQ_SELECT_PHOTO) {
       if (responseCode == RESULT_OK) {
         NotificationHandler.actionPassed(R.string.upload_complete);
-        Snackbar.make(parent, R.string.success_google, Snackbar.LENGTH_LONG).show();
+        SnackBarHandler.create(parent, getString(R.string.success_google), Snackbar.LENGTH_LONG)
+            .show();
         sendResult(SUCCESS);
         return;
       } else {
         NotificationHandler.actionFailed();
-        Snackbar.make(parent, R.string.error_google, Snackbar.LENGTH_LONG).show();
+        SnackBarHandler.create(parent, getString(R.string.error_google), Snackbar.LENGTH_LONG)
+            .show();
         sendResult(FAIL);
         return;
       }
@@ -1469,7 +1449,8 @@ public class SharingActivity extends ThemedActivity
               })
           .show();
     } else if (result.isSuccess()) {
-      Snackbar.make(parent, R.string.todo_operation_finished_in_success, Snackbar.LENGTH_LONG)
+      SnackBarHandler.create(
+              parent, getString(R.string.todo_operation_finished_in_success), Snackbar.LENGTH_LONG)
           .show();
     } else if (operation instanceof UploadRemoteFileOperation) {
       onSuccessfulUpload();
@@ -1514,15 +1495,11 @@ public class SharingActivity extends ThemedActivity
     protected void onPostExecute(Void result) {
       if (isPostedOnTwitter) {
         NotificationHandler.actionPassed(R.string.upload_complete);
-        Snackbar snackbar =
-            SnackBarHandler.show(parent, getString(R.string.tweet_posted_on_twitter));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.tweet_posted_on_twitter)).show();
         sendResult(SUCCESS);
       } else {
         NotificationHandler.actionFailed();
-        Snackbar snackbar =
-            SnackBarHandler.show(parent, getString(R.string.error_on_posting_twitter));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.error_on_posting_twitter)).show();
         sendResult(FAIL);
       }
     }
@@ -1574,12 +1551,10 @@ public class SharingActivity extends ThemedActivity
     protected void onPostExecute(Void result) {
       dialog.dismiss();
       if (success) {
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.posted_on_tumblr));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.posted_on_tumblr)).show();
         sendResult(Constants.SUCCESS);
       } else {
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.error_on_tumblr));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.error_on_tumblr)).show();
         sendResult(FAIL);
       }
     }

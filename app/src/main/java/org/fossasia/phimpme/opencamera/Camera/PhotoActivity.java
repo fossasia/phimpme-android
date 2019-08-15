@@ -135,7 +135,7 @@ public class PhotoActivity extends ThemedActivity {
       }
     }
     try {
-      SnackBarHandler.show(parent, R.string.image_invalid);
+      SnackBarHandler.create(parent, R.string.image_invalid).show();
     } catch (NullPointerException e) {
       e.printStackTrace();
     }
@@ -173,7 +173,7 @@ public class PhotoActivity extends ThemedActivity {
       intent.putExtra("requestCode", 1);
       startActivity(intent);
       finish();
-    } else SnackBarHandler.show(parent, R.string.image_invalid);
+    } else SnackBarHandler.create(parent, R.string.image_invalid).show();
   }
 
   public void saveOriginal() {

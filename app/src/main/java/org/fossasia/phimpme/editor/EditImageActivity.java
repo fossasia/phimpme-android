@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -237,8 +236,7 @@ public class EditImageActivity extends EditBaseActivity
       loadImage(filePath);
       return;
     }
-    Snackbar snackbar = SnackBarHandler.show(parentLayout, getString(R.string.image_invalid));
-    snackbar.show();
+    SnackBarHandler.create(parentLayout, getString(R.string.image_invalid)).show();
   }
 
   /** Called from onCreate(). Initializes all view objects and fragments to be used. */

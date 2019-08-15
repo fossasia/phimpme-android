@@ -54,7 +54,7 @@ public class ExcludedAlbumsActivity extends ThemedActivity {
       for (int i = 0; i < itemcount; i++) {
         h.clearAlbumExclude(excludedFolders.remove(0).getAbsolutePath());
       }
-      SnackBarHandler.show(
+      SnackBarHandler.create(
               findViewById(R.id.rl_ea), getString(R.string.folders_restored), Snackbar.LENGTH_SHORT)
           .show();
       new Handler()

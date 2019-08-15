@@ -2088,12 +2088,11 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbum().clearSelectedPhotos();
                   } else {
                     succ = getAlbum().deleteSelectedMedia(getApplicationContext());
-                    Snackbar snackbar =
-                        SnackBarHandler.show(
+                    SnackBarHandler.create(
                             mDrawerLayout,
                             getApplicationContext().getString(R.string.photo_deleted_msg),
-                            navigationView.getHeight());
-                    snackbar.show();
+                            navigationView.getHeight())
+                        .show();
                   }
                 } else if (all_photos && !fav_photos) {
                   checkForShare(selectedMedias);
@@ -2126,12 +2125,11 @@ public class LFMainActivity extends SharedMediaActivity {
                                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
                         contentResolver.delete(deleteUri, null, null);
                         succ = true;
-                        Snackbar snackbar =
-                            SnackBarHandler.show(
+                        SnackBarHandler.create(
                                 mDrawerLayout,
                                 getApplicationContext().getString(R.string.photo_deleted_msg),
-                                navigationView.getHeight());
-                        snackbar.show();
+                                navigationView.getHeight())
+                            .show();
                       } else {
                         succ = false;
                         // File not found in media store DB
@@ -2174,12 +2172,11 @@ public class LFMainActivity extends SharedMediaActivity {
                   } else {
                     succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
                     getAlbum().getMedia().clear();
-                    Snackbar snackbar =
-                        SnackBarHandler.show(
+                    SnackBarHandler.create(
                             mDrawerLayout,
                             getApplicationContext().getString(R.string.photo_deleted_msg),
-                            navigationView.getHeight());
-                    snackbar.show();
+                            navigationView.getHeight())
+                        .show();
                   }
                 } else {
                   checkForShare(favouriteslist);
@@ -2209,12 +2206,11 @@ public class LFMainActivity extends SharedMediaActivity {
                 getAlbums().clearSelectedAlbums();
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 albumsAdapter.notifyDataSetChanged();
-                Snackbar snackbar =
-                    SnackBarHandler.show(
+                SnackBarHandler.create(
                         mDrawerLayout,
                         getApplicationContext().getString(R.string.album_deleted),
-                        navigationView.getHeight());
-                snackbar.show();
+                        navigationView.getHeight())
+                    .show();
               } else {
                 if (!all_photos && !fav_photos) {
                   // if all media in current album have been deleted, delete current album too.
@@ -2237,18 +2233,16 @@ public class LFMainActivity extends SharedMediaActivity {
                   mediaAdapter.swapDataSet(listAll, false);
                 } else if (fav_photos && !all_photos) {
                   if (imagesUnfav >= 2) {
-                    Snackbar snackbar =
-                        SnackBarHandler.show(
+                    SnackBarHandler.create(
                             mDrawerLayout,
                             imagesUnfav
                                 + " "
-                                + getResources().getString(R.string.remove_from_favourite));
-                    snackbar.show();
+                                + getResources().getString(R.string.remove_from_favourite))
+                        .show();
                   } else {
-                    Snackbar snackbar =
-                        SnackBarHandler.show(
-                            mDrawerLayout, getResources().getString(R.string.single_image_removed));
-                    snackbar.show();
+                    SnackBarHandler.create(
+                            mDrawerLayout, getResources().getString(R.string.single_image_removed))
+                        .show();
                   }
                   clearSelectedPhotos();
                   getfavouriteslist();

@@ -9,7 +9,6 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import butterknife.BindView;
@@ -90,8 +89,7 @@ public class FlickrActivity extends ThemedActivity {
 
   public void onOAuthDone(OAuth result) {
     if (result == null) {
-      Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.auth_failed));
-      snackbar.show();
+      SnackBarHandler.create(parent, getString(R.string.auth_failed)).show();
     } else {
       User user = result.getUser();
       OAuthToken token = result.getToken();
@@ -100,8 +98,7 @@ public class FlickrActivity extends ThemedActivity {
           || token == null
           || token.getOauthToken() == null
           || token.getOauthTokenSecret() == null) {
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.auth_failed));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.auth_failed)).show();
         return;
       }
       basicCallBack.callBack(Constants.SUCCESS, null);
@@ -190,8 +187,7 @@ public class FlickrActivity extends ThemedActivity {
       if (result != null && !result.startsWith("error")) {
         mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(result)));
       } else {
-        Snackbar snackbar = SnackBarHandler.show(parent, result);
-        snackbar.show();
+        SnackBarHandler.create(parent, result).show();
       }
     }
   }
