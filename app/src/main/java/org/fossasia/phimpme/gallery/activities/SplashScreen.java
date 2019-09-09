@@ -35,6 +35,7 @@ public class SplashScreen extends SharedMediaActivity {
 
   private final int READ_EXTERNAL_STORAGE_ID = 12;
   private static final int PICK_MEDIA_REQUEST = 44;
+  public static final int REQUEST_OPEN_APP_SETTINGS = 13;
 
   public static final String CONTENT = "content";
   public static final String PICK_MODE = "pick_mode";
@@ -131,6 +132,13 @@ public class SplashScreen extends SharedMediaActivity {
         setResult(RESULT_OK, data);
         finish();
       }
+    }else if(requestCode == REQUEST_OPEN_APP_SETTINGS){
+      if (PermissionUtils.isDeviceInfoGranted(this)) {
+        new PrefetchAlbumsData()
+                .execute(SP.getBoolean(getString(R.string.preference_auto_update_media), false));
+      } else {
+        askForPermission();
+      }
     }
   }
 
@@ -194,13 +202,11 @@ public class SplashScreen extends SharedMediaActivity {
         new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
-            Toast.makeText(getApplicationContext(), R.string.permissions_restart, Toast.LENGTH_LONG)
-                .show();
             Intent intent = new Intent();
             intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             Uri uri = Uri.fromParts("package", getPackageName(), null);
             intent.setData(uri);
-            startActivity(intent);
+            startActivityForResult(intent,REQUEST_OPEN_APP_SETTINGS);
           }
         });
 
