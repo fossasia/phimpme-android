@@ -1,0 +1,46 @@
+{
+  "buildFiles": [
+    "C:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\src\\main\\jni\\Android.mk",
+    "C:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\src\\main\\jni\\Application.mk"
+  ],
+  "cleanCommands": [
+    "C:\\Users\\pmekala\\AppData\\Local\\Android\\Sdk\\ndk-bundle\\ndk-build.cmd NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003dC:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\src\\main\\jni\\Android.mk NDK_APPLICATION_MK\u003dC:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\src\\main\\jni\\Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-21 NDK_OUT\u003dC:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003dC:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\build\\intermediates\\ndkBuild\\release\\lib clean"
+  ],
+  "buildTargetsCommand": "C:\\Users\\pmekala\\AppData\\Local\\Android\\Sdk\\ndk-bundle\\ndk-build.cmd NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003dC:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\src\\main\\jni\\Android.mk NDK_APPLICATION_MK\u003dC:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\src\\main\\jni\\Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-21 NDK_OUT\u003dC:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003dC:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\build\\intermediates\\ndkBuild\\release\\lib {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "nativeimageprocessing-release-armeabi-v7a": {
+      "buildCommand": "C:\\Users\\pmekala\\AppData\\Local\\Android\\Sdk\\ndk-bundle\\ndk-build.cmd NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003dC:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\src\\main\\jni\\Android.mk NDK_APPLICATION_MK\u003dC:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\src\\main\\jni\\Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-21 NDK_OUT\u003dC:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003dC:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\build\\intermediates\\ndkBuild\\release\\lib C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/build/intermediates/ndkBuild/release/obj/local/armeabi-v7a/libnativeimageprocessing.so",
+      "toolchain": "toolchain-armeabi-v7a",
+      "abi": "armeabi-v7a",
+      "artifactName": "nativeimageprocessing",
+      "files": [
+        {
+          "src": "C:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\src\\main\\jni\\colour_space.cpp",
+          "flags": "-target armv7-none-linux-androideabi21 -fdata-sections -ffunction-sections -fstack-protector-strong -funwind-tables -no-canonical-prefixes --sysroot C:/Users/pmekala/AppData/Local/Android/Sdk/ndk-bundle/build//../toolchains/llvm/prebuilt/windows-x86_64/sysroot -g -Wno-invalid-command-line-argument -Wno-unused-command-line-argument -fno-addrsig -fno-exceptions -fno-rtti -fpic -march\u003darmv7-a -mthumb -Oz -DNDEBUG -IC:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/include -IC:/Users/pmekala/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include -IC:/Users/pmekala/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++abi/include -IC:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni -std\u003dc++11 -frtti -fexceptions -DANDROID -DANDROID_NDK -DDISABLE_IMPORTGL -nostdinc++ -Wa,--noexecstack -Wformat -Werror\u003dformat-security"
+        },
+        {
+          "src": "C:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\src\\main\\jni\\enhance.cpp",
+          "flags": "-target armv7-none-linux-androideabi21 -fdata-sections -ffunction-sections -fstack-protector-strong -funwind-tables -no-canonical-prefixes --sysroot C:/Users/pmekala/AppData/Local/Android/Sdk/ndk-bundle/build//../toolchains/llvm/prebuilt/windows-x86_64/sysroot -g -Wno-invalid-command-line-argument -Wno-unused-command-line-argument -fno-addrsig -fno-exceptions -fno-rtti -fpic -march\u003darmv7-a -mthumb -Oz -DNDEBUG -IC:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/include -IC:/Users/pmekala/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include -IC:/Users/pmekala/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++abi/include -IC:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni -std\u003dc++11 -frtti -fexceptions -DANDROID -DANDROID_NDK -DDISABLE_IMPORTGL -nostdinc++ -Wa,--noexecstack -Wformat -Werror\u003dformat-security"
+        },
+        {
+          "src": "C:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\src\\main\\jni\\filters.cpp",
+          "flags": "-target armv7-none-linux-androideabi21 -fdata-sections -ffunction-sections -fstack-protector-strong -funwind-tables -no-canonical-prefixes --sysroot C:/Users/pmekala/AppData/Local/Android/Sdk/ndk-bundle/build//../toolchains/llvm/prebuilt/windows-x86_64/sysroot -g -Wno-invalid-command-line-argument -Wno-unused-command-line-argument -fno-addrsig -fno-exceptions -fno-rtti -fpic -march\u003darmv7-a -mthumb -Oz -DNDEBUG -IC:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/include -IC:/Users/pmekala/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include -IC:/Users/pmekala/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++abi/include -IC:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni -std\u003dc++11 -frtti -fexceptions -DANDROID -DANDROID_NDK -DDISABLE_IMPORTGL -nostdinc++ -Wa,--noexecstack -Wformat -Werror\u003dformat-security"
+        },
+        {
+          "src": "C:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\src\\main\\jni\\main_processing.cpp",
+          "flags": "-target armv7-none-linux-androideabi21 -fdata-sections -ffunction-sections -fstack-protector-strong -funwind-tables -no-canonical-prefixes --sysroot C:/Users/pmekala/AppData/Local/Android/Sdk/ndk-bundle/build//../toolchains/llvm/prebuilt/windows-x86_64/sysroot -g -Wno-invalid-command-line-argument -Wno-unused-command-line-argument -fno-addrsig -fno-exceptions -fno-rtti -fpic -march\u003darmv7-a -mthumb -Oz -DNDEBUG -IC:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/include -IC:/Users/pmekala/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++/include -IC:/Users/pmekala/AppData/Local/Android/Sdk/ndk-bundle/build//../sources/cxx-stl/llvm-libc++abi/include -IC:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni -std\u003dc++11 -frtti -fexceptions -DANDROID -DANDROID_NDK -DDISABLE_IMPORTGL -nostdinc++ -Wa,--noexecstack -Wformat -Werror\u003dformat-security"
+        }
+      ],
+      "output": "C:\\Users\\pmekala\\AndroidStudioProjects\\phimpme-android\\app\\build\\intermediates\\ndkBuild\\release\\obj\\local\\armeabi-v7a\\libnativeimageprocessing.so"
+    }
+  },
+  "toolchains": {
+    "toolchain-armeabi-v7a": {
+      "cppCompilerExecutable": "C:\\Users\\pmekala\\AppData\\Local\\Android\\Sdk\\ndk-bundle\\build\\..\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

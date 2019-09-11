@@ -1,0 +1,29 @@
+{
+  "ndkFolder": "C:\\Users\\pmekala\\AppData\\Local\\Android\\Sdk\\ndk-bundle",
+  "messages": [
+    {
+      "level": "INFO",
+      "message": "android.ndkVersion from module build.gradle is not set"
+    },
+    {
+      "level": "INFO",
+      "message": "ndk.dir in local.properties is not set"
+    },
+    {
+      "level": "INFO",
+      "message": "ANDROID_NDK_HOME environment variable is not set"
+    },
+    {
+      "level": "INFO",
+      "message": "sdkFolder is C:\\Users\\pmekala\\AppData\\Local\\Android\\Sdk"
+    },
+    {
+      "level": "INFO",
+      "message": "Considering C:\\Users\\pmekala\\AppData\\Local\\Android\\Sdk\\ndk-bundle in SDK ndk-bundle folder"
+    },
+    {
+      "level": "INFO",
+      "message": "No user requested version, choosing C:\\Users\\pmekala\\AppData\\Local\\Android\\Sdk\\ndk-bundle which is version 20.0.5594570"
+    }
+  ]
+}

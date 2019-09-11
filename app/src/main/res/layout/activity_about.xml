@@ -26,7 +26,7 @@
             android:orientation="vertical">
 
             <!--ABOUT APP REDESIGN-->
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/about_app_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,10 +106,10 @@
                         android:textColor="@color/md_grey_400"
                         android:textSize="@dimen/medium_text"/>
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
             <!--SPECIAL THANKS-->
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/about_special_thanks_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -172,10 +172,10 @@
                             android:textSize="@dimen/sub_medium_text" />
                     </LinearLayout>
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
             <!--SUPPORT APP-->
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/about_support_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -289,10 +289,10 @@
                     </LinearLayout>
 
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
             <!--APP LICENSES-->
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/about_license_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -404,10 +404,10 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
             <!--APP Connect-->
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/connect_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -562,7 +562,7 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

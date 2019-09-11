@@ -1,11 +1,12 @@
 package org.fossasia.phimpme.base;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class RecyclerItemClickListner implements RecyclerView.OnItemTouchListener {
 
@@ -13,7 +14,8 @@ public class RecyclerItemClickListner implements RecyclerView.OnItemTouchListene
 
   private GestureDetector mGestureDetector;
 
-  @Nullable private View mChildView;
+  @Nullable
+  private View mChildView;
 
   private int mChildViewPosition;
 

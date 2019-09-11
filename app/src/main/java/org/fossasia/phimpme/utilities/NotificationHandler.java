@@ -3,17 +3,18 @@ package org.fossasia.phimpme.utilities;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.Builder;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+import androidx.core.app.NotificationCompat;
+
 import org.fossasia.phimpme.R;
 
 /** Created by anant on 23/7/17. */
 public class NotificationHandler {
 
   private static NotificationManager mNotifyManager;
-  private static Builder mBuilder;
+  private static NotificationCompat.Builder mBuilder;
   private static int id = 1;
 
   public static void make(@StringRes int title, @StringRes int action, @DrawableRes int iconid) {

@@ -30,7 +30,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true" />
 
-            <android.support.v7.widget.ActionMenuView
+            <androidx.appcompat.widget.ActionMenuView
                 android:id="@+id/toolbar_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"

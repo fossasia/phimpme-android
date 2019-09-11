@@ -3,11 +3,13 @@ package org.fossasia.phimpme.gallery.util;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.net.Uri;
-import android.support.customtabs.CustomTabsClient;
-import android.support.customtabs.CustomTabsIntent;
-import android.support.customtabs.CustomTabsServiceConnection;
-import android.support.customtabs.CustomTabsSession;
 import android.widget.Toast;
+
+import androidx.browser.customtabs.CustomTabsClient;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.browser.customtabs.CustomTabsServiceConnection;
+import androidx.browser.customtabs.CustomTabsSession;
+
 import org.fossasia.phimpme.R;
 
 public class CustomTabService {

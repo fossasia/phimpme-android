@@ -1,0 +1,5 @@
+[arm64-v8a] Compile++      : nativeimageprocessing <= main_processing.cpp
+[arm64-v8a] Compile++      : nativeimageprocessing <= enhance.cpp
+[arm64-v8a] Compile++      : nativeimageprocessing <= filters.cpp
+[arm64-v8a] Compile++      : nativeimageprocessing <= colour_space.cpp
+[arm64-v8a] SharedLibrary  : libnativeimageprocessing.so

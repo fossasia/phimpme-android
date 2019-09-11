@@ -5,13 +5,15 @@ import static org.fossasia.phimpme.utilities.Constants.IMGUR_LOGIN_URL;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.appcompat.app.AlertDialog;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import org.fossasia.phimpme.R;

@@ -36,7 +36,7 @@
 
             <!--GENERAL-->
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/general_setting_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -197,11 +197,11 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
             <!--THEME-->
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/theme_setting_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -459,7 +459,7 @@
                                     android:textSize="@dimen/sub_medium_text" />
                             </LinearLayout>
 
-                            <android.support.v7.widget.SwitchCompat
+                            <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/SetTraslucentStatusBar"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -523,7 +523,7 @@
                                     android:textSize="@dimen/sub_medium_text" />
                             </LinearLayout>
 
-                            <android.support.v7.widget.SwitchCompat
+                            <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/SetColoredNavBar"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -535,11 +535,11 @@
                         </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
             <!--MEDIA VIEWER SETTING-->
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/preview_picture_setting_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -617,7 +617,7 @@
                                     android:textSize="@dimen/sub_medium_text" />
                             </LinearLayout>
 
-                            <android.support.v7.widget.SwitchCompat
+                            <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/set_max_luminosity"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -680,7 +680,7 @@
                                     android:textSize="@dimen/sub_medium_text" />
                             </LinearLayout>
 
-                            <android.support.v7.widget.SwitchCompat
+                            <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/set_picture_orientation"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -744,7 +744,7 @@
                                     android:textSize="@dimen/sub_medium_text" />
                             </LinearLayout>
 
-                            <android.support.v7.widget.SwitchCompat
+                            <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/set_full_resolution"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -810,7 +810,7 @@
                                     android:textSize="@dimen/sub_medium_text" />
                             </LinearLayout>
 
-                            <android.support.v7.widget.SwitchCompat
+                            <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/Set_media_viewer_swipe_direction"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -822,11 +822,11 @@
                         </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
             <!--ADVANCED SETTING-->
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/advanced_setting_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -949,7 +949,7 @@
                                     android:textSize="@dimen/sub_medium_text" />
                             </LinearLayout>
 
-                            <android.support.v7.widget.SwitchCompat
+                            <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/SetAutoUpdateMedia"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -1016,7 +1016,7 @@
                         </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </ScrollView>

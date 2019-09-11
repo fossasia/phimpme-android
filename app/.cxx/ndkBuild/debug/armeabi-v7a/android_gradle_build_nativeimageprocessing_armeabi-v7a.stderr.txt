@@ -1,0 +1,185 @@
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:10:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y, i;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:10:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y, i;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:10:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y, i;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:55:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:55:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:79:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:79:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:101:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:101:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:127:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:127:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:162:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:162:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:197:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:197:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:222:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:222:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:248:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y, i;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:248:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y, i;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:248:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y, i;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:318:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int i, j, x, y, tr, tb, tg;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:318:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int i, j, x, y, tr, tb, tg;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:318:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int i, j, x, y, tr, tb, tg;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:318:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int i, j, x, y, tr, tb, tg;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:318:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int i, j, x, y, tr, tb, tg;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:318:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int i, j, x, y, tr, tb, tg;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:318:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int i, j, x, y, tr, tb, tg;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:322:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register uchar sepia, red, green, blue;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:322:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register uchar sepia, red, green, blue;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:322:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register uchar sepia, red, green, blue;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:322:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register uchar sepia, red, green, blue;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:372:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:372:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:402:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:402:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:428:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:428:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:470:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:470:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:487:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:487:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:513:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:513:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:517:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register uchar grey, r, g, b;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:517:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register uchar grey, r, g, b;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:517:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register uchar grey, r, g, b;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:517:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register uchar grey, r, g, b;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:617:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:617:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:648:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:648:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:682:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/filters.cpp:682:5: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+    register int x, y;
+    ^~~~~~~~~
+53 warnings generated.
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/colour_space.cpp:90:3: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+                register unsigned int i;
+                ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/colour_space.cpp:91:3: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+                register float aa, bb, cc, f;
+                ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/colour_space.cpp:91:3: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+                register float aa, bb, cc, f;
+                ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/colour_space.cpp:91:3: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+                register float aa, bb, cc, f;
+                ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/colour_space.cpp:91:3: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+                register float aa, bb, cc, f;
+                ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/colour_space.cpp:93:3: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+                register float h = (*hsb).h;
+                ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/colour_space.cpp:94:3: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+                register float s = (*hsb).s;
+                ^~~~~~~~~
+C:/Users/pmekala/AndroidStudioProjects/phimpme-android/app/src/main/jni/colour_space.cpp:95:3: warning: 'register' storage class specifier is deprecated and incompatible with C++17 [-Wdeprecated-register]
+                register float b = (*hsb).b;
+                ^~~~~~~~~
+8 warnings generated.

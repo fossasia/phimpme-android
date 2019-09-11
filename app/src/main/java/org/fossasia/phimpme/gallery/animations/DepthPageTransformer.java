@@ -1,7 +1,8 @@
 package org.fossasia.phimpme.gallery.animations;
 
-import android.support.v4.view.ViewPager;
 import android.view.View;
+
+import androidx.viewpager.widget.ViewPager;
 
 /** Created by dnld on 1/18/16. */
 public class DepthPageTransformer implements ViewPager.PageTransformer {

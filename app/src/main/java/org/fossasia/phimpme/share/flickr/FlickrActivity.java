@@ -9,8 +9,10 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
+
+import androidx.appcompat.app.AlertDialog;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.googlecode.flickrjandroid.Flickr;

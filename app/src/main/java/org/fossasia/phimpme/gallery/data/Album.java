@@ -5,8 +5,10 @@ import static org.fossasia.phimpme.gallery.data.base.FilterMode.ALL;
 import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
