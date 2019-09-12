@@ -124,7 +124,7 @@
             android:layout_gravity="bottom"
             app:elevation="@dimen/very_small_spacing" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_scroll_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

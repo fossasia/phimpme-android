@@ -1,5 +1,0 @@
-[x86_64] Compile++      : nativeimageprocessing <= main_processing.cpp
-[x86_64] Compile++      : nativeimageprocessing <= enhance.cpp
-[x86_64] Compile++      : nativeimageprocessing <= filters.cpp
-[x86_64] Compile++      : nativeimageprocessing <= colour_space.cpp
-[x86_64] SharedLibrary  : libnativeimageprocessing.so
