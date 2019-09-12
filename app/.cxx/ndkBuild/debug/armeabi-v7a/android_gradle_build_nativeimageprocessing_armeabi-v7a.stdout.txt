@@ -1,5 +1,1 @@
-[armeabi-v7a] Compile++ thumb: nativeimageprocessing <= main_processing.cpp
-[armeabi-v7a] Compile++ thumb: nativeimageprocessing <= enhance.cpp
-[armeabi-v7a] Compile++ thumb: nativeimageprocessing <= filters.cpp
-[armeabi-v7a] Compile++ thumb: nativeimageprocessing <= colour_space.cpp
-[armeabi-v7a] SharedLibrary  : libnativeimageprocessing.so
+make: Nothing to be done for `nativeimageprocessing'.

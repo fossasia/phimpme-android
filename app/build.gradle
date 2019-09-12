@@ -133,6 +133,7 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    androidTestImplementation 'androidx.test:rules:1.2.0'
 
     implementation 'com.mcxiaoke.volley:library:1.0.19'
 

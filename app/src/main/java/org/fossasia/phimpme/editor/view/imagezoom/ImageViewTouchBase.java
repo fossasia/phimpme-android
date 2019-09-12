@@ -10,6 +10,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.widget.ImageView;
+
 import org.fossasia.phimpme.editor.view.imagezoom.easing.Cubic;
 import org.fossasia.phimpme.editor.view.imagezoom.easing.Easing;
 import org.fossasia.phimpme.editor.view.imagezoom.graphic.FastBitmapDrawable;
@@ -20,7 +22,7 @@ import org.fossasia.phimpme.editor.view.imagezoom.utils.IDisposable;
  *
  * @author alessandro
  */
-public abstract class ImageViewTouchBase extends android.support.v7.widget.AppCompatImageView
+public abstract class ImageViewTouchBase extends androidx.appcompat.widget.AppCompatImageView
     implements IDisposable {
 
   public interface OnDrawableChangeListener {
@@ -119,12 +121,12 @@ public abstract class ImageViewTouchBase extends android.support.v7.widget.AppCo
   }
 
   protected void init() {
-    setScaleType(ScaleType.MATRIX);
+    setScaleType(ImageView.ScaleType.MATRIX);
   }
 
   @Override
-  public void setScaleType(ScaleType scaleType) {
-    if (scaleType == ScaleType.MATRIX) {
+  public void setScaleType(ImageView.ScaleType scaleType) {
+    if (scaleType == ImageView.ScaleType.MATRIX) {
       super.setScaleType(scaleType);
     } else {
       Log.w(LOG_TAG, "Unsupported scaletype. Only MATRIX can be used");
