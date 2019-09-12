@@ -14,9 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
 import androidx.core.content.ContextCompat;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;

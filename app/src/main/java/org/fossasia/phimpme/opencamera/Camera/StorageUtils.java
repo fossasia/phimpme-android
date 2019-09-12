@@ -20,9 +20,7 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.Images.ImageColumns;
 import android.util.Log;
-
 import androidx.core.content.ContextCompat;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;

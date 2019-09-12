@@ -3,10 +3,8 @@ package org.fossasia.phimpme.editor.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
-
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.fragment.PaintFragment;
 

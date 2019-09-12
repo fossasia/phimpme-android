@@ -2,7 +2,6 @@ package org.fossasia.phimpme.editor.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-
 import androidx.viewpager.widget.ViewPager;
 
 /**

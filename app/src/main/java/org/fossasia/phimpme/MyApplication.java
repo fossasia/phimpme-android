@@ -4,9 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.StrictMode;
 import android.util.Log;
-
 import androidx.multidex.MultiDex;
-
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.twitter.sdk.android.core.DefaultLogger;

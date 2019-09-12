@@ -1,7 +1,6 @@
 package org.fossasia.phimpme.gallery.animations;
 
 import android.view.View;
-
 import androidx.viewpager.widget.ViewPager;
 
 /** Created by dnld on 1/18/16. */

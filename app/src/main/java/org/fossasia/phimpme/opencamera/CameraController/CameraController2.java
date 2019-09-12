@@ -36,9 +36,7 @@ import android.util.SizeF;
 import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
-
 import androidx.annotation.NonNull;
-
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -6,9 +6,7 @@ import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.util.Log;
-
 import androidx.annotation.Nullable;
-
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;

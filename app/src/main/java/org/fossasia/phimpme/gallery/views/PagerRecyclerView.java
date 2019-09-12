@@ -2,7 +2,6 @@ package org.fossasia.phimpme.gallery.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;

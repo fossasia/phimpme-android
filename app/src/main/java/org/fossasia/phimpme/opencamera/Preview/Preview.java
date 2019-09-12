@@ -43,11 +43,8 @@ import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
-
 import androidx.core.content.ContextCompat;
-
 import com.google.android.material.snackbar.Snackbar;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;

@@ -20,11 +20,8 @@ import android.net.NetworkInfo;
 import android.speech.RecognizerIntent;
 import android.util.Base64;
 import android.view.View;
-
 import androidx.annotation.NonNull;
-
 import com.google.android.material.snackbar.Snackbar;
-
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;

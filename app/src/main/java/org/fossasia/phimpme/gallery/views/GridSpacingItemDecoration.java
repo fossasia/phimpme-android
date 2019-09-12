@@ -2,7 +2,6 @@ package org.fossasia.phimpme.gallery.views;
 
 import android.graphics.Rect;
 import android.view.View;
-
 import androidx.recyclerview.widget.RecyclerView;
 
 /** Created by Jibo on 10/03/2016. */

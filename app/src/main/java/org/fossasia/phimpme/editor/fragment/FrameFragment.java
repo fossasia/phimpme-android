@@ -14,11 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -143,8 +141,7 @@ public class FrameFragment extends BaseEditFragment {
     return imgBtnCancel.getVisibility() == View.VISIBLE ? true : false;
   }
 
-  private class recyclerView
-      extends RecyclerView.Adapter<recyclerView.viewHolder> {
+  private class recyclerView extends RecyclerView.Adapter<recyclerView.viewHolder> {
 
     @Override
     public viewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

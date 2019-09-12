@@ -3,11 +3,9 @@ package org.fossasia.phimpme.utilities;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.BitmapFactory;
-
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
-
 import org.fossasia.phimpme.R;
 
 /** Created by anant on 23/7/17. */

@@ -63,13 +63,10 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.mikepenz.iconics.view.IconicsImageView;
 import java.io.File;

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,8 +13,7 @@ public class RecyclerItemClickListner implements RecyclerView.OnItemTouchListene
 
   private GestureDetector mGestureDetector;
 
-  @Nullable
-  private View mChildView;
+  @Nullable private View mChildView;
 
   private int mChildViewPosition;
 

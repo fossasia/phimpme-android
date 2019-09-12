@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
-
 import androidx.annotation.RequiresApi;
 
 /** Created by panyi on 17/2/11. */

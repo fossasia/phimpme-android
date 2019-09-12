@@ -2,10 +2,8 @@ package org.fossasia.phimpme.gallery.util;
 
 import android.content.Context;
 import android.graphics.Color;
-
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
-
 import org.fossasia.phimpme.R;
 
 /** Created by dnld on 24/02/16. */

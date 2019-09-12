@@ -1,7 +1,6 @@
 package org.fossasia.phimpme.uploadhistory;
 
 import androidx.recyclerview.widget.DiffUtil;
-
 import java.util.List;
 import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
 

@@ -22,9 +22,7 @@ import android.content.DialogInterface.OnKeyListener;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.ProgressBar;
-
 import androidx.fragment.app.DialogFragment;
-
 import org.fossasia.phimpme.R;
 
 public class IndeterminateProgressDialog extends DialogFragment {

@@ -3,7 +3,6 @@ package org.fossasia.phimpme.gallery.util;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-
 import androidx.core.widget.NestedScrollView;
 
 public class CustomNestedView extends NestedScrollView {

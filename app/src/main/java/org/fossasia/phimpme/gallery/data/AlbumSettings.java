@@ -1,9 +1,7 @@
 package org.fossasia.phimpme.gallery.data;
 
 import android.content.Context;
-
 import androidx.annotation.Nullable;
-
 import java.io.Serializable;
 import org.fossasia.phimpme.gallery.data.base.FilterMode;
 import org.fossasia.phimpme.gallery.data.base.SortingMode;

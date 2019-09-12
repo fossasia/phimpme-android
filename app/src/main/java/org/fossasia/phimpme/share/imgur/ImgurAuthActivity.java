@@ -11,9 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import androidx.appcompat.app.AlertDialog;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import org.fossasia.phimpme.R;

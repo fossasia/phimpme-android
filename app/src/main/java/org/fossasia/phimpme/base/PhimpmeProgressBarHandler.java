@@ -1,6 +1,5 @@
 package org.fossasia.phimpme.base;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;

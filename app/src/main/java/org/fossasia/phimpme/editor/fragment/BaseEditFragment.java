@@ -1,9 +1,7 @@
 package org.fossasia.phimpme.editor.fragment;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.editor.EditImageActivity;
 

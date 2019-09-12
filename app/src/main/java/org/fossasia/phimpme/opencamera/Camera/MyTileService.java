@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.service.quicksettings.TileService;
 import android.util.Log;
-
 import androidx.annotation.RequiresApi;
 
 /** Provides service for quick settings tile. */

@@ -4,9 +4,7 @@ import android.graphics.Color;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
 import com.google.android.material.snackbar.Snackbar;
-
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 
 /** Created by pa1pal on 16/7/17. */

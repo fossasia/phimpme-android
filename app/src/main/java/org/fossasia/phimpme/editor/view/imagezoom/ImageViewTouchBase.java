@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
-
 import org.fossasia.phimpme.editor.view.imagezoom.easing.Cubic;
 import org.fossasia.phimpme.editor.view.imagezoom.easing.Easing;
 import org.fossasia.phimpme.editor.view.imagezoom.graphic.FastBitmapDrawable;

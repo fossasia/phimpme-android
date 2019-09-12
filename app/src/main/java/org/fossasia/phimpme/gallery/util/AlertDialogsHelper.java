@@ -17,11 +17,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
-
 import com.bumptech.glide.Glide;
 import com.drew.lang.GeoLocation;
 import java.lang.reflect.Field;
