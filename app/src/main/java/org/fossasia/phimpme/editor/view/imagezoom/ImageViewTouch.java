@@ -1,5 +1,7 @@
 package org.fossasia.phimpme.editor.view.imagezoom;
 
+import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
+
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.Rect;

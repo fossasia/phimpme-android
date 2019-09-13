@@ -5,9 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.View;
+import androidx.annotation.RequiresApi;
 
 /** Created by panyi on 17/2/11. */
 public class PaintModeView extends View {

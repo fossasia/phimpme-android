@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/affix_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                                     android:textSize="@dimen/sub_medium_text"
                                     />
                             </LinearLayout>
-                            <android.support.v7.widget.SwitchCompat
+                            <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/affix_vertical_switch"
                                 android:layout_width="@dimen/zero"
                                 android:layout_height="match_parent"
@@ -128,7 +128,7 @@
                                     android:textSize="@dimen/sub_medium_text"
                                     />
                             </LinearLayout>
-                            <android.support.v7.widget.SwitchCompat
+                            <androidx.appcompat.widget.SwitchCompat
                                 android:id="@+id/save_here_switch"
                                 android:layout_width="@dimen/zero"
                                 android:layout_height="match_parent"
@@ -185,18 +185,18 @@
                                     android:paddingTop="@dimen/very_small_spacing"
                                     android:orientation="horizontal"
                                     android:id="@+id/radio_format">
-                                    <android.support.v7.widget.AppCompatRadioButton
+                                    <androidx.appcompat.widget.AppCompatRadioButton
                                         android:id="@+id/radio_jpeg"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/jpeg"
                                         android:checked="true" />
-                                    <android.support.v7.widget.AppCompatRadioButton
+                                    <androidx.appcompat.widget.AppCompatRadioButton
                                         android:id="@+id/radio_png"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/png" />
-                                    <android.support.v7.widget.AppCompatRadioButton
+                                    <androidx.appcompat.widget.AppCompatRadioButton
                                         android:id="@+id/radio_webp"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -248,5 +248,5 @@
                 </LinearLayout>
                 </ScrollView>
             </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

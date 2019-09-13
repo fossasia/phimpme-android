@@ -9,19 +9,20 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/accounts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottombar"
         android:layout_below="@id/toolbar">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/accounts_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"></android.support.v7.widget.RecyclerView>
-    </android.support.design.widget.CoordinatorLayout>
+            android:layout_below="@id/toolbar" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <include
         android:id="@+id/bottombar"

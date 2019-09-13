@@ -7,8 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class FrameFragment extends BaseEditFragment {
 
   private static final String TAG = "FrameFragment";
   private static Bitmap original;
-  private android.support.v7.widget.RecyclerView frameRecycler;
+  private RecyclerView frameRecycler;
   private ArrayList<Bitmap> arrayList = null;
   private Bitmap lastBitmap;
   private int lastFrame = 99;
@@ -140,8 +141,7 @@ public class FrameFragment extends BaseEditFragment {
     return imgBtnCancel.getVisibility() == View.VISIBLE ? true : false;
   }
 
-  private class recyclerView
-      extends android.support.v7.widget.RecyclerView.Adapter<recyclerView.viewHolder> {
+  private class recyclerView extends RecyclerView.Adapter<recyclerView.viewHolder> {
 
     @Override
     public viewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -171,7 +171,7 @@ public class FrameFragment extends BaseEditFragment {
       return arrayList.size();
     }
 
-    public class viewHolder extends android.support.v7.widget.RecyclerView.ViewHolder {
+    public class viewHolder extends RecyclerView.ViewHolder {
 
       private ImageView imageView;
 

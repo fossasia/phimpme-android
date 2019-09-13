@@ -1,10 +1,10 @@
 package org.fossasia.phimpme.gallery.views;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PagerSnapHelper;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 /** Created by mohit on 19/8/17. */
 public class PagerRecyclerView extends RecyclerView {

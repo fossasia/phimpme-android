@@ -3,11 +3,11 @@ package org.fossasia.phimpme.gallery.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.support.v8.renderscript.Allocation;
-import android.support.v8.renderscript.Element;
-import android.support.v8.renderscript.RenderScript;
-import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.view.View;
+import androidx.renderscript.Allocation;
+import androidx.renderscript.Element;
+import androidx.renderscript.RenderScript;
+import androidx.renderscript.ScriptIntrinsicBlur;
 
 /** Created by mayank on 3/11/17. */
 public class BlurImageUtil {
