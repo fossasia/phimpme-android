@@ -1,5 +1,6 @@
 package org.fossasia.phimpme.gallery.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -223,10 +224,14 @@ public class AboutActivity extends ThemedActivity {
             new View.OnClickListener() {
               @Override
               public void onClick(View view) {
-                Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
-                String facebookUrl = getFacebookPageURL(getApplicationContext());
-                facebookIntent.setData(Uri.parse(facebookUrl));
-                startActivity(facebookIntent);
+                  try {
+                      Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
+                      String facebookUrl = getFacebookPageURL(getApplicationContext());
+                      facebookIntent.setData(Uri.parse(facebookUrl));
+                      startActivity(facebookIntent);
+                  }catch (ActivityNotFoundException e){
+                     cts.launchUrl("https://www.facebook.com/phimpmeapp");
+                  }
               }
             });
 
