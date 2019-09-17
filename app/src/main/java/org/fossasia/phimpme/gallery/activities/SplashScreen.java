@@ -3,6 +3,7 @@ package org.fossasia.phimpme.gallery.activities;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -16,6 +17,13 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import java.io.IOException;
@@ -30,6 +38,8 @@ import org.fossasia.phimpme.utilities.SnackBarHandler;
 import pl.droidsonroids.gif.AnimationListener;
 import pl.droidsonroids.gif.GifDrawable;
 
+import static com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE;
+
 public class SplashScreen extends SharedMediaActivity {
 
   private final int READ_EXTERNAL_STORAGE_ID = 12;
@@ -42,6 +52,8 @@ public class SplashScreen extends SharedMediaActivity {
   public static final int ALBUMS_PREFETCHED = 23;
   public static final int PHOTOS_PREFETCHED = 2;
   public static final int ALBUMS_BACKUP = 60;
+  private static final int MY_REQUEST_CODE = 222;
+
   private boolean PICK_INTENT = false;
   public static final String ACTION_OPEN_ALBUM = "vn.mbm.phimp.leafpic.OPEN_ALBUM";
 
@@ -56,6 +68,7 @@ public class SplashScreen extends SharedMediaActivity {
 
   @BindView(R.id.imgLogo)
   ImageView logoView;
+  AppUpdateManager appUpdateManager;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +77,35 @@ public class SplashScreen extends SharedMediaActivity {
     ActivitySwitchHelper.setContext(this);
     ButterKnife.bind(this);
     SP = PreferenceUtil.getInstance(getApplicationContext());
+
+    // Creates instance of the manager.
+    appUpdateManager = AppUpdateManagerFactory.create(getApplicationContext());
+
+// Returns an intent object that you use to check for an update.
+    Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+
+// Checks that the platform will allow the specified type of update.
+    appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+      if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+              // For a flexible update, use AppUpdateType.FLEXIBLE
+              && appUpdateInfo.isUpdateTypeAllowed(IMMEDIATE)) {
+
+        // Request the update.
+        try {
+          appUpdateManager.startUpdateFlowForResult(
+                  // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                  appUpdateInfo,
+                  // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
+                  IMMEDIATE,
+                  // The current activity making the update request.
+                  this,
+                  // Include a request code to later monitor this update request.
+                  MY_REQUEST_CODE);
+        } catch (IntentSender.SendIntentException e) {
+          e.printStackTrace();
+        }
+      }
+    });
 
     parentView.setBackgroundColor(ColorPalette.getObscuredColor(getPrimaryColor()));
 
@@ -138,6 +180,33 @@ public class SplashScreen extends SharedMediaActivity {
       } else {
         askForPermission();
       }
+    } else if(requestCode == MY_REQUEST_CODE) {
+      if(resultCode!=RESULT_OK){
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+
+      // Checks that the platform will allow the specified type of update.
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+          if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                  // For a flexible update, use AppUpdateType.FLEXIBLE
+                  && appUpdateInfo.isUpdateTypeAllowed(IMMEDIATE)) {
+            // Request the update.
+            try {
+              appUpdateManager.startUpdateFlowForResult(
+                      // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                      appUpdateInfo,
+                      // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
+                      IMMEDIATE,
+                      // The current activity making the update request.
+                      this,
+                      // Include a request code to later monitor this update request.
+                      MY_REQUEST_CODE);
+            } catch (IntentSender.SendIntentException e) {
+              e.printStackTrace();
+            }
+          }
+        });
+
+      }
     }
   }
 
@@ -159,6 +228,29 @@ public class SplashScreen extends SharedMediaActivity {
               ColorPalette.getTransparentColor(
                   ContextCompat.getColor(getApplicationContext(), R.color.md_black_1000), 70));
     }
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    appUpdateManager
+            .getAppUpdateInfo()
+            .addOnSuccessListener(
+                    appUpdateInfo -> {
+                      if (appUpdateInfo.updateAvailability()
+                              == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                        // If an in-app update is already running, resume the update.
+                        try {
+                          appUpdateManager.startUpdateFlowForResult(
+                                  appUpdateInfo,
+                                  IMMEDIATE,
+                                  this,
+                                  MY_REQUEST_CODE);
+                        } catch (IntentSender.SendIntentException e) {
+                          e.printStackTrace();
+                        }
+                      }
+                    });
   }
 
   @Override
