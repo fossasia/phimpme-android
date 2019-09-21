@@ -201,6 +201,11 @@ public class EditImageActivity extends EditBaseActivity
       check = true;
       mainBitmap = savedInstanceState.getParcelable("Edited Bitmap");
       mOpTimes = savedInstanceState.getInt("numberOfEdits");
+      Fragment restoredAddTextFragment =
+          getSupportFragmentManager().getFragment(savedInstanceState, "addTextFragment");
+      if (restoredAddTextFragment != null) {
+        addTextFragment = (AddTextFragment) restoredAddTextFragment;
+      }
     }
     if (exitDialog) {
       onSaveTaskDone();
@@ -757,6 +762,9 @@ public class EditImageActivity extends EditBaseActivity
     outState.putInt("checkString", messageCheck);
     outState.putParcelable("Edited Bitmap", mainBitmap);
     outState.putInt("numberOfEdits", mOpTimes);
+    if (addTextFragment.isAdded()) {
+      getSupportFragmentManager().putFragment(outState, "addTextFragment", addTextFragment);
+    }
   }
 
   @Override
