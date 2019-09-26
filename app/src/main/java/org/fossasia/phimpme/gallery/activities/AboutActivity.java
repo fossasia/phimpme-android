@@ -28,7 +28,7 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.gallery.util.CustomTabService;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
-/** Created by codedsun on 26/9/2019. */
+/** Created by Jibo on 02/03/2016. */
 public class AboutActivity extends ThemedActivity implements View.OnClickListener {
 
   private Toolbar toolbar;
