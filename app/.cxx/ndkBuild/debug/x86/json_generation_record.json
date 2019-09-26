@@ -1,0 +1,62 @@
+[
+  {
+    "level": "INFO",
+    "message": "Start JSON generation. Platform version: 21 min SDK version: x86"
+  },
+  {
+    "level": "INFO",
+    "message": "rebuilding JSON /Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/.cxx/ndkBuild/debug/x86/android_gradle_build.json due to:"
+  },
+  {
+    "level": "INFO",
+    "message": "- expected json /Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/.cxx/ndkBuild/debug/x86/android_gradle_build.json file is not present, will remove stale json folder"
+  },
+  {
+    "level": "INFO",
+    "message": "- missing previous command file /Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/.cxx/ndkBuild/debug/x86/build_command.txt, will remove stale json folder"
+  },
+  {
+    "level": "INFO",
+    "message": "- command changed from previous, will remove stale json folder"
+  },
+  {
+    "level": "INFO",
+    "message": "removing stale contents from \u0027/Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/.cxx/ndkBuild/debug/x86\u0027"
+  },
+  {
+    "level": "INFO",
+    "message": "created folder \u0027/Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/.cxx/ndkBuild/debug/x86\u0027"
+  },
+  {
+    "level": "INFO",
+    "message": "executing ndkBuild Executable : /Users/suneetsrivastava/Library/Android/sdk/ndk/18.1.5063045/ndk-build\narguments : \nNDK_PROJECT_PATH\u003dnull\nAPP_BUILD_SCRIPT\u003d/Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/src/main/jni/Android.mk\nNDK_APPLICATION_MK\u003d/Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/src/main/jni/Application.mk\nAPP_ABI\u003dx86\nNDK_ALL_ABIS\u003dx86\nNDK_DEBUG\u003d1\nAPP_PLATFORM\u003dandroid-21\nNDK_OUT\u003d/Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/build/intermediates/ndkBuild/debug/obj\nNDK_LIBS_OUT\u003d/Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/build/intermediates/ndkBuild/debug/lib\nAPP_SHORT_COMMANDS\u003dfalse\nLOCAL_SHORT_COMMANDS\u003dfalse\n-B\n-n\njvmArgs : \n\n"
+  },
+  {
+    "level": "INFO",
+    "message": "Executable : /Users/suneetsrivastava/Library/Android/sdk/ndk/18.1.5063045/ndk-build\narguments : \nNDK_PROJECT_PATH\u003dnull\nAPP_BUILD_SCRIPT\u003d/Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/src/main/jni/Android.mk\nNDK_APPLICATION_MK\u003d/Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/src/main/jni/Application.mk\nAPP_ABI\u003dx86\nNDK_ALL_ABIS\u003dx86\nNDK_DEBUG\u003d1\nAPP_PLATFORM\u003dandroid-21\nNDK_OUT\u003d/Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/build/intermediates/ndkBuild/debug/obj\nNDK_LIBS_OUT\u003d/Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/build/intermediates/ndkBuild/debug/lib\nAPP_SHORT_COMMANDS\u003dfalse\nLOCAL_SHORT_COMMANDS\u003dfalse\n-B\n-n\njvmArgs : \n\n"
+  },
+  {
+    "level": "INFO",
+    "message": "done executing ndkBuild"
+  },
+  {
+    "level": "INFO",
+    "message": "write build output /Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/.cxx/ndkBuild/debug/x86/build_output.txt"
+  },
+  {
+    "level": "INFO",
+    "message": "parse and convert ndk-build output to build configuration JSON"
+  },
+  {
+    "level": "INFO",
+    "message": "found application make file /Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/src/main/jni/Application.mk"
+  },
+  {
+    "level": "INFO",
+    "message": "write command file /Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/.cxx/ndkBuild/debug/x86/build_command.txt"
+  },
+  {
+    "level": "INFO",
+    "message": "JSON generation completed without problems"
+  }
+]

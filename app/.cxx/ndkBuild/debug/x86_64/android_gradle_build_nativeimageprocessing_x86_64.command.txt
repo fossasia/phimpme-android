@@ -1,0 +1,14 @@
+Executable : /Users/suneetsrivastava/Library/Android/sdk/ndk/18.1.5063045/ndk-build
+arguments : 
+NDK_PROJECT_PATH=null
+APP_BUILD_SCRIPT=/Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/src/main/jni/Android.mk
+NDK_APPLICATION_MK=/Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/src/main/jni/Application.mk
+APP_ABI=x86_64
+NDK_ALL_ABIS=x86_64
+NDK_DEBUG=1
+APP_PLATFORM=android-21
+NDK_OUT=/Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/build/intermediates/ndkBuild/debug/obj
+NDK_LIBS_OUT=/Users/suneetsrivastava/Documents/FOSS/phimpme-android/app/build/intermediates/ndkBuild/debug/lib
+nativeimageprocessing
+jvmArgs : 
+
