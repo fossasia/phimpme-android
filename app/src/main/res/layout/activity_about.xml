@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ScrollView
-        android:id="@+id/svAbout"
+        android:id="@+id/sv_about"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,7 +20,7 @@
             android:orientation="vertical">
             <!--ABOUT APP CARD-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardAboutApp"
+                android:id="@+id/card_about_app"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_spacing"
@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/ivPhimpmeLogo"
+                        android:id="@+id/iv_phimpme_logo"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/size_200dp"
                         android:padding="@dimen/sub_medium_spacing"
@@ -46,7 +46,7 @@
                         app:srcCompat="@drawable/ic_launcher_vector" />
 
                     <TextView
-                        android:id="@+id/tvAppTitle"
+                        android:id="@+id/tv_app_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -57,10 +57,10 @@
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ivPhimpmeLogo" />
+                        app:layout_constraintTop_toBottomOf="@id/iv_phimpme_logo" />
 
                     <TextView
-                        android:id="@+id/tvAppDescription"
+                        android:id="@+id/tv_app_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -73,10 +73,10 @@
                         android:textSize="@dimen/medium_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvAppTitle" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_app_title" />
 
                     <TextView
-                        android:id="@+id/tvVersion"
+                        android:id="@+id/tv_version"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -86,10 +86,10 @@
                         android:textSize="@dimen/medium_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvAppDescription" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_app_description" />
 
                     <TextView
-                        android:id="@+id/tvAboutFossasia"
+                        android:id="@+id/tv_about_fossasia"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -99,14 +99,14 @@
                         android:textSize="@dimen/medium_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvVersion" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_version" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
             <!--SPECIAL THANKS-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardSpecialThanks"
+                android:id="@+id/card_special_thanks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_spacing"
@@ -122,7 +122,7 @@
                     android:padding="@dimen/medium_spacing">
 
                     <TextView
-                        android:id="@+id/tvSpecialThanksLabel"
+                        android:id="@+id/tv_special_thanks"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/about_special_thanks"
@@ -134,7 +134,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tvOpenCamera"
+                        android:id="@+id/tv_open_camera"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/small_spacing"
@@ -145,10 +145,10 @@
                         android:textSize="@dimen/sub_medium_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvSpecialThanksLabel" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_special_thanks" />
 
                     <TextView
-                        android:id="@+id/tvLeafPic"
+                        android:id="@+id/tv_leaf_pic"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/small_spacing"
@@ -159,14 +159,14 @@
                         android:textSize="@dimen/sub_medium_text"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvOpenCamera" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_open_camera" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
             <!-- SUPPORT DEVELOPMENT-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardSupportDev"
+                android:id="@+id/card_support_dev"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_spacing"
@@ -182,7 +182,7 @@
                     android:padding="@dimen/medium_spacing">
 
                     <TextView
-                        android:id="@+id/tvSupportLabel"
+                        android:id="@+id/tv_support_label"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/about_support"
@@ -194,17 +194,17 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.mikepenz.iconics.view.IconicsImageView
-                        android:id="@+id/ivBug"
+                        android:id="@+id/iv_bug"
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         android:layout_marginStart="@dimen/small_spacing"
                         app:iiv_icon="gmd-bug-report"
-                        app:layout_constraintStart_toStartOf="@id/tvSupportLabel"
-                        app:layout_constraintTop_toTopOf="@id/tvReportBugLabel"
-                        app:layout_constraintBottom_toBottomOf="@id/tvReportBugDesc"/>
+                        app:layout_constraintStart_toStartOf="@id/tv_support_label"
+                        app:layout_constraintTop_toTopOf="@id/tv_report_bug_label"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_report_bug_desc"/>
 
                     <TextView
-                        android:id="@+id/tvReportBugLabel"
+                        android:id="@+id/tv_report_bug_label"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/about_support_report_bug"
@@ -213,31 +213,31 @@
                         android:layout_marginStart="@dimen/medium_spacing"
                         android:layout_marginTop="@dimen/medium_spacing"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/ivBug"
-                        app:layout_constraintTop_toBottomOf="@id/tvSupportLabel"/>
+                        app:layout_constraintStart_toEndOf="@id/iv_bug"
+                        app:layout_constraintTop_toBottomOf="@id/tv_support_label"/>
 
                     <TextView
-                        android:id="@+id/tvReportBugDesc"
+                        android:id="@+id/tv_report_bug_desc"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/about_support_report_bug_sub"
                         android:textColor="@color/md_grey_400"
                         android:textSize="@dimen/sub_medium_text"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@id/tvReportBugLabel"
-                        app:layout_constraintTop_toBottomOf="@id/tvReportBugLabel" />
+                        app:layout_constraintStart_toStartOf="@id/tv_report_bug_label"
+                        app:layout_constraintTop_toBottomOf="@id/tv_report_bug_label" />
 
                     <com.mikepenz.iconics.view.IconicsImageView
-                        android:id="@+id/ivGithub"
+                        android:id="@+id/iv_github"
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         app:iiv_icon="faw-github"
-                        app:layout_constraintStart_toStartOf="@id/ivBug"
-                        app:layout_constraintTop_toTopOf="@id/tvGithubLabel"
-                        app:layout_constraintBottom_toBottomOf="@id/tvGithubDesc"/>
+                        app:layout_constraintStart_toStartOf="@id/iv_bug"
+                        app:layout_constraintTop_toTopOf="@id/tv_github_label"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_github_desc"/>
 
                     <TextView
-                        android:id="@+id/tvGithubLabel"
+                        android:id="@+id/tv_github_label"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/about_support_github"
@@ -245,26 +245,26 @@
                         android:textSize="@dimen/medium_text"
                         android:layout_marginStart="@dimen/medium_spacing"
                         android:layout_marginTop="@dimen/big_spacing"
-                        app:layout_constraintTop_toBottomOf="@id/tvReportBugDesc"
+                        app:layout_constraintTop_toBottomOf="@id/tv_report_bug_desc"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/ivGithub" />
+                        app:layout_constraintStart_toEndOf="@id/iv_github" />
 
                     <TextView
-                        android:id="@+id/tvGithubDesc"
+                        android:id="@+id/tv_github_desc"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/about_support_github_sub"
                         android:textColor="@color/md_grey_400"
                         android:textSize="@dimen/sub_medium_text"
-                        app:layout_constraintStart_toStartOf="@id/tvGithubLabel"
-                        app:layout_constraintTop_toBottomOf="@id/tvGithubLabel" />
+                        app:layout_constraintStart_toStartOf="@id/tv_github_label"
+                        app:layout_constraintTop_toBottomOf="@id/tv_github_label" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
             <!--APP LICENSES-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardLicense"
+                android:id="@+id/card_license"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_spacing"
@@ -280,7 +280,7 @@
                     android:padding="@dimen/medium_spacing">
 
                     <TextView
-                        android:id="@+id/tvLicenseHeading"
+                        android:id="@+id/tv_license_heading"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/about_license"
@@ -292,18 +292,18 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.mikepenz.iconics.view.IconicsImageView
-                        android:id="@+id/ivLicense"
+                        android:id="@+id/iv_license"
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         android:layout_marginStart="@dimen/small_spacing"
                         app:iiv_icon="gmd-insert-drive-file"
-                        app:layout_constraintStart_toStartOf="@id/tvLicenseHeading"
-                        app:layout_constraintTop_toTopOf="@id/tvLicenseLabel"
-                        app:layout_constraintBottom_toBottomOf="@id/tvLicenseDesc"
+                        app:layout_constraintStart_toStartOf="@id/tv_license_heading"
+                        app:layout_constraintTop_toTopOf="@id/tv_license_label"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_license_desc"
                          />
 
                     <TextView
-                        android:id="@+id/tvLicenseLabel"
+                        android:id="@+id/tv_license_label"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/about_license"
@@ -311,58 +311,58 @@
                         android:textSize="@dimen/medium_text"
                         android:layout_marginStart="@dimen/medium_spacing"
                         android:layout_marginTop="@dimen/big_spacing"
-                        app:layout_constraintStart_toEndOf="@id/ivLicense"
-                        app:layout_constraintTop_toBottomOf="@id/tvLicenseHeading" />
+                        app:layout_constraintStart_toEndOf="@id/iv_license"
+                        app:layout_constraintTop_toBottomOf="@id/tv_license_heading" />
 
                     <TextView
-                        android:id="@+id/tvLicenseDesc"
+                        android:id="@+id/tv_license_desc"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/about_license_sub"
                         android:textColor="@color/md_grey_400"
                         android:textSize="@dimen/sub_medium_text"
-                        app:layout_constraintStart_toStartOf="@id/tvLicenseLabel"
-                        app:layout_constraintTop_toBottomOf="@id/tvLicenseLabel" />
+                        app:layout_constraintStart_toStartOf="@id/tv_license_label"
+                        app:layout_constraintTop_toBottomOf="@id/tv_license_label" />
 
                     <com.mikepenz.iconics.view.IconicsImageView
-                        android:id="@+id/ivLibrary"
+                        android:id="@+id/iv_library"
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         app:iiv_icon="gmd-insert-drive-file"
-                        app:layout_constraintStart_toStartOf="@id/ivLicense"
-                        app:layout_constraintTop_toTopOf="@id/tvLibraryLicenseLabel"
-                        app:layout_constraintBottom_toBottomOf="@id/tvLibraryLicenseDesc"
+                        app:layout_constraintStart_toStartOf="@id/iv_license"
+                        app:layout_constraintTop_toTopOf="@id/tv_library_license_label"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_library_license_desc"
                          />
 
 
                     <TextView
-                        android:id="@+id/tvLibraryLicenseLabel"
+                        android:id="@+id/tv_library_license_label"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/about_library_license"
                         android:textColor="@color/md_dark_background"
                         android:layout_marginStart="@dimen/medium_spacing"
                         android:textSize="@dimen/medium_text"
-                        app:layout_constraintStart_toEndOf="@id/ivLibrary"
+                        app:layout_constraintStart_toEndOf="@id/iv_library"
                         android:layout_marginTop="@dimen/big_spacing"
-                        app:layout_constraintTop_toBottomOf="@id/tvLicenseDesc"/>
+                        app:layout_constraintTop_toBottomOf="@id/tv_license_desc"/>
 
                     <TextView
-                        android:id="@+id/tvLibraryLicenseDesc"
+                        android:id="@+id/tv_library_license_desc"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/about_library_license_sub"
                         android:textColor="@color/md_grey_400"
                         android:textSize="@dimen/sub_medium_text"
-                        app:layout_constraintStart_toStartOf="@id/tvLibraryLicenseLabel"
-                        app:layout_constraintTop_toBottomOf="@id/tvLibraryLicenseLabel" />
+                        app:layout_constraintStart_toStartOf="@id/tv_library_license_label"
+                        app:layout_constraintTop_toBottomOf="@id/tv_library_license_label" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
             <!--APP Connect-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardConnectToUs"
+                android:id="@+id/card_connect_to_us"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/card_spacing"
@@ -378,7 +378,7 @@
                     android:padding="@dimen/medium_spacing">
 
                     <TextView
-                        android:id="@+id/tvConnectToUsLabel"
+                        android:id="@+id/tv_connect_to_us"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/connect_to_us"
@@ -389,19 +389,19 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.mikepenz.iconics.view.IconicsImageView
-                        android:id="@+id/ivWebsite"
+                        android:id="@+id/iv_website"
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         android:layout_gravity="center_vertical"
                         app:iiv_icon="ion_android_globe"
                         android:layout_marginStart="@dimen/small_spacing"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/tvPhimpmeWebsite"
-                        app:layout_constraintBottom_toBottomOf="@id/tvPhimpmeWebsiteDesc"
+                        app:layout_constraintTop_toTopOf="@id/tv_phimpme_website"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_phimpme_website_desc"
                          />
 
                     <TextView
-                        android:id="@+id/tvPhimpmeWebsite"
+                        android:id="@+id/tv_phimpme_website"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/about_website_connect"
@@ -409,32 +409,32 @@
                         android:textSize="@dimen/medium_text"
                         android:layout_marginTop="@dimen/big_spacing"
                         android:layout_marginStart="@dimen/medium_spacing"
-                        app:layout_constraintStart_toEndOf="@id/ivWebsite"
-                        app:layout_constraintTop_toBottomOf="@id/tvConnectToUsLabel" />
+                        app:layout_constraintStart_toEndOf="@id/iv_website"
+                        app:layout_constraintTop_toBottomOf="@id/tv_connect_to_us" />
 
                     <TextView
-                        android:id="@+id/tvPhimpmeWebsiteDesc"
+                        android:id="@+id/tv_phimpme_website_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/about_website_connect_sub"
                         android:textColor="@color/md_grey_400"
                         android:textSize="@dimen/sub_medium_text"
-                        app:layout_constraintStart_toStartOf="@id/tvPhimpmeWebsite"
-                        app:layout_constraintTop_toBottomOf="@id/tvPhimpmeWebsite" />
+                        app:layout_constraintStart_toStartOf="@id/tv_phimpme_website"
+                        app:layout_constraintTop_toBottomOf="@id/tv_phimpme_website" />
 
                     <com.mikepenz.iconics.view.IconicsImageView
-                        android:id="@+id/ivFacebook"
+                        android:id="@+id/iv_facebook"
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         android:layout_gravity="center_vertical"
                         app:iiv_icon="faw_facebook_square"
-                        app:layout_constraintStart_toStartOf="@id/ivWebsite"
-                        app:layout_constraintTop_toTopOf="@id/tvFacebook"
-                        app:layout_constraintBottom_toBottomOf="@id/tvFacebookDesc"
+                        app:layout_constraintStart_toStartOf="@id/iv_website"
+                        app:layout_constraintTop_toTopOf="@id/tv_facebook"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_facebook_desc"
                          />
 
                     <TextView
-                        android:id="@+id/tvFacebook"
+                        android:id="@+id/tv_facebook"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/about_fb_connect"
@@ -442,32 +442,32 @@
                         android:textSize="@dimen/medium_text"
                         android:layout_marginStart="@dimen/size_16dp"
                         android:layout_marginTop="@dimen/big_spacing"
-                        app:layout_constraintStart_toEndOf="@id/ivFacebook"
-                        app:layout_constraintTop_toBottomOf="@id/tvPhimpmeWebsiteDesc"/>
+                        app:layout_constraintStart_toEndOf="@id/iv_facebook"
+                        app:layout_constraintTop_toBottomOf="@id/tv_phimpme_website_desc"/>
 
                     <TextView
-                        android:id="@+id/tvFacebookDesc"
+                        android:id="@+id/tv_facebook_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/about_fb_connect_sub"
                         android:textColor="@color/md_grey_400"
                         android:textSize="@dimen/sub_medium_text"
-                        app:layout_constraintStart_toStartOf="@id/tvFacebook"
-                        app:layout_constraintTop_toBottomOf="@id/tvFacebook" />
+                        app:layout_constraintStart_toStartOf="@id/tv_facebook"
+                        app:layout_constraintTop_toBottomOf="@id/tv_facebook" />
 
                     <com.mikepenz.iconics.view.IconicsImageView
-                        android:id="@+id/ivTwitter"
+                        android:id="@+id/iv_twitter"
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         android:layout_gravity="center_vertical"
                         app:iiv_icon="faw_twitter"
-                        app:layout_constraintStart_toStartOf="@id/ivFacebook"
-                        app:layout_constraintTop_toTopOf="@id/tvTwitter"
-                        app:layout_constraintBottom_toBottomOf="@id/tvTwitterDesc"
+                        app:layout_constraintStart_toStartOf="@id/iv_facebook"
+                        app:layout_constraintTop_toTopOf="@id/tv_twitter"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_twitter_desc"
                         />
 
                     <TextView
-                        android:id="@+id/tvTwitter"
+                        android:id="@+id/tv_twitter"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/about_twitter_connect"
@@ -475,44 +475,18 @@
                         android:textSize="@dimen/medium_text"
                         android:layout_marginStart="@dimen/medium_spacing"
                         android:layout_marginTop="@dimen/big_spacing"
-                        app:layout_constraintStart_toEndOf="@id/ivTwitter"
-                        app:layout_constraintTop_toBottomOf="@id/tvFacebookDesc" />
+                        app:layout_constraintStart_toEndOf="@id/iv_twitter"
+                        app:layout_constraintTop_toBottomOf="@id/tv_facebook_desc" />
 
                     <TextView
-                        android:id="@+id/tvTwitterDesc"
+                        android:id="@+id/tv_twitter_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/about_twitter_connect_sub"
                         android:textColor="@color/md_grey_400"
                         android:textSize="@dimen/sub_medium_text"
-                        app:layout_constraintStart_toStartOf="@id/tvTwitter"
-                        app:layout_constraintTop_toBottomOf="@id/tvTwitter" />
-
-
-
-                    <!--                    <LinearLayout-->
-                    <!--                        android:id="@+id/ll_about_website"-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:background="@drawable/ripple"-->
-                    <!--                        android:clickable="true"-->
-                    <!--                        android:orientation="horizontal">-->
-                    <!--                        &lt;!&ndash;&ndash;&gt;-->
-                    <!--                        <LinearLayout-->
-                    <!--                            android:layout_width="match_parent"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:orientation="vertical"-->
-                    <!--                            android:paddingTop="@dimen/medium_spacing"-->
-                    <!--                            android:paddingEnd="@dimen/medium_spacing"-->
-                    <!--                            android:paddingBottom="@dimen/small_spacing">-->
-                    <!--                            &lt;!&ndash;&ndash;&gt;-->
-
-                    <!--                        </LinearLayout>-->
-                    <!--                        &lt;!&ndash;&ndash;&gt;-->
-                    <!--                    </LinearLayout>-->
-                    <!---->
-                    <!---->
-
+                        app:layout_constraintStart_toStartOf="@id/tv_twitter"
+                        app:layout_constraintTop_toBottomOf="@id/tv_twitter" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
