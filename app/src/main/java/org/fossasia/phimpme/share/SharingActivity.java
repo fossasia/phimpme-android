@@ -80,8 +80,8 @@ import com.owncloud.android.lib.common.operations.OnRemoteOperationListener;
 import com.owncloud.android.lib.common.operations.RemoteOperation;
 import com.owncloud.android.lib.common.operations.RemoteOperationResult;
 import com.owncloud.android.lib.resources.files.FileUtils;
-import com.owncloud.android.lib.resources.files.ReadRemoteFolderOperation;
-import com.owncloud.android.lib.resources.files.UploadRemoteFileOperation;
+import com.owncloud.android.lib.resources.files.ReadFileRemoteOperation;
+import com.owncloud.android.lib.resources.files.UploadFileRemoteOperation;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
@@ -1362,8 +1362,8 @@ public class SharingActivity extends ThemedActivity
       Long timeStampLong = fileToUpload.lastModified() / 1000;
       String timeStamp = timeStampLong.toString();
 
-      UploadRemoteFileOperation uploadOperation =
-          new UploadRemoteFileOperation(
+      UploadFileRemoteOperation uploadOperation =
+          new UploadFileRemoteOperation(
               fileToUpload.getAbsolutePath(), remotePath, mimeType, timeStamp);
       uploadOperation.execute(mClient, this, mHandler);
       phimpmeProgressBarHandler.show();
@@ -1380,6 +1380,7 @@ public class SharingActivity extends ThemedActivity
 
   @Override
   protected void onActivityResult(int requestCode, int responseCode, Intent data) {
+    super.onActivityResult(requestCode, responseCode, data);
     if (requestCode == REQ_SELECT_PHOTO) {
       if (responseCode == RESULT_OK) {
         NotificationHandler.actionPassed(R.string.upload_complete);
@@ -1423,8 +1424,8 @@ public class SharingActivity extends ThemedActivity
   }
 
   private void startRefresh() {
-    ReadRemoteFolderOperation refreshOperation =
-        new ReadRemoteFolderOperation(FileUtils.PATH_SEPARATOR);
+    ReadFileRemoteOperation refreshOperation =
+        new ReadFileRemoteOperation(FileUtils.PATH_SEPARATOR);
     refreshOperation.execute(mClient, this, mHandler);
   }
 
@@ -1452,7 +1453,7 @@ public class SharingActivity extends ThemedActivity
       SnackBarHandler.create(
               parent, getString(R.string.todo_operation_finished_in_success), Snackbar.LENGTH_LONG)
           .show();
-    } else if (operation instanceof UploadRemoteFileOperation) {
+    } else if (operation instanceof UploadFileRemoteOperation) {
       onSuccessfulUpload();
     }
   }
