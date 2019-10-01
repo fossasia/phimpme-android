@@ -51,6 +51,6 @@ ext {
     twitterVersion = "3.0.0"
     stethoVersion = "1.5.0"
     showcaseVersion = "5.4.3"
-    nextCloudVersion = "1.0.21"
+    nextCloudVersion = "1.5.0"
 }
 
