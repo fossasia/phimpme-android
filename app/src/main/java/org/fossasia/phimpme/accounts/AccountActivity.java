@@ -34,9 +34,8 @@ import butterknife.ButterKnife;
 import com.box.androidsdk.content.BoxConfig;
 import com.box.androidsdk.content.auth.BoxAuthentication;
 import com.box.androidsdk.content.models.BoxSession;
-import com.cloudrail.si.CloudRail;
+import com.dropbox.core.android.Auth;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
@@ -74,8 +73,6 @@ public class AccountActivity extends ThemedActivity
   private static final int OWNCLOUD_REQUEST_CODE = 9;
   private static final int RESULT_OK = 1;
   public static final String BROWSABLE = "android.intent.category.BROWSABLE";
-  public static final String CLOUDRAIL_APP_KEY =
-      Constants.CLOUDRAIL_LICENSE_KEY; // CloudRail_App-Key
 
   @BindView(R.id.accounts_parent)
   RelativeLayout parentLayout;
@@ -101,7 +98,6 @@ public class AccountActivity extends ThemedActivity
   private AccountDatabase account;
   private DatabaseHelper databaseHelper;
   private Context context;
-  private CloudRailServices cloudRailServices;
   private PDKClient pdkClient;
   // private GoogleApiClient mGoogleApiClient;
   private BoxSession sessionBox;
@@ -129,7 +125,6 @@ public class AccountActivity extends ThemedActivity
     accountPresenter.loadFromDatabase(); // Calling presenter function to load data from database
     getSupportActionBar().setTitle(R.string.title_account);
     phimpmeProgressBarHandler.show();
-    cloudRailServices = CloudRailServices.getInstance();
     pdkClient = PDKClient.configureInstance(this, PINTEREST_APP_ID);
     pdkClient.onConnect(this);
     setDebugMode(true);
@@ -249,13 +244,7 @@ public class AccountActivity extends ThemedActivity
           break;
 
         case DROPBOX:
-          if (CLOUDRAIL_APP_KEY == null || CLOUDRAIL_APP_KEY.equals("")) {
-            SnackBarHandler.create(
-                    findViewById(android.R.id.content),
-                    getString(R.string.Cloudrail_License_key),
-                    Snackbar.LENGTH_SHORT)
-                .show();
-          } else signInDropbox();
+          Auth.startOAuth2Authentication(this, Constants.DROPBOX_APP_KEY);
           break;
 
         case OWNCLOUD:
@@ -365,74 +354,6 @@ public class AccountActivity extends ThemedActivity
               .enable2FA(true)
               .setUrlCallBack(Constants.CALL_BACK_TUMBLR)
               .initiateInActivity(AccountActivity.this);
-  }*/
-
-  private void signInDropbox() {
-    if (accountPresenter.checkAlreadyExist(DROPBOX)) {
-      SnackBarHandler.create(coordinatorLayout, getString(R.string.already_signed_in)).show();
-    } else cloudRailServices.prepare(this);
-    cloudRailServices.login();
-    BasicCallBack basicCallBack =
-        new BasicCallBack() {
-          @Override
-          public void callBack(int status, Object data) {
-            if (status == 1) {
-              dropboxAuthentication(data.toString());
-            }
-          }
-        };
-    CloudRailServices.setCallBack(basicCallBack);
-  }
-  /*
-  Catching the intent of the external browser login and getting that data
-   */
-
-  @Override
-  protected void onNewIntent(Intent intent) {
-    try {
-
-      if (intent.getCategories().contains(BROWSABLE)) {
-        CloudRail.setAuthenticationResponse(intent);
-      }
-    } catch (Exception e) {
-      // Nothing is to be done when the BROWSABLE Intent is null
-    }
-    super.onNewIntent(intent);
-  }
-
-  /* private void signInGoogleDrive() {
-      if(accountPresenter.checkAlreadyExist(GOOGLEDRIVE))
-          SnackBarHandler.show(coordinatorLayout,"Already Signed In");
-      else
-          cloudRailServices.prepare(this);
-          cloudRailServices.googleDriveLogin();
-          BasicCallBack basicCallBack = new BasicCallBack() {
-              @Override
-              public void callBack(int status, Object data) {
-                  if(status == 2){
-                      Log.e("TAG", "callBack: GOOGLE DRIVE"+data.toString() );
-                      googleDriveAuthentication(data.toString());
-                  }
-              }
-          };
-          CloudRailServices.setCallBack(basicCallBack);
-  }*/
-
-  /* private void signInOneDrive(){
-      if(accountPresenter.checkAlreadyExist(ONEDRIVE))
-          SnackBarHandler.show(coordinatorLayout,"Already Signed In");
-      else
-          cloudRailServices.prepare(this);
-          cloudRailServices.oneDriveLogin();
-          BasicCallBack  basicCallBack = new BasicCallBack() {
-              @Override
-              public void callBack(int status, Object data) {
-                  if(status==3){
-                      oneDriveAuthentication(data.toString());
-                  }
-              }
-          };
-          CloudRailServices.setCallBack(basicCallBack);
   }*/
 
   private void signInImgur() {
@@ -566,6 +487,9 @@ public class AccountActivity extends ThemedActivity
     toolbar.setBackgroundColor(ThemeHelper.getPrimaryColor(this));
     // dropboxAuthentication();
     boxAuthentication();
+    if (Auth.getOAuth2Token() != null) {
+      dropBoxAuthentication(Auth.getOAuth2Token());
+    }
     setStatusBarColor();
     setNavBarColor();
     accountPresenter.loadFromDatabase();
@@ -600,59 +524,6 @@ public class AccountActivity extends ThemedActivity
       accountPresenter.loadFromDatabase();
     }
   }
-
-  private void dropboxAuthentication(String tokens) {
-    try {
-      String result = cloudRailServices.db.saveAsString();
-      Log.d(
-          getString(R.string.AccountsActivity),
-          getString(R.string.dropboxAuthentication) + tokens + " " + result);
-      String accessToken = cloudRailServices.getToken();
-      realm.beginTransaction();
-      account = realm.createObject(AccountDatabase.class, DROPBOX.toString());
-      account.setUsername(DROPBOX.toString());
-      account.setToken(String.valueOf(accessToken));
-      realm.commitTransaction();
-
-    } catch (Exception e) {
-      // catches exception dont need handling
-    }
-    accountPresenter.loadFromDatabase();
-  }
-
-  /* private void oneDriveAuthentication(String tokens){
-      try {
-          String result = cloudRailServices.oneDrive.saveAsString();
-          Log.d("AccountsActivity", "oneDriveAuthentication: "+tokens+" "+result );
-          String accessToken = cloudRailServices.getOneDriveToken();
-          realm.beginTransaction();
-          account = realm.createObject(AccountDatabase.class,ONEDRIVE.toString());
-          account.setUsername(ONEDRIVE.toString());
-          account.setToken(String.valueOf(accessToken));
-          realm.commitTransaction();
-      }
-      catch (Exception e){
-          //No need of handling it
-      }
-      accountPresenter.loadFromDatabase();
-  }*/
-
-  /* private void googleDriveAuthentication(String tokens) {
-      try{
-          String token = cloudRailServices.googleDrive.saveAsString();
-          Log.e("AccountsActivity", "googleDriveAuthentication: "+token + "Matching Token "+tokens);
-          String accessToken = cloudRailServices.getGoogleDriveToken();
-          realm.beginTransaction();
-          account = realm.createObject(AccountDatabase.class,GOOGLEDRIVE.toString());
-          account.setUsername(GOOGLEDRIVE.toString());
-          account.setToken(String.valueOf(accessToken));
-          realm.commitTransaction();
-      }catch (Exception e)
-      {
-          //No need for handling
-      }
-      accountPresenter.loadFromDatabase();
-  }*/
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -692,4 +563,13 @@ public class AccountActivity extends ThemedActivity
           SnackBarHandler.show(parentLayout,R.string.google_auth_fail);
       }
   }*/
+
+  // Handles the Auth Activity result of DropBox signIn flow
+  private void dropBoxAuthentication(String token) {
+    realm.beginTransaction();
+    account = realm.createObject(AccountDatabase.class, DROPBOX.toString());
+    account.setUsername(DROPBOX.toString());
+    account.setToken(token);
+    realm.commitTransaction();
+  }
 }

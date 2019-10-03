@@ -201,8 +201,7 @@ dependencies {
     implementation "org.twitter4j:twitter4j-core:3.0.5"
     implementation "org.twitter4j:twitter4j-media-support:3.0.5"
 
-    //cloud rail
-    implementation 'com.cloudrail:cloudrail-si-android:2.20.1'
+    implementation 'com.dropbox.core:dropbox-core-sdk:3.1.1'
 
     //next cloud
     implementation "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
