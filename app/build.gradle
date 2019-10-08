@@ -176,7 +176,7 @@ dependencies {
     implementation 'com.koushikdutta.ion:ion:2.1.7'
     implementation 'org.jetbrains:annotations-java5:15.0'
     implementation 'com.android.support:multidex:1.0.3'
-    implementation group: 'com.box', name: 'box-android-sdk', version: '4.0.8'
+    implementation group: 'com.box', name: 'box-android-sdk', version: '5.0.0'
 
     //icons
     implementation 'com.mikepenz:iconics-core:2.8.4@aar'
