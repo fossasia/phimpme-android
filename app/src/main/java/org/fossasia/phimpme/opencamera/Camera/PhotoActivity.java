@@ -128,7 +128,7 @@ public class PhotoActivity extends ThemedActivity {
       if (!TextUtils.isEmpty(FILE_PATH)) {
         Glide.with(this)
             .load(new File(FILE_PATH))
-            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+            .diskCacheStrategy(DiskCacheStrategy.DATA)
             .thumbnail(0.5f)
             .into(imageView);
         return;

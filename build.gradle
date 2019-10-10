@@ -52,5 +52,6 @@ ext {
     stethoVersion = "1.5.0"
     showcaseVersion = "5.4.3"
     nextCloudVersion = "1.5.0"
+    glideVersion = "4.10.0"
 }
 
