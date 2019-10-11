@@ -104,7 +104,7 @@ public class CompressImageActivity extends ThemedActivity {
     ImageViewTouch imageViewToucher = findViewById(R.id.main_image);
     saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);
     Uri uri = Uri.fromFile(new File(saveFilePath));
-    Glide.with(this).load(uri).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageViewToucher);
+    Glide.with(this).load(uri).diskCacheStrategy(DiskCacheStrategy.DATA).into(imageViewToucher);
     imageViewToucher.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
   }
 

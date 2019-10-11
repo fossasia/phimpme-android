@@ -27,6 +27,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -44,6 +45,8 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -68,8 +71,8 @@ import com.box.androidsdk.content.models.BoxSession;
 import com.box.androidsdk.content.requests.BoxRequestsFile;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
@@ -258,7 +261,7 @@ public class SharingActivity extends ThemedActivity
     Uri uri = Uri.fromFile(new File(saveFilePath));
     Glide.with(getApplicationContext())
         .load(uri)
-        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+        .diskCacheStrategy(DiskCacheStrategy.DATA)
         .into(shareImage);
   }
 
@@ -874,16 +877,19 @@ public class SharingActivity extends ThemedActivity
   private void shareToTwitter() {
     if (Utils.checkAlreadyExist(TWITTER)) {
       Glide.with(this)
-          .load(Uri.fromFile(new File(saveFilePath)))
           .asBitmap()
+          .load(Uri.fromFile(new File(saveFilePath)))
           .into(
-              new SimpleTarget<Bitmap>(1024, 512) {
+              new CustomTarget<Bitmap>(1024, 512) {
                 @Override
                 public void onResourceReady(
-                    Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    @NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                   finalBmp = resource;
                   new PostToTwitterAsync().execute();
                 }
+
+                @Override
+                public void onLoadCleared(@Nullable Drawable placeholder) {}
               });
     } else {
       SnackBarHandler.create(parent, getString(R.string.sign_from_account)).show();
