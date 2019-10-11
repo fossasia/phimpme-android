@@ -20,6 +20,7 @@ import android.widget.TextView;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.drew.lang.GeoLocation;
 import java.lang.reflect.Field;
@@ -192,10 +193,10 @@ public class AlertDialogsHelper {
                   StaticMapProvider.GOOGLE_MAPS.getValue()));
 
       Glide.with(activity.getApplicationContext())
-          .load(staticMapProvider.getUrl(location))
           .asBitmap()
+          .load(staticMapProvider.getUrl(location))
           .centerCrop()
-          .animate(R.anim.fade_in)
+          .transition(new GenericTransitionOptions<>().transition(R.anim.fade_in))
           .into(imgMap);
 
       imgMap.setOnClickListener(
