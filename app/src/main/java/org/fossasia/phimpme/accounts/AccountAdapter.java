@@ -64,6 +64,8 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
       holder.signInSignOutSwitch.setChecked(true);
       themeHelper.updateSwitchColor(holder.signInSignOutSwitch, switchAccentColor);
     } else {
+      holder.signInSignOutSwitch.setChecked(false);
+      themeHelper.updateSwitchColor(holder.signInSignOutSwitch, switchBackgroundColor);
       holder.accountName.setText(name);
     }
 
