@@ -37,7 +37,17 @@ public class Constants {
           + MY_IMGUR_CLIENT_ID
           + "&response_type=token";
 
-  public static final String PINTEREST_APP_ID = "4914573327424567067";
+//  public static final String PINTEREST_APP_ID = "4914573327424567067";
+  public static final String PINTEREST_APP_ID = "5060239792999016722";
+  public static final String PINTEREST_APP_SECRET = "bb2e4bfbb72dd12fd9cd6ec40627a3999eda262320178e63c10b6f74e10d4e5d";
+  public static final String PINTEREST_AUTH_STATE = "2019phimpme";
+  public static final String PINTEREST_REDIRECT_URI = "https://phimp.me"; //to be exact as in developer console
+  public static final String PINTEREST_AUTH_URL = "https://api.pinterest.com/oauth/?" +
+          "response_type=code&" +
+          "redirect_uri="+PINTEREST_REDIRECT_URI+"&"+
+          "client_id="+PINTEREST_APP_ID+"&" +
+          "scope=read_public,write_public&" +
+          "state="+PINTEREST_AUTH_STATE;
 
   public static final String PACKAGE_INSTAGRAM = "com.instagram.android";
   public static final String PACKAGE_WHATSAPP = "com.whatsapp";

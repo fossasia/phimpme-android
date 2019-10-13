@@ -89,10 +89,6 @@ import com.owncloud.android.lib.common.operations.RemoteOperationResult;
 import com.owncloud.android.lib.resources.files.FileUtils;
 import com.owncloud.android.lib.resources.files.ReadFileRemoteOperation;
 import com.owncloud.android.lib.resources.files.UploadFileRemoteOperation;
-import com.pinterest.android.pdk.PDKCallback;
-import com.pinterest.android.pdk.PDKClient;
-import com.pinterest.android.pdk.PDKException;
-import com.pinterest.android.pdk.PDKResponse;
 import com.tumblr.jumblr.JumblrClient;
 import com.tumblr.jumblr.types.PhotoPost;
 import com.tumblr.jumblr.types.User;
@@ -849,29 +845,29 @@ public class SharingActivity extends ThemedActivity
     NotificationHandler.make(
         R.string.pinterest, R.string.upload_progress, R.drawable.ic_cloud_upload_black_24dp);
     Bitmap image = getBitmapFromPath(saveFilePath);
-    PDKClient.getInstance()
-        .createPin(
-            caption,
-            boardID,
-            image,
-            null,
-            new PDKCallback() {
-              @Override
-              public void onSuccess(PDKResponse response) {
-                NotificationHandler.actionPassed(R.string.upload_complete);
-                Log.d(getClass().getName(), response.getData().toString());
-                SnackBarHandler.create(parent, getString(R.string.pinterest_post)).show();
-                sendResult(Constants.SUCCESS);
-              }
-
-              @Override
-              public void onFailure(PDKException exception) {
-                NotificationHandler.actionFailed();
-                Log.e(getClass().getName(), exception.getDetailMessage());
-                SnackBarHandler.create(parent, getString(R.string.Pinterest_fail)).show();
-                sendResult(FAIL);
-              }
-            });
+//    PDKClient.getInstance()
+//        .createPin(
+//            caption,
+//            boardID,
+//            image,
+//            null,
+//            new PDKCallback() {
+//              @Override
+//              public void onSuccess(PDKResponse response) {
+//                NotificationHandler.actionPassed(R.string.upload_complete);
+//                Log.d(getClass().getName(), response.getData().toString());
+//                SnackBarHandler.create(parent, getString(R.string.pinterest_post)).show();
+//                sendResult(Constants.SUCCESS);
+//              }
+//
+//              @Override
+//              public void onFailure(PDKException exception) {
+//                NotificationHandler.actionFailed();
+//                Log.e(getClass().getName(), exception.getDetailMessage());
+//                SnackBarHandler.create(parent, getString(R.string.Pinterest_fail)).show();
+//                sendResult(FAIL);
+//              }
+//            });
   }
 
   private void shareToTwitter() {

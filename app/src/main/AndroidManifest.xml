@@ -4,30 +4,39 @@
     package="org.fossasia.phimpme">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <uses-permission android:name="android.permission.READ_SMS"
-        tools:node="remove"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"
-        tools:node="remove"/>
-    <uses-permission android:name="android.permission.SEND_SMS"
-        tools:node="remove"/>
-    <uses-permission android:name="android.permission.WRITE_SMS"
-        tools:node="remove"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"
-        tools:node="remove"/>
-    <uses-permission android:name="android.permission.WRITE_CALL_LOG"
-        tools:node="remove"/>
-    <uses-permission android:name="android.permission.READ_CALL_LOG"
-        tools:node="remove"/>
-    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"
-        tools:node="remove"/>
-    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS"
-        tools:node="remove"/>
-    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS"
-        tools:node="remove"/>
-    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS"
-        tools:node="remove"/>
-
+    <uses-permission
+        android:name="android.permission.READ_SMS"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.RECEIVE_SMS"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.SEND_SMS"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.WRITE_SMS"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.CALL_PHONE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.WRITE_CALL_LOG"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.READ_CALL_LOG"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.PROCESS_OUTGOING_CALLS"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.MANAGE_OWN_CALLS"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.ANSWER_PHONE_CALLS"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.READ_PHONE_NUMBERS"
+        tools:node="remove" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -46,6 +55,9 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
         <activity
             android:name=".share.twitter.LoginActivity"
             android:screenOrientation="portrait">
@@ -60,7 +72,6 @@
                     android:scheme="phimp.me" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".opencamera.Camera.CameraActivity"
             android:parentActivityName=".gallery.activities.LFMainActivity"
@@ -97,8 +108,7 @@
             android:icon="@drawable/ic_launcher_take_photo"
             android:label="@string/take_photo"
             android:screenOrientation="portrait"
-            android:taskAffinity="" />
-        <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
+            android:taskAffinity="" /> <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <receiver
             android:name=".opencamera.Camera.MyWidgetProvider"
             android:icon="@drawable/ic_launcher_vector"
@@ -114,8 +124,7 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />
-        </receiver>
-        <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
+        </receiver> <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <receiver
             android:name=".opencamera.Camera.MyWidgetProviderTakePhoto"
             android:icon="@drawable/ic_launcher_take_photo"
@@ -127,8 +136,7 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info_take_photo" />
-        </receiver>
-        <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
+        </receiver> <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <service
             android:name=".opencamera.Camera.MyTileService"
             android:icon="@drawable/ic_photo_camera_white_48dp"
@@ -137,8 +145,7 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
-        <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
+        </service> <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <service
             android:name=".opencamera.Camera.MyTileServiceVideo"
             android:icon="@drawable/ic_videocam_white_48dp"
@@ -147,8 +154,7 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
-        <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
+        </service> <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <service
             android:name=".opencamera.Camera.MyTileServiceFrontCamera"
             android:icon="@drawable/ic_face_white_48dp"
@@ -211,9 +217,9 @@
             android:name=".gallery.activities.SingleMediaActivity"
             android:configChanges="orientation|screenSize|uiMode|touchscreen|screenLayout"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".gallery.activities.LFMainActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -255,9 +261,9 @@
         <activity
             android:name=".gallery.activities.SettingsActivity"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustNothing"
             android:label="@string/settings"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.SETTING" />
 
@@ -269,14 +275,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".gallery.activities.AboutActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/about"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-        </activity>
-
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
         <activity
             android:name=".gallery.activities.ExcludedAlbumsActivity"
             android:label="@string/excluded_albums"
@@ -290,10 +293,7 @@
         <activity
             android:name=".editor.EditImageActivity"
             android:theme="@style/AppTheme.NoActionBar"
-
-            android:windowSoftInputMode="adjustPan"
-            />
-
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
@@ -327,7 +327,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
-
         <activity
             android:name=".accounts.AccountActivity"
             android:launchMode="singleTask"
@@ -392,8 +391,9 @@
             android:name="io.fabric.ApiKey"
             android:value="78c6ec5c18fcd10ffbfd28ae038f3311f2763889" />
 
-        <activity android:name=".editor.CompressImageActivity"></activity>
-        <activity android:name=".trashbin.TrashBinActivity"></activity>
+        <activity android:name=".editor.CompressImageActivity" />
+        <activity android:name=".trashbin.TrashBinActivity" />
+        <activity android:name=".share.pinterest.PinterestAuthActivity" />
     </application>
 
 </manifest>

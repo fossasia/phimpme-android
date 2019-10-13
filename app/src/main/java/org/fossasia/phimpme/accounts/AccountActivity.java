@@ -1,6 +1,5 @@
 package org.fossasia.phimpme.accounts;
 
-import static com.pinterest.android.pdk.PDKClient.setDebugMode;
 import static org.fossasia.phimpme.R.string.no_account_signed_in;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
@@ -36,10 +35,6 @@ import com.box.androidsdk.content.auth.BoxAuthentication;
 import com.box.androidsdk.content.models.BoxSession;
 import com.dropbox.core.android.Auth;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.pinterest.android.pdk.PDKCallback;
-import com.pinterest.android.pdk.PDKClient;
-import com.pinterest.android.pdk.PDKException;
-import com.pinterest.android.pdk.PDKResponse;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -58,6 +53,7 @@ import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
 import org.fossasia.phimpme.share.owncloud.OwnCloudActivity;
+import org.fossasia.phimpme.share.pinterest.PinterestAuthActivity;
 import org.fossasia.phimpme.share.twitter.LoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
@@ -98,7 +94,7 @@ public class AccountActivity extends ThemedActivity
   private AccountDatabase account;
   private DatabaseHelper databaseHelper;
   private Context context;
-  private PDKClient pdkClient;
+//  private PDKClient pdkClient;
   // private GoogleApiClient mGoogleApiClient;
   private BoxSession sessionBox;
 
@@ -125,9 +121,9 @@ public class AccountActivity extends ThemedActivity
     accountPresenter.loadFromDatabase(); // Calling presenter function to load data from database
     getSupportActionBar().setTitle(R.string.title_account);
     phimpmeProgressBarHandler.show();
-    pdkClient = PDKClient.configureInstance(this, PINTEREST_APP_ID);
-    pdkClient.onConnect(this);
-    setDebugMode(true);
+//    pdkClient = PDKClient.configureInstance(this, PINTEREST_APP_ID);
+//    pdkClient.onConnect(this);
+//    setDebugMode(true);
     //  googleApiClient();
     configureBoxClient();
   }
@@ -380,38 +376,39 @@ public class AccountActivity extends ThemedActivity
   }
 
   private void signInPinterest() {
-    ArrayList<String> scopes = new ArrayList<>();
-    scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_PUBLIC);
-    scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_PUBLIC);
-    scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_RELATIONSHIPS);
-    scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_RELATIONSHIPS);
-
-    pdkClient.login(
-        this,
-        scopes,
-        new PDKCallback() {
-          @Override
-          public void onSuccess(PDKResponse response) {
-            Log.d(getClass().getName(), response.getData().toString());
-            realm.beginTransaction();
-            account = realm.createObject(AccountDatabase.class, PINTEREST.toString());
-            account.setAccountname(PINTEREST);
-            account.setUsername(
-                response.getUser().getFirstName() + " " + response.getUser().getLastName());
-            realm.commitTransaction();
-            finish();
-            startActivity(getIntent());
-            SnackBarHandler.create(coordinatorLayout, getString(R.string.account_logged_pinterest))
-                .show();
-          }
-
-          @Override
-          public void onFailure(PDKException exception) {
-            Log.e(getClass().getName(), exception.getDetailMessage());
-            SnackBarHandler.create(coordinatorLayout, getString(R.string.pinterest_signIn_fail))
-                .show();
-          }
-        });
+    startActivity(new Intent(this, PinterestAuthActivity.class));
+//    ArrayList<String> scopes = new ArrayList<>();
+//    scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_PUBLIC);
+//    scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_PUBLIC);
+//    scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_RELATIONSHIPS);
+//    scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_RELATIONSHIPS);
+//
+//    pdkClient.login(
+//        this,
+//        scopes,
+//        new PDKCallback() {
+//          @Override
+//          public void onSuccess(PDKResponse response) {
+//            Log.d(getClass().getName(), response.getData().toString());
+//            realm.beginTransaction();
+//            account = realm.createObject(AccountDatabase.class, PINTEREST.toString());
+//            account.setAccountname(PINTEREST);
+//            account.setUsername(
+//                response.getUser().getFirstName() + " " + response.getUser().getLastName());
+//            realm.commitTransaction();
+//            finish();
+//            startActivity(getIntent());
+//            SnackBarHandler.create(coordinatorLayout, getString(R.string.account_logged_pinterest))
+//                .show();
+//          }
+//
+//          @Override
+//          public void onFailure(PDKException exception) {
+//            Log.e(getClass().getName(), exception.getDetailMessage());
+//            SnackBarHandler.create(coordinatorLayout, getString(R.string.pinterest_signIn_fail))
+//                .show();
+//          }
+//        });
   }
 
   @Override
@@ -530,7 +527,7 @@ public class AccountActivity extends ThemedActivity
     super.onActivityResult(requestCode, resultCode, data);
     client.onActivityResult(requestCode, resultCode, data);
     // callbackManager.onActivityResult(requestCode, resultCode, data);
-    pdkClient.onOauthResponse(requestCode, resultCode, data);
+//    pdkClient.onOauthResponse(requestCode, resultCode, data);
 
     if ((requestCode == OWNCLOUD_REQUEST_CODE && resultCode == RESULT_OK)
         || (requestCode == NEXTCLOUD_REQUEST_CODE && resultCode == RESULT_OK)) {
