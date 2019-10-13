@@ -162,6 +162,8 @@ dependencies {
     //exoplayer
     implementation 'com.google.android.exoplayer:exoplayer:r1.5.7'
 
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+
     //utils
     implementation 'com.github.deano2390:MaterialShowcaseView:1.2.0@aar'
     implementation "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
