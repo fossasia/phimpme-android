@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.StrictMode;
 import android.util.Log;
 import androidx.multidex.MultiDex;
+
+import com.android.volley.VolleyLog;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.twitter.sdk.android.core.DefaultLogger;
@@ -54,7 +56,7 @@ public class MyApplication extends Application {
             .debug(true)
             .build();
     Twitter.initialize(config);
-
+    VolleyLog.DEBUG = true;
     /** Realm initialization */
     Realm.init(this);
     RealmConfiguration realmConfiguration =

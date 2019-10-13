@@ -55,8 +55,11 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".share.pinterest.PinterestShareActivity"></activity>
 
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <activity
             android:name=".share.twitter.LoginActivity"
@@ -279,7 +282,7 @@
             android:name=".gallery.activities.AboutActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/about"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".gallery.activities.ExcludedAlbumsActivity"
             android:label="@string/excluded_albums"

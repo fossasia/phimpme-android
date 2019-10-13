@@ -7,6 +7,7 @@ public class Constants {
   public static int FAIL = 1;
   public static final int REQUEST_SHARE_RESULT = 50;
   public static final String SHARE_RESULT = "share_result";
+  public static final String DATA = "DATA";
 
   public static final String IMGUR_IMAGE_UPLOAD_URL = "https://api.imgur.com/3/image/";
   public static String IMGUR_HEADER_CLIENt = "Client-ID";
@@ -48,6 +49,11 @@ public class Constants {
           "client_id="+PINTEREST_APP_ID+"&" +
           "scope=read_public,write_public&" +
           "state="+PINTEREST_AUTH_STATE;
+  public static final String PINTEREST_GET_USER_TOKEN = "https://api.pinterest.com/v1/oauth/token";
+  public static final String PINTEREST_GET_USER_DETAILS = "https://api.pinterest.com/v1/me?access_token=";
+  public static final String PINTEREST_GET_USER_BOARDS = "https://api.pinterest.com/v1/me/boards?access_token=";
+  public static final String PINTEREST_POST_CREATE_BOARD = "https://api.pinterest.com/v1/boards?access_token=";
+  public static final String PINTEREST_POST_CREATE_PIN = "https://api.pinterest.com/v1/pins?access_token=Au1G6EblcR8RaDYxB1k-3K63SnQkFc05Eej8W0dGOZVIDACpEgsrADAAAsfyRjo1TIvAuv8AAAAA";
 
   public static final String PACKAGE_INSTAGRAM = "com.instagram.android";
   public static final String PACKAGE_WHATSAPP = "com.whatsapp";

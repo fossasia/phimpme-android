@@ -118,6 +118,7 @@ import org.fossasia.phimpme.gallery.activities.LFMainActivity;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.share.flickr.FlickrHelper;
+import org.fossasia.phimpme.share.pinterest.PinterestShareActivity;
 import org.fossasia.phimpme.share.tumblr.TumblrClient;
 import org.fossasia.phimpme.share.twitter.HelperMethods;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
@@ -315,7 +316,10 @@ public class SharingActivity extends ThemedActivity
                   break;
 
                 case PINTEREST:
-                  shareToPinterest();
+                  Intent pinterestIntent  = new Intent(SharingActivity.this, PinterestShareActivity.class);
+                  pinterestIntent.putExtra(Constants.DATA, saveFilePath);
+                  startActivity(pinterestIntent);
+                //  shareToPinterest();
                   break;
 
                 case MESSENGER:
@@ -802,6 +806,7 @@ public class SharingActivity extends ThemedActivity
   }
 
   private void shareToPinterest() {
+
     final AlertDialog.Builder dialogBuilder =
         new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
     final EditText captionEditText = new EditText(getApplicationContext());
