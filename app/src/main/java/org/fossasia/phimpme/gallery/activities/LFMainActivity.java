@@ -6,6 +6,7 @@ import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.SIZE;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.app.Dialog;
@@ -128,6 +129,7 @@ import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
 import org.fossasia.phimpme.gallery.util.CustomNestedView;
 import org.fossasia.phimpme.gallery.util.Measure;
+import org.fossasia.phimpme.gallery.util.PermissionUtils;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
@@ -1219,33 +1221,13 @@ public class LFMainActivity extends SharedMediaActivity {
   // endregion
 
   private void requestSdCardPermissions() {
-    final AlertDialog.Builder dialogBuilder =
-        new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
-
-    AlertDialogsHelper.getTextDialog(
-        LFMainActivity.this,
-        dialogBuilder,
-        R.string.sd_card_write_permission_title,
-        R.string.sd_card_permissions_message,
-        null);
-
-    dialogBuilder.setPositiveButton(
-        getString(R.string.ok_action).toUpperCase(),
-        new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialogInterface, int i) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-              startActivityForResult(
-                  new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE), REQUEST_CODE_SD_CARD_PERMISSIONS);
-          }
-        });
-    dialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-    AlertDialog alertDialog = dialogBuilder.create();
-    alertDialog.show();
-    AlertDialogsHelper.setButtonTextColor(
-        new int[] {DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE},
-        getAccentColor(),
-        alertDialog);
+    if (PermissionUtils.shouldShowPermissionRationale(
+        this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+      showPermissionAlertDialog();
+    } else {
+      PermissionUtils.requestPermissions(
+          this, REQUEST_CODE_SD_CARD_PERMISSIONS, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    }
   }
 
   // region UI/GRAPHIC
@@ -2040,6 +2022,12 @@ public class LFMainActivity extends SharedMediaActivity {
 
       case R.id.delete_action:
         getNavigationBar();
+        if (!PermissionUtils.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+          requestSdCardPermissions();
+          swipeRefreshLayout.setRefreshing(false);
+          invalidateOptionsMenu();
+          return true;
+        }
         class DeletePhotos extends AsyncTask<String, Integer, Boolean> {
 
           private boolean succ = false;
@@ -2249,7 +2237,11 @@ public class LFMainActivity extends SharedMediaActivity {
                   new FavouritePhotos(activityContext).execute();
                 }
               }
-            } else requestSdCardPermissions();
+            } else {
+              SnackBarHandler.create(
+                      mDrawerLayout, getResources().getString(R.string.photo_deletion_failed))
+                  .show();
+            }
 
             invalidateOptionsMenu();
             checkNothing();
@@ -2737,6 +2729,12 @@ public class LFMainActivity extends SharedMediaActivity {
         // endregion
 
       case R.id.action_move:
+        if (!PermissionUtils.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+          requestSdCardPermissions();
+          swipeRefreshLayout.setRefreshing(false);
+          invalidateOptionsMenu();
+          return true;
+        }
         final Snackbar[] snackbar = {null};
         final ArrayList<Media> dr = getselecteditems();
         final String[] pathofalbum = {null};
@@ -2854,7 +2852,12 @@ public class LFMainActivity extends SharedMediaActivity {
                         getAccentColor(),
                         alert);
 
-                  } else requestSdCardPermissions();
+                  } else {
+                    SnackBarHandler.showWithBottomMargin(
+                        mDrawerLayout,
+                        getString(R.string.photo_move_failed),
+                        navigationView.getHeight());
+                  }
 
                   swipeRefreshLayout.setRefreshing(false);
                   bottomSheetDialogFragment.dismiss();
@@ -2905,9 +2908,10 @@ public class LFMainActivity extends SharedMediaActivity {
                     mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                     new PrepareAlbumTask(activityContext).execute();
                   } else {
-                    requestSdCardPermissions();
-                    swipeRefreshLayout.setRefreshing(false);
-                    invalidateOptionsMenu();
+                    SnackBarHandler.showWithBottomMargin(
+                        mDrawerLayout,
+                        getString(R.string.photo_move_failed),
+                        navigationView.getHeight());
                   }
                   bottomSheetDialogFragment.dismiss();
                 }
@@ -2930,6 +2934,12 @@ public class LFMainActivity extends SharedMediaActivity {
         return true;
 
       case R.id.action_copy:
+        if (!PermissionUtils.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+          requestSdCardPermissions();
+          swipeRefreshLayout.setRefreshing(false);
+          invalidateOptionsMenu();
+          return true;
+        }
         bottomSheetDialogFragment = new SelectAlbumBottomSheet();
         bottomSheetDialogFragment.setTitle(getString(R.string.copy_to));
         bottomSheetDialogFragment.setSelectAlbumInterface(
@@ -2945,6 +2955,12 @@ public class LFMainActivity extends SharedMediaActivity {
         return true;
 
       case R.id.renameAlbum:
+        if (!PermissionUtils.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+          requestSdCardPermissions();
+          swipeRefreshLayout.setRefreshing(false);
+          invalidateOptionsMenu();
+          return true;
+        }
         AlertDialog.Builder renameDialogBuilder =
             new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
         final EditText editTextNewName = new EditText(getApplicationContext());
@@ -3087,7 +3103,6 @@ public class LFMainActivity extends SharedMediaActivity {
                             mDrawerLayout,
                             getString(R.string.rename_error),
                             navigationView.getHeight());
-                        requestSdCardPermissions();
                       }
                       swipeRefreshLayout.setRefreshing(false);
                     } else {
@@ -3157,7 +3172,6 @@ public class LFMainActivity extends SharedMediaActivity {
                           mDrawerLayout,
                           getString(R.string.rename_error),
                           navigationView.getHeight());
-                      requestSdCardPermissions();
                     }
                     swipeRefreshLayout.setRefreshing(false);
                   } else {
@@ -4609,7 +4623,44 @@ public class LFMainActivity extends SharedMediaActivity {
           snackbar.show();
         }
 
-      } else asyncActivityRef.requestSdCardPermissions();
+      } else {
+        SnackBarHandler.showWithBottomMargin2(
+            asyncActivityRef.mDrawerLayout,
+            asyncActivityRef.getString(R.string.error_copying_files),
+            asyncActivityRef.navigationView.getHeight(),
+            Snackbar.LENGTH_SHORT);
+      }
     }
+  }
+
+  private void showPermissionAlertDialog() {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setIcon(R.drawable.ic_caution);
+    builder.setTitle(R.string.permission_rationale_title);
+    builder.setMessage(R.string.permission_rationale_storage);
+    builder.setCancelable(false);
+    builder.setPositiveButton(
+        R.string.exit,
+        new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            finish();
+          }
+        });
+
+    builder.setNegativeButton(
+        R.string.grant_permission,
+        new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            PermissionUtils.requestPermissions(
+                LFMainActivity.this,
+                REQUEST_CODE_SD_CARD_PERMISSIONS,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+          }
+        });
+
+    AlertDialog alertDialog = builder.create();
+    alertDialog.show();
   }
 }
