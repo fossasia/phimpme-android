@@ -92,7 +92,6 @@ android {
 
     configurations {
         implementation.exclude group: 'org.jetbrains', module: 'annotations'
-        all*.exclude group: 'com.android.volley'
     }
 
     lintOptions {
@@ -145,7 +144,10 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
 
-    implementation 'com.mcxiaoke.volley:library:1.0.19'
+    //retrofit
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.0'
 
     //google and support
     implementation "androidx.appcompat:appcompat:$rootProject.supportLibraryVersion"

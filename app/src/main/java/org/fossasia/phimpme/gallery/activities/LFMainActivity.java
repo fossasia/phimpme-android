@@ -65,6 +65,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -1221,12 +1222,14 @@ public class LFMainActivity extends SharedMediaActivity {
   // endregion
 
   private void requestSdCardPermissions() {
-    if (PermissionUtils.shouldShowPermissionRationale(
+    if (ActivityCompat.shouldShowRequestPermissionRationale(
         this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
       showPermissionAlertDialog();
     } else {
-      PermissionUtils.requestPermissions(
-          this, REQUEST_CODE_SD_CARD_PERMISSIONS, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+      ActivityCompat.requestPermissions(
+          this,
+          new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+          REQUEST_CODE_SD_CARD_PERMISSIONS);
     }
   }
 
@@ -4653,10 +4656,10 @@ public class LFMainActivity extends SharedMediaActivity {
         new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
-            PermissionUtils.requestPermissions(
+            ActivityCompat.requestPermissions(
                 LFMainActivity.this,
-                REQUEST_CODE_SD_CARD_PERMISSIONS,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                REQUEST_CODE_SD_CARD_PERMISSIONS);
           }
         });
 
