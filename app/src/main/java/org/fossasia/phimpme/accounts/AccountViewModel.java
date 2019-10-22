@@ -1,25 +1,15 @@
 package org.fossasia.phimpme.accounts;
 
-import android.app.Application;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.android.volley.VolleyError;
-
 import io.realm.RealmQuery;
 import org.fossasia.phimpme.data.local.AccountDatabase;
-import org.fossasia.phimpme.utilities.BasicCallBack;
+import org.fossasia.phimpme.share.pinterest.PinterestBoardsResp;
+import org.fossasia.phimpme.share.pinterest.PinterestUploadImgResp;
 import org.fossasia.phimpme.utilities.Constants;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /** Created by @codedsun on 09/Oct/2019 */
-public class AccountViewModel extends AndroidViewModel {
+public class AccountViewModel extends ViewModel {
 
   final int NEXTCLOUD_REQUEST_CODE = 3;
   final int OWNCLOUD_REQUEST_CODE = 9;
@@ -28,12 +18,12 @@ public class AccountViewModel extends AndroidViewModel {
   private AccountRepository accountRepository = new AccountRepository();
   public MutableLiveData<Boolean> error = new MutableLiveData<>();
   MutableLiveData<RealmQuery<AccountDatabase>> accountDetails = new MutableLiveData<>();
-  public MutableLiveData<JSONArray> boards = new MutableLiveData<>();
+  public MutableLiveData<PinterestBoardsResp> boards = new MutableLiveData<>();
+  public MutableLiveData<PinterestUploadImgResp> pinterestUploadImageResponse =
+      new MutableLiveData<>();
+  public MutableLiveData<String> pinterestUploadImageError = new MutableLiveData<>();
 
-  public AccountViewModel(@NonNull Application application) {
-    super(application);
-  }
-
+  public AccountViewModel() {}
 
   // Used to fetch all the current logged in accounts
   void fetchAccountDetails() {
@@ -91,31 +81,33 @@ public class AccountViewModel extends AndroidViewModel {
     accountRepository.saveUsernameAndToken(AccountDatabase.AccountName.PINTEREST, username, token);
   }
 
-  public void getUserPinterestBoards(){
-    accountRepository.getPinterestBoards((status, data) -> {
-      if(status == Constants.SUCCESS) {
-        try {
-          boards.postValue(((JSONObject)data).getJSONArray("data"));
-        } catch (JSONException e) {
-          e.printStackTrace();
-          error.postValue(true);
-        }
-      }else{
-        if(data instanceof VolleyError) {
-          error.postValue(true);
-        }else{
-          error.postValue(false);
-        }
-      }
-    }, getApplication());
+  public void getUserPinterestBoards() {
+    accountRepository.getPinterestBoards(
+        (status, data) -> {
+          if (status == Constants.SUCCESS) {
+            PinterestBoardsResp resp = (PinterestBoardsResp) data;
+            boards.postValue(resp);
+          } else {
+            error.postValue(true);
+          }
+        });
   }
 
-  public void uploadImageToBoards(String image, String note, String board){
-    accountRepository.uploadImageToPinterest(new BasicCallBack() {
-      @Override
-      public void callBack(int status, Object data) {
-      }
-    },getApplication(),image, note, board);
+  public void uploadImageToBoards(String image, String note, String board) {
+    accountRepository.uploadImageToPinterest(
+        (status, data) -> {
+          if (status == Constants.SUCCESS) {
+            pinterestUploadImageResponse.postValue((PinterestUploadImgResp) data);
+          } else {
+            if (data == null) {
+              pinterestUploadImageError.postValue("No account logged in");
+            } else {
+              pinterestUploadImageError.postValue(((PinterestUploadImgResp) data).getMessage());
+            }
+          }
+        },
+        image,
+        note,
+        board);
   }
-
 }

@@ -1,5 +1,12 @@
 package org.fossasia.phimpme.accounts;
 
+import static org.fossasia.phimpme.R.string.no_account_signed_in;
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
+import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
+import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
+import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
+import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
@@ -15,14 +21,15 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.box.androidsdk.content.BoxConfig;
 import com.box.androidsdk.content.auth.BoxAuthentication;
 import com.box.androidsdk.content.models.BoxSession;
 import com.dropbox.core.android.Auth;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
-
+import io.realm.RealmQuery;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
@@ -43,17 +50,6 @@ import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 import org.jetbrains.annotations.NotNull;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import io.realm.RealmQuery;
-
-import static org.fossasia.phimpme.R.string.no_account_signed_in;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
-import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
-import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
-import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
-import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
 
 /** Created by pa1pal on 13/6/17. */
 public class AccountActivity extends ThemedActivity

@@ -54,14 +54,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.box.androidsdk.content.BoxApiFile;
 import com.box.androidsdk.content.BoxConfig;
 import com.box.androidsdk.content.BoxException;
@@ -105,8 +97,6 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
@@ -118,16 +108,21 @@ import org.fossasia.phimpme.gallery.activities.LFMainActivity;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.share.flickr.FlickrHelper;
+import org.fossasia.phimpme.share.imgur.ImgurPicUploadReq;
+import org.fossasia.phimpme.share.imgur.ImgurPicUploadResp;
 import org.fossasia.phimpme.share.pinterest.PinterestShareActivity;
 import org.fossasia.phimpme.share.tumblr.TumblrClient;
 import org.fossasia.phimpme.share.twitter.HelperMethods;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.Constants;
+import org.fossasia.phimpme.utilities.ImgurApi;
 import org.fossasia.phimpme.utilities.NotificationHandler;
+import org.fossasia.phimpme.utilities.RetrofitClient;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 import org.fossasia.phimpme.utilities.Utils;
-import org.json.JSONException;
-import org.json.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Class which deals with Sharing images to multiple Account logged in by the user in the app. If
@@ -152,6 +147,9 @@ public class SharingActivity extends ThemedActivity
         OnRemoteOperationListener,
         RecyclerItemClickListner.OnItemClickListener {
 
+  private static final String IMGUR_BASE_URL = "https://api.imgur.com/3/";
+  private static final String IMGUR_HEADER_CLIENT = "Client-ID";
+  private static final String IMGUR_HEADER_USER = "Bearer";
   public static final String EXTRA_OUTPUT = "extra_output";
   private static String LOG_TAG = SharingActivity.class.getCanonicalName();
   public String saveFilePath;
@@ -199,9 +197,10 @@ public class SharingActivity extends ThemedActivity
   public String uploadName;
   private int positionShareOption;
   private boolean triedUploading = false;
+  private ImgurApi imgurApiInterface;
 
   public static String getClientAuth() {
-    return Constants.IMGUR_HEADER_CLIENt + " " + Constants.MY_IMGUR_CLIENT_ID;
+    return IMGUR_HEADER_CLIENT + " " + Constants.MY_IMGUR_CLIENT_ID;
   }
 
   @Override
@@ -316,10 +315,11 @@ public class SharingActivity extends ThemedActivity
                   break;
 
                 case PINTEREST:
-                  Intent pinterestIntent  = new Intent(SharingActivity.this, PinterestShareActivity.class);
+                  Intent pinterestIntent =
+                      new Intent(SharingActivity.this, PinterestShareActivity.class);
                   pinterestIntent.putExtra(Constants.DATA, saveFilePath);
                   startActivity(pinterestIntent);
-                //  shareToPinterest();
+                  finish();
                   break;
 
                 case MESSENGER:
@@ -805,76 +805,6 @@ public class SharingActivity extends ThemedActivity
             });
   }
 
-  private void shareToPinterest() {
-
-    final AlertDialog.Builder dialogBuilder =
-        new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-    final EditText captionEditText = new EditText(getApplicationContext());
-
-    String link = context.getString(R.string.Pinterest_link);
-    AlertDialogsHelper.getInsertTextDialog(
-        SharingActivity.this, dialogBuilder, captionEditText, R.string.Pinterest_link, link);
-    dialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-    dialogBuilder.setPositiveButton(
-        getString(R.string.post_action).toUpperCase(),
-        new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int which) {
-            // This should br empty it will be overwrite later
-            // to avoid dismiss of the dialog on wrong password
-          }
-        });
-
-    final AlertDialog passwordDialog = dialogBuilder.create();
-    passwordDialog.show();
-    AlertDialogsHelper.setButtonTextColor(
-        new int[] {DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE},
-        getAccentColor(),
-        passwordDialog);
-    passwordDialog
-        .getButton(AlertDialog.BUTTON_POSITIVE)
-        .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                String captionText = captionEditText.getText().toString();
-                boardID = captionText;
-                postToPinterest(boardID);
-                passwordDialog.dismiss();
-              }
-            });
-  }
-
-  private void postToPinterest(final String boardID) {
-    SnackBarHandler.create(parent, getString(R.string.pinterest_image_uploading)).show();
-    NotificationHandler.make(
-        R.string.pinterest, R.string.upload_progress, R.drawable.ic_cloud_upload_black_24dp);
-    Bitmap image = getBitmapFromPath(saveFilePath);
-//    PDKClient.getInstance()
-//        .createPin(
-//            caption,
-//            boardID,
-//            image,
-//            null,
-//            new PDKCallback() {
-//              @Override
-//              public void onSuccess(PDKResponse response) {
-//                NotificationHandler.actionPassed(R.string.upload_complete);
-//                Log.d(getClass().getName(), response.getData().toString());
-//                SnackBarHandler.create(parent, getString(R.string.pinterest_post)).show();
-//                sendResult(Constants.SUCCESS);
-//              }
-//
-//              @Override
-//              public void onFailure(PDKException exception) {
-//                NotificationHandler.actionFailed();
-//                Log.e(getClass().getName(), exception.getDetailMessage());
-//                SnackBarHandler.create(parent, getString(R.string.Pinterest_fail)).show();
-//                sendResult(FAIL);
-//              }
-//            });
-  }
-
   private void shareToTwitter() {
     if (Utils.checkAlreadyExist(TWITTER)) {
       Glide.with(this)
@@ -1016,6 +946,9 @@ public class SharingActivity extends ThemedActivity
   }
 
   private void shareToImgur() {
+    if (imgurApiInterface == null) {
+      imgurApiInterface = RetrofitClient.getRetrofitClient(IMGUR_BASE_URL).create(ImgurApi.class);
+    }
     final AlertDialog.Builder dialogBuilder =
         new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
     RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
@@ -1023,7 +956,7 @@ public class SharingActivity extends ThemedActivity
     final RealmResults<AccountDatabase> result = query.findAll();
     if (result.size() != 0) {
       isPersonal = true;
-      imgurAuth = Constants.IMGUR_HEADER_USER + " " + result.get(0).getToken();
+      imgurAuth = IMGUR_HEADER_USER + " " + result.get(0).getToken();
     }
     AlertDialogsHelper.getTextDialog(
         SharingActivity.this, dialogBuilder, R.string.choose, R.string.imgur_select_mode, null);
@@ -1082,21 +1015,30 @@ public class SharingActivity extends ThemedActivity
     Bitmap bitmap = getBitmapFromPath(saveFilePath);
     final String imageString = getStringImage(bitmap);
     // sending image to server
-    StringRequest request =
-        new StringRequest(
-            Request.Method.POST,
-            Constants.IMGUR_IMAGE_UPLOAD_URL,
-            new Response.Listener<String>() {
+    ImgurPicUploadReq imgurPicUpload = new ImgurPicUploadReq();
+    imgurPicUpload.setImage(imageString);
+    if (caption != null && !caption.isEmpty()) {
+      imgurPicUpload.setCaption(caption);
+    }
+    String authorization;
+    if (isPersonal && imgurAuth != null) {
+      authorization = imgurAuth;
+    } else {
+      authorization = getClientAuth();
+    }
+    imgurApiInterface
+        .uploadImageToImgur(authorization, imgurPicUpload)
+        .enqueue(
+            new Callback<ImgurPicUploadResp>() {
               @Override
-              public void onResponse(String s) {
-                dialog.dismiss();
-                JSONObject jsonObject = null;
-
-                try {
-                  jsonObject = new JSONObject(s);
-                  Boolean success = jsonObject.getBoolean("success");
+              public void onResponse(
+                  Call<ImgurPicUploadResp> call, Response<ImgurPicUploadResp> response) {
+                if (response.body() != null && response.isSuccessful()) {
+                  dialog.dismiss();
+                  ImgurPicUploadResp imgurPicUploadResp = response.body();
+                  boolean success = imgurPicUploadResp.isSuccess();
                   if (success) {
-                    final String url = jsonObject.getJSONObject("data").getString("link");
+                    final String url = imgurPicUploadResp.getData().getLink();
 
                     if (isPersonal) {
                       imgurString = getString(R.string.upload_personal) + "\n" + url;
@@ -1144,45 +1086,18 @@ public class SharingActivity extends ThemedActivity
                     SnackBarHandler.create(parent, getString(R.string.error_on_imgur)).show();
                     sendResult(FAIL);
                   }
-                } catch (JSONException e) {
-                  e.printStackTrace();
+                } else {
+                  dialog.dismiss();
+                  SnackBarHandler.create(parent, getString(R.string.error_volly)).show();
                 }
               }
-            },
-            new Response.ErrorListener() {
+
               @Override
-              public void onErrorResponse(VolleyError volleyError) {
+              public void onFailure(Call<ImgurPicUploadResp> call, Throwable t) {
                 dialog.dismiss();
-                SnackBarHandler.create(parent, getString(R.string.error_volly))
-                    .show(); // add volleyError to check error
+                SnackBarHandler.create(parent, getString(R.string.error_volly)).show();
               }
-            }) {
-          @Override
-          protected Map<String, String> getParams() throws AuthFailureError {
-            Map<String, String> parameters = new HashMap<String, String>();
-            parameters.put("image", imageString);
-            if (caption != null && !caption.isEmpty()) parameters.put("title", caption);
-            return parameters;
-          }
-
-          @Override
-          public Map<String, String> getHeaders() throws AuthFailureError {
-            Map<String, String> headers = new HashMap<String, String>();
-            if (isPersonal) {
-              if (imgurAuth != null) {
-                headers.put(getString(R.string.header_auth), imgurAuth);
-              }
-            } else {
-              headers.put(getString(R.string.header_auth), getClientAuth());
-            }
-
-            return headers;
-          }
-        };
-    request.setRetryPolicy(
-        new DefaultRetryPolicy(50000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-    RequestQueue rQueue = Volley.newRequestQueue(SharingActivity.this);
-    rQueue.add(request);
+            });
   }
 
   /**

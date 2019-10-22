@@ -76,25 +76,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <TextView
-        android:id="@+id/tv_create_board"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_margin="@dimen/size_16dp"
-        android:drawableStart="@drawable/ic_plus_pinterest"
-        android:drawablePadding="@dimen/alternate_padding"
-        android:gravity="center|start"
-        android:text="Create Board"
-        android:textColor="@color/black"
-        android:textSize="@dimen/medium_text"
-        android:background="?android:selectableItemBackground"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="0dp"

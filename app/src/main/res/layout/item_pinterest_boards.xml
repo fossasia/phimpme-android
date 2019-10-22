@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
-    android:padding="@dimen/alternate_half_padding"
+    android:paddingTop="@dimen/large_padding"
+    android:paddingStart="@dimen/alternate_half_padding"
+    android:paddingEnd="@dimen/alternate_half_padding"
+    android:paddingBottom="@dimen/large_padding"
     android:layout_marginBottom="@dimen/small_margin"
     android:layout_height="wrap_content">
 

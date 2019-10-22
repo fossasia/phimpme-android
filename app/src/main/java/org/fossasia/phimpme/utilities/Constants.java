@@ -9,10 +9,6 @@ public class Constants {
   public static final String SHARE_RESULT = "share_result";
   public static final String DATA = "DATA";
 
-  public static final String IMGUR_IMAGE_UPLOAD_URL = "https://api.imgur.com/3/image/";
-  public static String IMGUR_HEADER_CLIENt = "Client-ID";
-  public static String IMGUR_HEADER_USER = "Bearer";
-
   /*Also add dropbox api key in manifest */
   public static final String DROPBOX_APP_KEY = "7fhwc9meece1m9g";
   public static final String DROPBOX_APP_SECRET = "m5567c8v5yt1qc1";
@@ -38,22 +34,11 @@ public class Constants {
           + MY_IMGUR_CLIENT_ID
           + "&response_type=token";
 
-//  public static final String PINTEREST_APP_ID = "4914573327424567067";
+  //  public static final String PINTEREST_APP_ID = "4914573327424567067";
   public static final String PINTEREST_APP_ID = "5060239792999016722";
-  public static final String PINTEREST_APP_SECRET = "bb2e4bfbb72dd12fd9cd6ec40627a3999eda262320178e63c10b6f74e10d4e5d";
-  public static final String PINTEREST_AUTH_STATE = "2019phimpme";
-  public static final String PINTEREST_REDIRECT_URI = "https://phimp.me"; //to be exact as in developer console
-  public static final String PINTEREST_AUTH_URL = "https://api.pinterest.com/oauth/?" +
-          "response_type=code&" +
-          "redirect_uri="+PINTEREST_REDIRECT_URI+"&"+
-          "client_id="+PINTEREST_APP_ID+"&" +
-          "scope=read_public,write_public&" +
-          "state="+PINTEREST_AUTH_STATE;
-  public static final String PINTEREST_GET_USER_TOKEN = "https://api.pinterest.com/v1/oauth/token";
-  public static final String PINTEREST_GET_USER_DETAILS = "https://api.pinterest.com/v1/me?access_token=";
-  public static final String PINTEREST_GET_USER_BOARDS = "https://api.pinterest.com/v1/me/boards?access_token=";
-  public static final String PINTEREST_POST_CREATE_BOARD = "https://api.pinterest.com/v1/boards?access_token=";
-  public static final String PINTEREST_POST_CREATE_PIN = "https://api.pinterest.com/v1/pins?access_token=Au1G6EblcR8RaDYxB1k-3K63SnQkFc05Eej8W0dGOZVIDACpEgsrADAAAsfyRjo1TIvAuv8AAAAA";
+  public static final String PINTEREST_APP_SECRET =
+      "bb2e4bfbb72dd12fd9cd6ec40627a3999eda262320178e63c10b6f74e10d4e5d";
+  public static final String PINTEREST_BASE_URL = "https://api.pinterest.com/v1/";
 
   public static final String PACKAGE_INSTAGRAM = "com.instagram.android";
   public static final String PACKAGE_WHATSAPP = "com.whatsapp";

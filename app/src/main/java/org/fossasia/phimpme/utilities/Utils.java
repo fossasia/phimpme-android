@@ -166,6 +166,6 @@ public class Utils {
   }
 
   public static void showToastShort(Context context, String message) {
-    Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
   }
 }
