@@ -60,7 +60,7 @@
         <!-- android:fitSystemWindows=true, so that transclucent status bar fits perfectly to the screen-->
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:elevation" tools:ignore="NewApi">5dp</item>
-        <item name="theme">@style/MyToolbarTheme</item>
+        <item name="android:theme">@style/MyToolbarTheme</item>
 
     </style>
 
