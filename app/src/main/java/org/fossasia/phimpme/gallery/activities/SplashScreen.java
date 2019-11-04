@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -120,8 +121,8 @@ public class SplashScreen extends SharedMediaActivity {
   }
 
   private void askForPermission() {
-    String[] permissions = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
-    PermissionUtils.requestPermissions(this, READ_EXTERNAL_STORAGE_ID, permissions);
+    ActivityCompat.requestPermissions(
+        this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_ID);
   }
 
   @Override

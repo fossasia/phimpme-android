@@ -21,7 +21,6 @@ import android.speech.RecognizerIntent;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import com.google.android.material.snackbar.Snackbar;
 import io.realm.Realm;

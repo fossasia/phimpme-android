@@ -25,13 +25,13 @@ import retrofit2.Response;
 /** Created by codedsun on 13/Oct/2019 */
 public class PinterestAuthActivity extends ThemedActivity {
 
-  public static final String TAG = PinterestAuthActivity.class.getName();
-  public static final String PINTEREST_GRANT_TYPE = "authorization_code";
-  public static final String PINTEREST_AUTH_STATE =
-      "2019phimpme"; // FIXME: to be exact in developer console
-  public static final String PINTEREST_REDIRECT_URI =
-      "https://phimp.me"; // to be exact as in developer console
-  public static final String PINTEREST_AUTH_URL =
+  private static final String TAG = PinterestAuthActivity.class.getName();
+  private static final String PINTEREST_GRANT_TYPE = "authorization_code";
+  private static final String PINTEREST_AUTH_STATE =
+      "2019phimpme"; // TODO:check before release to be exact in developer console
+  private static final String PINTEREST_REDIRECT_URI =
+      "https://phimp.me"; // TODO: check before release to be exact as in developer console
+  private static final String PINTEREST_AUTH_URL =
       "https://api.pinterest.com/oauth/?"
           + "response_type=code&"
           + "redirect_uri="
@@ -64,6 +64,13 @@ public class PinterestAuthActivity extends ThemedActivity {
     pinterestApi =
         RetrofitClient.getRetrofitClient(Constants.PINTEREST_BASE_URL).create(PinterestApi.class);
     webView.getSettings().setJavaScriptEnabled(true);
+    if (Constants.PINTEREST_APP_ID.isEmpty()
+        || Constants.PINTEREST_APP_SECRET.isEmpty()
+        || PINTEREST_AUTH_STATE.isEmpty()
+        || PINTEREST_REDIRECT_URI.isEmpty()) {
+      Utils.showToastShort(this, "No App Id Present ");
+      return;
+    }
     webView.setWebViewClient(
         new WebViewClient() {
           @Override

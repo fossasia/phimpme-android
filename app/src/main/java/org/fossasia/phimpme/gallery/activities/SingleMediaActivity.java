@@ -820,7 +820,7 @@ public class SingleMediaActivity extends SharedMediaActivity
                 SnackBarHandler.showWithBottomMargin(
                     parentView,
                     getString(R.string.new_file_created),
-                    (bottomBar.getHeight() * 2) - 22);
+                    parentView.getHeight() - bottomBar.getTop());
               }
               // adapter.notifyDataSetChanged();
             } catch (Exception e) {
@@ -828,7 +828,7 @@ public class SingleMediaActivity extends SharedMediaActivity
             }
           } else
             SnackBarHandler.showWithBottomMargin(
-                parentView, "errori random", (bottomBar.getHeight() * 2) - 22);
+                parentView, "errori random", parentView.getHeight() - bottomBar.getTop());
           break;
         default:
           break;
@@ -871,7 +871,7 @@ public class SingleMediaActivity extends SharedMediaActivity
             SnackBarHandler.showWithBottomMargin(
                 parentView,
                 getString(R.string.trashbin_move_onefile),
-                bottomBar.getHeight() + navigationView.getHeight(),
+                parentView.getHeight() - bottomBar.getTop(),
                 Snackbar.LENGTH_SHORT);
         snackbar.setAction(
             R.string.open,
@@ -888,7 +888,7 @@ public class SingleMediaActivity extends SharedMediaActivity
             SnackBarHandler.showWithBottomMargin(
                 parentView,
                 getApplicationContext().getString(R.string.photo_deleted_msg),
-                bottomBar.getHeight() + navigationView.getHeight());
+                parentView.getHeight() - bottomBar.getTop());
         snackbar.show();
       }
       if (!success) {
@@ -1210,7 +1210,7 @@ public class SingleMediaActivity extends SharedMediaActivity
             SnackBarHandler.showWithBottomMargin(
                 parentView,
                 getString(R.string.photo_deleted_from_fav_msg),
-                (bottomBar.getHeight() * 2) - 22);
+                parentView.getHeight() - bottomBar.getTop());
           }
         });
     AlertDialog alertDialog = deleteDialog.create();
@@ -1258,7 +1258,7 @@ public class SingleMediaActivity extends SharedMediaActivity
                   SnackBarHandler.showWithBottomMargin(
                       relativeLayout,
                       getString(R.string.copied_successfully) + " to " + path,
-                      (bottomBar.getHeight() * 2) - 22);
+                      parentView.getHeight() - bottomBar.getTop());
                 }
               }
             });
@@ -1497,7 +1497,7 @@ public class SingleMediaActivity extends SharedMediaActivity
                           SnackBarHandler.showWithBottomMargin(
                               parentView,
                               getString(R.string.rename_no_change),
-                              (bottomBar.getHeight() * 2) - 22);
+                              parentView.getHeight() - bottomBar.getTop());
                           renameDialog.dismiss();
                         } else {
                           int index = file.getPath().lastIndexOf("/");
@@ -1669,7 +1669,7 @@ public class SingleMediaActivity extends SharedMediaActivity
               SnackBarHandler.showWithBottomMargin(
                   parentView,
                   getResources().getString(R.string.add_favourite),
-                  bottomBar.getHeight());
+                  parentView.getHeight() - bottomBar.getTop());
           snackbar.setAction(
               R.string.openfav,
               new View.OnClickListener() {
@@ -1755,7 +1755,7 @@ public class SingleMediaActivity extends SharedMediaActivity
                 SnackBarHandler.showWithBottomMargin(
                     relativeLayout,
                     getString(R.string.photo_moved_successfully) + " to " + path,
-                    (bottomBar.getHeight() * 2) - 22);
+                    parentView.getHeight() - bottomBar.getTop());
               }
             });
         bottomSheetDialogFragment.show(
@@ -1769,14 +1769,18 @@ public class SingleMediaActivity extends SharedMediaActivity
               AlbumSettings.getSettings(getApplicationContext(), getAlbum());
           albumSettings.changeCoverPath(getApplicationContext(), getAlbum().getMedia(0).getPath());
           SnackBarHandler.showWithBottomMargin(
-              parentView, getString(R.string.cover_removed), (bottomBar.getHeight() * 2) - 22);
+              parentView,
+              getString(R.string.cover_removed),
+              parentView.getHeight() - bottomBar.getTop());
         } else {
           AlbumSettings albumSettings =
               AlbumSettings.getSettings(getApplicationContext(), getAlbum());
           albumSettings.changeCoverPath(
               getApplicationContext(), getAlbum().getCurrentMedia().getPath());
           SnackBarHandler.showWithBottomMargin(
-              parentView, getString(R.string.change_cover), bottomBar.getHeight());
+              parentView,
+              getString(R.string.change_cover),
+              parentView.getHeight() - bottomBar.getTop());
           MenuItem cover = menu.findItem(R.id.action_cover);
           cover.setTitle("Remove cover image");
         }
@@ -1936,7 +1940,7 @@ public class SingleMediaActivity extends SharedMediaActivity
                       SnackBarHandler.showWithBottomMargin(
                           parentView,
                           getString(R.string.description_saved),
-                          (bottomBar.getHeight() * 2) - 22);
+                          (parentView.getHeight() - bottomBar.getTop()));
                     } else {
                       databaseHelper.update(
                           new ImageDescModel(
@@ -1944,7 +1948,7 @@ public class SingleMediaActivity extends SharedMediaActivity
                       SnackBarHandler.showWithBottomMargin(
                           parentView,
                           getString(R.string.description_updated),
-                          (bottomBar.getHeight() * 2) - 22);
+                          parentView.getHeight() - bottomBar.getTop());
                     }
                   }
                 });
@@ -1963,7 +1967,7 @@ public class SingleMediaActivity extends SharedMediaActivity
                       SnackBarHandler.showWithBottomMargin(
                           parentView,
                           getString(R.string.description_deleted),
-                          (bottomBar.getHeight() * 2) - 22);
+                          (parentView.getHeight() - bottomBar.getTop()));
                     }
                   }
                 });
