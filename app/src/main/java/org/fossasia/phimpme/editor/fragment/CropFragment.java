@@ -142,6 +142,8 @@ public class CropFragment extends BaseEditFragment {
       text.setTag(i);
       if (i == 0 && selctedTextView == null) {
         selctedTextView = text;
+        sView = selctedTextView;
+        sView.setTag(selctedTextView.getTag());
       }
       dataList.get(i).setIndex(i);
       text.setTag(dataList.get(i));
@@ -175,8 +177,10 @@ public class CropFragment extends BaseEditFragment {
       combinedList.addView(image, params1);
       combinedList.addView(text, params);
       text.setTag(i);
-      if (i == 0) {
+      if (i == 0 && selctedTextView == null) {
         selctedTextView = text;
+        sView = selctedTextView;
+        sView.setTag(selctedTextView.getTag());
       }
       dataList.get(i).setIndex(i);
       text.setTag(dataList.get(i));
@@ -213,21 +217,21 @@ public class CropFragment extends BaseEditFragment {
       ratioList = mainView.findViewById(R.id.ratio_list_group);
       imageList = mainView.findViewById(R.id.image_crop);
       setUpRatioListPortriat();
-      this.mCropPanel = ensureEditActivity().mCropPanel;
-      cancel.setOnClickListener(new BackToMenuClick());
-      apply.setOnClickListener(
-          new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              applyCropImage();
-            }
-          });
-      if (savedInstanceState != null) {
-        rec = savedInstanceState.getParcelable("Rect");
-        sView.setText(savedInstanceState.getString("text"));
-      }
-      onShow();
     }
+    this.mCropPanel = ensureEditActivity().mCropPanel;
+    cancel.setOnClickListener(new BackToMenuClick());
+    apply.setOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            applyCropImage();
+          }
+        });
+    if (savedInstanceState != null) {
+      rec = savedInstanceState.getParcelable("Rect");
+      sView.setText(savedInstanceState.getString("text"));
+    }
+    onShow();
   }
 
   @Override
