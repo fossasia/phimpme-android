@@ -14,20 +14,20 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.google.android.material.snackbar.Snackbar;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import io.realm.Realm;
@@ -197,21 +197,17 @@ public class TrashBinActivity extends ThemedActivity
     swipeRefreshLayout.setColorSchemeColors(getAccentColor());
     swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getBackgroundColor());
     Realm realm = Realm.getDefaultInstance();
-    trashBinRealmModelRealmQuery = realm.where(TrashBinRealmModel.class);
-    if (getTrashObjects().size() == 0) {
-      swipeRefreshLayout.setEnabled(false);
-    } else {
-      swipeRefreshLayout.setOnRefreshListener(
-          new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-              trashBinAdapter.setResults(getTrashObjects());
-              if (swipeRefreshLayout.isRefreshing()) {
-                swipeRefreshLayout.setRefreshing(false);
-              }
+
+    swipeRefreshLayout.setOnRefreshListener(
+        new SwipeRefreshLayout.OnRefreshListener() {
+          @Override
+          public void onRefresh() {
+            trashBinAdapter.setResults(getTrashObjects());
+            if (swipeRefreshLayout.isRefreshing()) {
+              swipeRefreshLayout.setRefreshing(false);
             }
-          });
-    }
+          }
+        });
   }
 
   private int checkpos(String path) {

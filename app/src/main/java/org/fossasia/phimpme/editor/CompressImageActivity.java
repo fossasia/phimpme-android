@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,6 +20,7 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import id.zelory.compressor.Compressor;
@@ -104,7 +104,7 @@ public class CompressImageActivity extends ThemedActivity {
     ImageViewTouch imageViewToucher = findViewById(R.id.main_image);
     saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);
     Uri uri = Uri.fromFile(new File(saveFilePath));
-    Glide.with(this).load(uri).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageViewToucher);
+    Glide.with(this).load(uri).diskCacheStrategy(DiskCacheStrategy.DATA).into(imageViewToucher);
     imageViewToucher.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
   }
 

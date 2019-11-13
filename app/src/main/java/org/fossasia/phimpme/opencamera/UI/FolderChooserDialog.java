@@ -8,8 +8,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -20,6 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import androidx.annotation.NonNull;
+import com.google.android.material.snackbar.Snackbar;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +29,7 @@ import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.opencamera.Camera.MyDebug;
 import org.fossasia.phimpme.opencamera.Camera.PreferenceKeys;
 import org.fossasia.phimpme.opencamera.Camera.StorageUtils;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 /**
  * Dialog to pick a folder. Also allows creating new folders. Used when not using the Storage Access
@@ -248,9 +249,9 @@ public class FolderChooserDialog extends DialogFragment {
       chosen_folder = new_save_location;
       return true;
     } else {
-      Snackbar.make(
+      SnackBarHandler.create(
               getActivity().findViewById(android.R.id.content),
-              R.string.cant_write_folder,
+              getString(R.string.cant_write_folder),
               Snackbar.LENGTH_SHORT)
           .show();
     }
@@ -310,9 +311,9 @@ public class FolderChooserDialog extends DialogFragment {
                           File new_folder = new File(new_folder_name);
                           if (new_folder.exists()) {
                             if (MyDebug.LOG) Log.d(TAG, "folder already exists");
-                            Snackbar.make(
+                            SnackBarHandler.create(
                                     getActivity().findViewById(android.R.id.content),
-                                    R.string.folder_exists,
+                                    getString(R.string.folder_exists),
                                     Snackbar.LENGTH_SHORT)
                                 .show();
                           } else if (new_folder.mkdirs()) {
@@ -320,18 +321,18 @@ public class FolderChooserDialog extends DialogFragment {
                             refreshList(current_folder);
                           } else {
                             if (MyDebug.LOG) Log.d(TAG, "failed to create new folder");
-                            Snackbar.make(
+                            SnackBarHandler.create(
                                     getActivity().findViewById(android.R.id.content),
-                                    R.string.failed_create_folder,
+                                    getString(R.string.failed_create_folder),
                                     Snackbar.LENGTH_SHORT)
                                 .show();
                           }
                         } catch (Exception e) {
                           if (MyDebug.LOG) Log.d(TAG, "exception trying to create new folder");
                           e.printStackTrace();
-                          Snackbar.make(
+                          SnackBarHandler.create(
                                   getActivity().findViewById(android.R.id.content),
-                                  R.string.failed_create_folder,
+                                  getString(R.string.failed_create_folder),
                                   Snackbar.LENGTH_SHORT)
                               .show();
                         }
@@ -342,9 +343,9 @@ public class FolderChooserDialog extends DialogFragment {
               .create();
       dialog.show();
     } else {
-      Snackbar.make(
+      SnackBarHandler.create(
               getActivity().findViewById(android.R.id.content),
-              R.string.cant_write_folder,
+              getString(R.string.cant_write_folder),
               Snackbar.LENGTH_SHORT)
           .show();
     }

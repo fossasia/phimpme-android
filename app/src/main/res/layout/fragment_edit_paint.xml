@@ -28,7 +28,7 @@
         android:layout_toRightOf="@+id/paint_cancel"
         android:layout_toEndOf="@+id/paint_cancel"/>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_centerVertical="true"
         android:id="@+id/paint_color_list"
         android:layout_width="wrap_content"

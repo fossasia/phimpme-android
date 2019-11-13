@@ -11,11 +11,10 @@
         <!--android:background="@color/md_dark_appbar"-->
         <!--android:windowActionBarOverlay="true"-->
         <!--/>-->
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:background="@color/md_dark_appbar"
         android:windowActionBarOverlay="true"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         style="@style/MyToolbar"
         android:layout_width="match_parent"
@@ -24,13 +23,13 @@
         app:titleTextAppearance="@style/ToolbarTitle"
         app:popupTheme="@style/ThemeOverlay.excludedMenuPopup">
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout
         android:id="@+id/rl_ea"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/excluded_albums"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

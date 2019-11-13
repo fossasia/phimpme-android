@@ -22,7 +22,7 @@
         android:contentDescription="@null"
         android:scaleType="fitCenter" />
 
-    <android.support.v7.widget.ActionMenuView
+    <androidx.appcompat.widget.ActionMenuView
         android:id="@+id/toolbar_bottom_preview"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"

@@ -16,6 +16,7 @@
             layout="@layout/toolbar" />
 
         <RelativeLayout
+            android:id="@+id/parentRelative"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true">
@@ -26,11 +27,11 @@
                 android:layout_height="match_parent"
                 android:layout_above="@+id/toolbar_bottom"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true" />
 
-            <android.support.v7.widget.ActionMenuView
+            <androidx.appcompat.widget.ActionMenuView
                 android:id="@+id/toolbar_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"

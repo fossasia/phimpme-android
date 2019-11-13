@@ -9,14 +9,14 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import java.io.IOException;
@@ -35,6 +35,7 @@ public class SplashScreen extends SharedMediaActivity {
 
   private final int READ_EXTERNAL_STORAGE_ID = 12;
   private static final int PICK_MEDIA_REQUEST = 44;
+  public static final int REQUEST_OPEN_APP_SETTINGS = 13;
 
   public static final String CONTENT = "content";
   public static final String PICK_MODE = "pick_mode";
@@ -111,7 +112,7 @@ public class SplashScreen extends SharedMediaActivity {
           if (ab != null) {
             new PrefetchPhotosData().execute();
           }
-        } else SnackBarHandler.show(parentView, R.string.album_not_found);
+        } else SnackBarHandler.create(parentView, R.string.album_not_found).show();
       } else // default intent
       new PrefetchAlbumsData().execute();
     } else {
@@ -120,8 +121,8 @@ public class SplashScreen extends SharedMediaActivity {
   }
 
   private void askForPermission() {
-    String[] permissions = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
-    PermissionUtils.requestPermissions(this, READ_EXTERNAL_STORAGE_ID, permissions);
+    ActivityCompat.requestPermissions(
+        this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_ID);
   }
 
   @Override
@@ -130,6 +131,13 @@ public class SplashScreen extends SharedMediaActivity {
       if (resultCode == RESULT_OK) {
         setResult(RESULT_OK, data);
         finish();
+      }
+    } else if (requestCode == REQUEST_OPEN_APP_SETTINGS) {
+      if (PermissionUtils.isDeviceInfoGranted(this)) {
+        new PrefetchAlbumsData()
+            .execute(SP.getBoolean(getString(R.string.preference_auto_update_media), false));
+      } else {
+        askForPermission();
       }
     }
   }
@@ -165,7 +173,7 @@ public class SplashScreen extends SharedMediaActivity {
           new PrefetchAlbumsData()
               .execute(SP.getBoolean(getString(R.string.preference_auto_update_media), false));
         else {
-          SnackBarHandler.show(parentView, R.string.storage_permission_denied);
+          SnackBarHandler.create(parentView, R.string.storage_permission_denied).show();
           showPermissionAlertDialog();
         }
         break;
@@ -194,13 +202,11 @@ public class SplashScreen extends SharedMediaActivity {
         new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
-            Toast.makeText(getApplicationContext(), R.string.permissions_restart, Toast.LENGTH_LONG)
-                .show();
             Intent intent = new Intent();
             intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             Uri uri = Uri.fromParts("package", getPackageName(), null);
             intent.setData(uri);
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_OPEN_APP_SETTINGS);
           }
         });
 

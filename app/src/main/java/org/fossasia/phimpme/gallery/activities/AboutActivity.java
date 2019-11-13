@@ -1,18 +1,19 @@
 package org.fossasia.phimpme.gallery.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
@@ -28,7 +29,7 @@ import org.fossasia.phimpme.gallery.util.CustomTabService;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
 /** Created by Jibo on 02/03/2016. */
-public class AboutActivity extends ThemedActivity {
+public class AboutActivity extends ThemedActivity implements View.OnClickListener {
 
   private Toolbar toolbar;
 
@@ -45,7 +46,7 @@ public class AboutActivity extends ThemedActivity {
     toolbar = findViewById(R.id.toolbar);
     setNavBarColor();
     cts = new CustomTabService(AboutActivity.this, getPrimaryColor());
-    scr = findViewById(R.id.aboutAct_scrollView);
+    scr = findViewById(R.id.sv_about);
   }
 
   @Override
@@ -56,7 +57,7 @@ public class AboutActivity extends ThemedActivity {
   }
 
   private void setTheme() {
-    /** ** ToolBar **** */
+    /* ToolBar*/
     toolbar.setBackgroundColor(getPrimaryColor());
     setSupportActionBar(toolbar);
     toolbar.setNavigationIcon(
@@ -64,51 +65,27 @@ public class AboutActivity extends ThemedActivity {
             .icon(GoogleMaterial.Icon.gmd_arrow_back)
             .color(Color.WHITE)
             .sizeDp(19));
-    toolbar.setNavigationOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            onBackPressed();
-          }
-        });
-    // toolbar.setTitle(getString(R.string.about));
+    toolbar.setNavigationOnClickListener(v -> onBackPressed());
+    toolbar.setTitle(getString(R.string.about));
 
-    /** ** Status Bar *** */
+    /*Status Bar */
     setStatusBarColor();
 
-    /** ** Nav Bar ****** */
+    /* Nav Bar */
     setNavBarColor();
 
-    /** ** Recent App *** */
+    /* Recent App */
     setRecentApp(getString(R.string.about));
 
-    /** ** Title Cards ** */
+    /* Title Cards */
     int color = getAccentColor();
-    ((TextView) findViewById(R.id.about_app_title)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_special_thanks_title)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_support_title)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_license_title)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_special_thanks_title)).setTextColor(color);
-    ((TextView) findViewById(R.id.connect_to_us_title)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_about_fossasia)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_special_thanks)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_support_label)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_license_heading)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_connect_to_us)).setTextColor(color);
 
-    /** *** LeafPic Header **** */
-    /*
-    Glide.with(this)
-            .load("https://lh5.googleusercontent.com/-aX4YeN8Cvdc/VizLlektHNI/AAAAAAAATE0/c8NUmcEs46QTVf-HITTbvo3e5dja6JwoQCL0B/w958-h539-no/flat_landscape_wallpaper_by_othrod-d8crs50.png")
-            .priority(Priority.HIGH)
-            .animate(R.anim.fade_in)
-            .into((ImageView) findViewById(R.id.leafpic_header));
-    */
-    /** *** Donald Card **** */
-    /** *** Images **** */
-    /*        Glide.with(this)
-    .load("https://lh3.googleusercontent.com/-4lGmk-K4r4U/Vw1Vj8yERrI/AAAAAAAANww/FIsb58PcO-U-9AfD8FXfruK1c75SZ184QCL0B/w958-h539-no/asd.png")
-    .placeholder(getPlaceHolder())
-    .priority(Priority.HIGH)
-    .animate(R.anim.fade_in)
-    .into((ImageView) findViewById(R.id.donald_header_img));*/
-
-    /** *** ScrolView **** */
+    /* ScrolView */
     setScrollViewColor(scr);
 
     setThemeOnChangeListener();
@@ -139,114 +116,123 @@ public class AboutActivity extends ThemedActivity {
     }
   }
 
+  @Override
+  public void onClick(View v) {
+    switch (v.getId()) {
+      case R.id.tv_about_fossasia:
+        cts.launchUrl(getApplicationContext().getString(R.string.contributors_link));
+        break;
+
+      case R.id.iv_github:
+      case R.id.tv_github_desc:
+      case R.id.tv_github_label:
+        cts.launchUrl(getApplicationContext().getString(R.string.phimpme_github));
+        break;
+
+      case R.id.tv_report_bug_desc:
+      case R.id.tv_report_bug_label:
+      case R.id.iv_bug:
+        cts.launchUrl(getApplicationContext().getString(R.string.phimpme_github_issues));
+        break;
+
+      case R.id.tv_open_camera:
+        cts.launchUrl(getApplicationContext().getString(R.string.opencamera_sourceforge));
+        break;
+
+      case R.id.tv_leaf_pic:
+        cts.launchUrl(getApplicationContext().getString(R.string.leafpic_github));
+        break;
+
+      case R.id.iv_license:
+      case R.id.tv_license_desc:
+      case R.id.tv_license_label:
+        cts.launchUrl(getApplicationContext().getString(R.string.phimpme_license));
+        break;
+
+      case R.id.iv_library:
+      case R.id.tv_library_license_desc:
+      case R.id.tv_library_license_label:
+        licenseDialog();
+        break;
+
+      case R.id.iv_website:
+      case R.id.tv_phimpme_website:
+      case R.id.tv_phimpme_website_desc:
+        cts.launchUrl(getApplicationContext().getString(R.string.phimpme_website));
+        break;
+
+      case R.id.iv_facebook:
+      case R.id.tv_facebook:
+      case R.id.tv_facebook_desc:
+        try {
+          Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
+          String facebookUrl = getFacebookPageURL(getApplicationContext());
+          facebookIntent.setData(Uri.parse(facebookUrl));
+          startActivity(facebookIntent);
+        } catch (ActivityNotFoundException e) {
+          cts.launchUrl("https://www.facebook.com/phimpmeapp");
+        }
+        break;
+      case R.id.iv_twitter:
+      case R.id.tv_twitter:
+      case R.id.tv_twitter_desc:
+        try {
+          Intent intent =
+              new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=phimpme"));
+          startActivity(intent);
+        } catch (Exception e) {
+          startActivity(
+              new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/phimpme")));
+        }
+        break;
+    }
+  }
+
   private void setUpActions() {
 
     // Fossasia contributors
-    findViewById(R.id.about_fossasia)
-        .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                cts.launchUrl(getApplicationContext().getString(R.string.contributors_link));
-              }
-            });
+    findViewById(R.id.tv_about_fossasia).setOnClickListener(this);
+
     // GitHub
-    findViewById(R.id.ll_about_support_github)
-        .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                cts.launchUrl(getApplicationContext().getString(R.string.phimpme_github));
-              }
-            });
+    findViewById(R.id.iv_github).setOnClickListener(this);
+    findViewById(R.id.tv_github_desc).setOnClickListener(this);
+    findViewById(R.id.tv_github_label).setOnClickListener(this);
+
     /// Report bug
-    findViewById(R.id.ll_about_report_bug)
-        .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                cts.launchUrl(getApplicationContext().getString(R.string.phimpme_github_issues));
-              }
-            });
+    findViewById(R.id.tv_report_bug_desc).setOnClickListener(this);
+    findViewById(R.id.iv_bug).setOnClickListener(this);
+    findViewById(R.id.tv_report_bug_label).setOnClickListener(this);
+
     // openCamera
-    findViewById(R.id.about_patryk_goworowski_item_sub)
-        .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                cts.launchUrl(getApplicationContext().getString(R.string.opencamera_sourceforge));
-              }
-            });
+    findViewById(R.id.tv_open_camera).setOnClickListener(this);
+
     // LeafPic
-    findViewById(R.id.about_community_members_sub)
-        .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                cts.launchUrl(getApplicationContext().getString(R.string.leafpic_github));
-              }
-            });
+    findViewById(R.id.tv_leaf_pic).setOnClickListener(this);
 
     // License
-    findViewById(R.id.ll_about_license)
-        .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                cts.launchUrl(getApplicationContext().getString(R.string.phimpme_license));
-              }
-            });
+    findViewById(R.id.iv_license).setOnClickListener(this);
+    findViewById(R.id.tv_license_desc).setOnClickListener(this);
+    findViewById(R.id.tv_license_label).setOnClickListener(this);
 
     // Libs
-    findViewById(R.id.ll_about_libs)
-        .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                licenseDialog();
-              }
-            });
+    findViewById(R.id.iv_library).setOnClickListener(this);
+    findViewById(R.id.tv_library_license_label).setOnClickListener(this);
+    findViewById(R.id.tv_library_license_desc).setOnClickListener(this);
 
     // Website
-    findViewById(R.id.ll_about_website)
-        .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View view) {
-                cts.launchUrl(getApplicationContext().getString(R.string.phimpme_website));
-              }
-            });
+    findViewById(R.id.iv_website).setOnClickListener(this);
+    findViewById(R.id.tv_phimpme_website).setOnClickListener(this);
+    findViewById(R.id.tv_phimpme_website_desc).setOnClickListener(this);
 
     // Facebook page
-    findViewById(R.id.ll_about_Facebook)
-        .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View view) {
-                Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
-                String facebookUrl = getFacebookPageURL(getApplicationContext());
-                facebookIntent.setData(Uri.parse(facebookUrl));
-                startActivity(facebookIntent);
-              }
-            });
+    findViewById(R.id.iv_facebook).setOnClickListener(this);
+    findViewById(R.id.tv_facebook).setOnClickListener(this);
+    findViewById(R.id.tv_facebook_desc).setOnClickListener(this);
 
     // Twitter page
-    findViewById(R.id.ll_about_twitter_connect)
-        .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View view) {
-                try {
-                  Intent intent =
-                      new Intent(
-                          Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=phimpme"));
-                  startActivity(intent);
-                } catch (Exception e) {
-                  startActivity(
-                      new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/phimpme")));
-                }
-              }
-            });
+    findViewById(R.id.iv_twitter).setOnClickListener(this);
+    findViewById(R.id.tv_twitter_desc).setOnClickListener(this);
+    findViewById(R.id.tv_twitter).setOnClickListener(this);
   }
 
   public String getFacebookPageURL(Context context) {
@@ -266,63 +252,59 @@ public class AboutActivity extends ThemedActivity {
 
   private void setThemeOnChangeListener() {
 
-    /** BackGround * */
-    findViewById(R.id.about_background).setBackgroundColor(getBackgroundColor());
+    /* Background */
+    findViewById(R.id.clAboutParent).setBackgroundColor(getBackgroundColor());
 
-    /** Cards * */
+    /* Cards */
     int color = getCardBackgroundColor();
-    ((CardView) findViewById(R.id.about_app_card)).setCardBackgroundColor(color);
-    ((CardView) findViewById(R.id.about_special_thanks_card)).setCardBackgroundColor(color);
-    ((CardView) findViewById(R.id.about_support_card)).setCardBackgroundColor(color);
-    ((CardView) findViewById(R.id.about_license_card)).setCardBackgroundColor(color);
-    ((CardView) findViewById(R.id.connect_card)).setCardBackgroundColor(color);
+    ((CardView) findViewById(R.id.card_about_app)).setCardBackgroundColor(color);
+    ((CardView) findViewById(R.id.card_special_thanks)).setCardBackgroundColor(color);
+    ((CardView) findViewById(R.id.card_support_dev)).setCardBackgroundColor(color);
+    ((CardView) findViewById(R.id.card_license)).setCardBackgroundColor(color);
+    ((CardView) findViewById(R.id.card_connect_to_us)).setCardBackgroundColor(color);
 
     // cvSpecialThanks.setBackgroundColor(color);
 
-    /** Icons * */
+    /* Icons  */
     // ABOUT APP
     color = getIconColor();
-    ((IconicsImageView) findViewById(R.id.about_libs_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.about_license_icon)).setColor(color);
+    ((IconicsImageView) findViewById(R.id.iv_library)).setColor(color);
+    ((IconicsImageView) findViewById(R.id.iv_license)).setColor(color);
 
     // ABOUT SUPPORT
-    ((IconicsImageView) findViewById(R.id.about_support_github_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.about_support_report_bug_icon)).setColor(color);
+    ((IconicsImageView) findViewById(R.id.iv_github)).setColor(color);
+    ((IconicsImageView) findViewById(R.id.iv_bug)).setColor(color);
 
     // CONNECT ICONS
-    ((IconicsImageView) findViewById(R.id.about_website_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.about_fb_page_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.about_twitter_connect_icon)).setColor(color);
+    ((IconicsImageView) findViewById(R.id.iv_website)).setColor(color);
+    ((IconicsImageView) findViewById(R.id.iv_facebook)).setColor(color);
+    ((IconicsImageView) findViewById(R.id.iv_twitter)).setColor(color);
 
     /** TextViews * */
     color = getTextColor();
-    ((TextView) findViewById(R.id.about_libs_item)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_app_light_description)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_support_github_item)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_license_item)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_support_report_bug_item)).setTextColor(color);
-    ((TextView) findViewById(R.id.Website_tv)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_fb_item)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_twitter_tv_item)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_library_license_desc)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_app_description)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_github_label)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_license_label)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_report_bug_label)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_phimpme_website)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_facebook)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_twitter)).setTextColor(color);
 
     /** Sub Text Views* */
     color = getSubTextColor();
-    ((TextView) findViewById(R.id.about_version_item_sub)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_version_item_sub))
-        .setText(
-            getApplicationContext().getString(R.string.version_title)
-                + " "
-                + BuildConfig.VERSION_NAME);
-    ((TextView) findViewById(R.id.about_libs_item_sub)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_patryk_goworowski_item_sub)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_community_members_sub)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_community_you_sub)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_support_github_item_sub)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_license_item_sub)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_support_report_bug_sub)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_website_item_sub)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_fb_item_sub)).setTextColor(color);
-    ((TextView) findViewById(R.id.about_twitter_tv_item_sub)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_version)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_version))
+        .setText(getString(R.string.version_title) + " " + BuildConfig.VERSION_NAME);
+    ((TextView) findViewById(R.id.tv_license_desc)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_open_camera)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_leaf_pic)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_github_desc)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_library_license_desc)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_report_bug_desc)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_phimpme_website_desc)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_facebook_desc)).setTextColor(color);
+    ((TextView) findViewById(R.id.tv_twitter_desc)).setTextColor(color);
   }
 
   private void licenseDialog() {

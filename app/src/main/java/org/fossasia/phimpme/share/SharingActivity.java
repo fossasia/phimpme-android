@@ -27,18 +27,13 @@ import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -50,16 +45,15 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.box.androidsdk.content.BoxApiFile;
 import com.box.androidsdk.content.BoxConfig;
 import com.box.androidsdk.content.BoxException;
@@ -69,8 +63,13 @@ import com.box.androidsdk.content.models.BoxSession;
 import com.box.androidsdk.content.requests.BoxRequestsFile;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.WriteMode;
+import com.google.android.material.snackbar.Snackbar;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.owncloud.android.lib.common.OwnCloudClient;
@@ -80,8 +79,8 @@ import com.owncloud.android.lib.common.operations.OnRemoteOperationListener;
 import com.owncloud.android.lib.common.operations.RemoteOperation;
 import com.owncloud.android.lib.common.operations.RemoteOperationResult;
 import com.owncloud.android.lib.resources.files.FileUtils;
-import com.owncloud.android.lib.resources.files.ReadRemoteFolderOperation;
-import com.owncloud.android.lib.resources.files.UploadRemoteFileOperation;
+import com.owncloud.android.lib.resources.files.ReadFileRemoteOperation;
+import com.owncloud.android.lib.resources.files.UploadFileRemoteOperation;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
@@ -102,10 +101,7 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.accounts.CloudRailServices;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
@@ -116,15 +112,20 @@ import org.fossasia.phimpme.gallery.activities.LFMainActivity;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.share.flickr.FlickrHelper;
+import org.fossasia.phimpme.share.imgur.ImgurPicUploadReq;
+import org.fossasia.phimpme.share.imgur.ImgurPicUploadResp;
 import org.fossasia.phimpme.share.tumblr.TumblrClient;
 import org.fossasia.phimpme.share.twitter.HelperMethods;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.Constants;
+import org.fossasia.phimpme.utilities.ImgurApi;
 import org.fossasia.phimpme.utilities.NotificationHandler;
+import org.fossasia.phimpme.utilities.RetrofitClient;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 import org.fossasia.phimpme.utilities.Utils;
-import org.json.JSONException;
-import org.json.JSONObject;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Class which deals with Sharing images to multiple Account logged in by the user in the app. If
@@ -149,6 +150,9 @@ public class SharingActivity extends ThemedActivity
         OnRemoteOperationListener,
         RecyclerItemClickListner.OnItemClickListener {
 
+  private static final String IMGUR_BASE_URL = "https://api.imgur.com/3/";
+  private static final String IMGUR_HEADER_CLIENT = "Client-ID";
+  private static final String IMGUR_HEADER_USER = "Bearer";
   public static final String EXTRA_OUTPUT = "extra_output";
   private static String LOG_TAG = SharingActivity.class.getCanonicalName();
   public String saveFilePath;
@@ -187,7 +191,6 @@ public class SharingActivity extends ThemedActivity
   Bitmap finalBmp;
   Boolean isPostedOnTwitter = false, isPersonal = false;
   String boardID, imgurAuth = null, imgurString = null;
-  private CloudRailServices cloudRailServices;
   private static final int REQ_SELECT_PHOTO = 1;
   private final int REQ_CODE_SPEECH_INPUT = 10;
   private static final int SHARE_WHATSAPP = 200;
@@ -197,9 +200,10 @@ public class SharingActivity extends ThemedActivity
   public String uploadName;
   private int positionShareOption;
   private boolean triedUploading = false;
+  private ImgurApi imgurApiInterface;
 
   public static String getClientAuth() {
-    return Constants.IMGUR_HEADER_CLIENt + " " + Constants.MY_IMGUR_CLIENT_ID;
+    return IMGUR_HEADER_CLIENT + " " + Constants.MY_IMGUR_CLIENT_ID;
   }
 
   @Override
@@ -256,7 +260,7 @@ public class SharingActivity extends ThemedActivity
     Uri uri = Uri.fromFile(new File(saveFilePath));
     Glide.with(getApplicationContext())
         .load(uri)
-        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+        .diskCacheStrategy(DiskCacheStrategy.DATA)
         .into(shareImage);
   }
 
@@ -370,9 +374,7 @@ public class SharingActivity extends ThemedActivity
                   break;
 
                 default:
-                  Snackbar snackbar =
-                      SnackBarHandler.show(parent, getString(R.string.feature_not_present));
-                  snackbar.show();
+                  SnackBarHandler.create(parent, getString(R.string.feature_not_present)).show();
               }
             }
           });
@@ -456,8 +458,7 @@ public class SharingActivity extends ThemedActivity
       sessionBox = new BoxSession(this);
       new UploadToBox().execute();
     } else {
-      Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.login_box));
-      snackbar.show();
+      SnackBarHandler.create(parent, getString(R.string.login_box)).show();
     }
   }
 
@@ -516,8 +517,7 @@ public class SharingActivity extends ThemedActivity
     protected void onPostExecute(Void result) {
       if (success) {
         NotificationHandler.actionPassed(R.string.upload_complete);
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.uploaded_box));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.uploaded_box)).show();
         sendResult(Constants.SUCCESS);
       } else {
         NotificationHandler.actionFailed();
@@ -565,8 +565,7 @@ public class SharingActivity extends ThemedActivity
 
   private void shareToFlickr() {
     if (Utils.checkAlreadyExist(FLICKR)) {
-      Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.uploading));
-      snackbar.show();
+      SnackBarHandler.create(parent, getString(R.string.uploading)).show();
       InputStream is = null;
       File file = new File(saveFilePath);
       try {
@@ -588,24 +587,26 @@ public class SharingActivity extends ThemedActivity
   }
 
   private void shareToDropBox() {
-    cloudRailServices = CloudRailServices.getInstance();
-    cloudRailServices.prepare(this);
     RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
     // Checking if string equals to is exist or not
     query.equalTo("name", DROPBOX.toString());
-    RealmResults<AccountDatabase> result = query.findAll();
-    try {
-      cloudRailServices.loadAsString(result.first().getToken());
-      new UploadToDropbox().execute();
-
-    } catch (ArrayIndexOutOfBoundsException e) {
-      Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.login_dropbox_account));
-      snackbar.show();
+    AccountDatabase result = query.findFirst();
+    if (result != null) {
+      new UploadToDropbox(result.getToken()).execute(saveFilePath);
+    } else {
+      SnackBarHandler.create(parent, getString(R.string.login_dropbox_account)).show();
     }
   }
 
-  private class UploadToDropbox extends AsyncTask<Void, Integer, Void> {
+  private class UploadToDropbox extends AsyncTask<String, Integer, Void> {
     Boolean success;
+    DbxRequestConfig config;
+    DbxClientV2 client;
+
+    UploadToDropbox(String accessToken) {
+      config = DbxRequestConfig.newBuilder("phimpme").build();
+      client = new DbxClientV2(config, accessToken);
+    }
 
     @Override
     protected void onPreExecute() {
@@ -614,25 +615,18 @@ public class SharingActivity extends ThemedActivity
     }
 
     @Override
-    protected Void doInBackground(Void... arg0) {
-      File file = new File(saveFilePath);
-      FileInputStream inputStream = null;
-      try {
-        inputStream = new FileInputStream(file);
-        if (cloudRailServices.checkFolderExist()) {
-          cloudRailServices.upload(
-              cloudRailServices.getDropboxFolderPath() + "/" + file.getName(),
-              inputStream,
-              file.length(),
-              true);
-          success = true;
-        }
-
-      } catch (Exception e) {
-        e.printStackTrace();
+    protected Void doInBackground(String... args) {
+      File file = new File(args[0]);
+      try (InputStream inputStream = new FileInputStream(file)) {
+        client
+            .files()
+            .uploadBuilder("/phimpme/" + file.getName())
+            .withMode(WriteMode.OVERWRITE)
+            .uploadAndFinish(inputStream);
+        success = true;
+      } catch (DbxException | IOException e) {
         success = false;
       }
-
       return null;
     }
 
@@ -640,150 +634,13 @@ public class SharingActivity extends ThemedActivity
     protected void onPostExecute(Void result) {
       if (success) {
         NotificationHandler.actionPassed(R.string.upload_complete);
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.uploaded_dropbox));
-        snackbar.show();
-        sendResult(Constants.SUCCESS);
+        SnackBarHandler.create(parent, getString(R.string.uploaded_dropbox)).show();
       } else {
         NotificationHandler.actionFailed();
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.upload_failed));
-        snackbar.show();
-        sendResult(FAIL);
+        SnackBarHandler.create(parent, getString(R.string.upload_failed)).show();
       }
     }
   }
-
-  /* private void shareToOneDrive(){
-      cloudRailServices = CloudRailServices.getInstance();
-      cloudRailServices.prepare(this);
-      RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
-      query.equalTo("name",ONEDRIVE.toString());
-      RealmResults<AccountDatabase> results = query.findAll();
-      try{
-          cloudRailServices.oneDriveLoadAsString(results.first().getToken());
-          new UploadToOneDrive().execute();
-      }
-      catch (Exception e){
-          SnackBarHandler.show(parent,R.string.login_onedrive_from_accounts);
-      }
-  }
-
-  private void shareToGoogleDrive(){
-      cloudRailServices = CloudRailServices.getInstance();
-      cloudRailServices.prepare(this);
-      RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
-      //Checking if string is equal or not
-      query.equalTo("name",GOOGLEDRIVE.toString());
-      RealmResults<AccountDatabase> results = query.findAll();
-      try{
-          cloudRailServices.driveLoadAsString(results.first().getToken());
-          new UploadToGoogleDrive().execute();
-      }
-      catch (Exception e){
-          SnackBarHandler.show(parent,R.string.login_googledrive_account);
-      }
-
-  }*/
-
-  private class UploadToGoogleDrive extends AsyncTask<Void, Void, Void> {
-    Boolean success;
-
-    @Override
-    protected void onPreExecute() {
-      NotificationHandler.make(
-          R.string.googledrive_share, R.string.uploading, R.drawable.ic_cloud_upload_black_24dp);
-    }
-
-    @Override
-    protected Void doInBackground(Void... voids) {
-      File file = new File(saveFilePath);
-      FileInputStream inputStream = null;
-      try {
-        inputStream = new FileInputStream(file);
-        if (cloudRailServices.checkDriveFolderExist()) {
-          cloudRailServices
-              .getGoogleDrive()
-              .upload(
-                  cloudRailServices.getGoogleDriveFolderPath() + "/" + file.getName(),
-                  inputStream,
-                  file.length(),
-                  true);
-          success = true;
-        }
-
-      } catch (Exception e) {
-        e.printStackTrace();
-        success = false;
-      }
-
-      return null;
-    }
-
-    @Override
-    protected void onPostExecute(Void aVoid) {
-      super.onPostExecute(aVoid);
-
-      if (success) {
-        NotificationHandler.actionPassed(R.string.upload_complete);
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.uploaded_googledrive));
-        snackbar.show();
-        sendResult(Constants.SUCCESS);
-      } else {
-        NotificationHandler.actionFailed();
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.upload_failed));
-        snackbar.show();
-        sendResult(FAIL);
-      }
-    }
-  }
-
-  /*private class UploadToOneDrive extends AsyncTask<Void, Void, Void> {
-    Boolean success;
-
-    @Override
-    protected void onPreExecute() {
-      NotificationHandler.make(
-          R.string.onedrive_share, R.string.uploading, R.drawable.ic_onedrive_black);
-    }
-
-    @Override
-    protected Void doInBackground(Void... voids) {
-      File file = new File(saveFilePath);
-      FileInputStream fileInputStream = null;
-      try {
-        fileInputStream = new FileInputStream(file);
-        if (cloudRailServices.checkOneDriveFolderExist()) {
-          cloudRailServices
-              .getOneDrive()
-              .upload(
-                  cloudRailServices.getOneDriveFolderPath() + "/" + file.getName(),
-                  fileInputStream,
-                  file.length(),
-                  true);
-          success = true;
-        }
-      } catch (FileNotFoundException e) {
-        e.printStackTrace();
-        success = false;
-      }
-      return null;
-    }
-
-    @Override
-    protected void onPostExecute(Void aVoid) {
-      super.onPostExecute(aVoid);
-      if (success) {
-        NotificationHandler.actionPassed(R.string.upload_complete);
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.uploaded_onedrive));
-        snackbar.show();
-        sendResult(Constants.SUCCESS);
-      } else {
-        NotificationHandler.actionFailed();
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.upload_failed));
-        snackbar.show();
-        sendResult(FAIL);
-      }
-    }
-  }*/
 
   @Override
   public void onBackPressed() {
@@ -987,8 +844,7 @@ public class SharingActivity extends ThemedActivity
   }
 
   private void postToPinterest(final String boardID) {
-    Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.pinterest_image_uploading));
-    snackbar.show();
+    SnackBarHandler.create(parent, getString(R.string.pinterest_image_uploading)).show();
     NotificationHandler.make(
         R.string.pinterest, R.string.upload_progress, R.drawable.ic_cloud_upload_black_24dp);
     Bitmap image = getBitmapFromPath(saveFilePath);
@@ -1003,9 +859,7 @@ public class SharingActivity extends ThemedActivity
               public void onSuccess(PDKResponse response) {
                 NotificationHandler.actionPassed(R.string.upload_complete);
                 Log.d(getClass().getName(), response.getData().toString());
-                Snackbar snackbar =
-                    SnackBarHandler.show(parent, getString(R.string.pinterest_post));
-                snackbar.show();
+                SnackBarHandler.create(parent, getString(R.string.pinterest_post)).show();
                 sendResult(Constants.SUCCESS);
               }
 
@@ -1013,9 +867,7 @@ public class SharingActivity extends ThemedActivity
               public void onFailure(PDKException exception) {
                 NotificationHandler.actionFailed();
                 Log.e(getClass().getName(), exception.getDetailMessage());
-                Snackbar snackbar =
-                    SnackBarHandler.show(parent, getString(R.string.Pinterest_fail));
-                snackbar.show();
+                SnackBarHandler.create(parent, getString(R.string.Pinterest_fail)).show();
                 sendResult(FAIL);
               }
             });
@@ -1024,26 +876,27 @@ public class SharingActivity extends ThemedActivity
   private void shareToTwitter() {
     if (Utils.checkAlreadyExist(TWITTER)) {
       Glide.with(this)
-          .load(Uri.fromFile(new File(saveFilePath)))
           .asBitmap()
+          .load(Uri.fromFile(new File(saveFilePath)))
           .into(
-              new SimpleTarget<Bitmap>(1024, 512) {
+              new CustomTarget<Bitmap>(1024, 512) {
                 @Override
                 public void onResourceReady(
-                    Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    @NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                   finalBmp = resource;
                   new PostToTwitterAsync().execute();
                 }
+
+                @Override
+                public void onLoadCleared(@Nullable Drawable placeholder) {}
               });
     } else {
-      Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.sign_from_account));
-      snackbar.show();
+      SnackBarHandler.create(parent, getString(R.string.sign_from_account)).show();
     }
   }
 
   private void uploadOnTwitter(String token, String secret) {
-    Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.twitter_uploading));
-    snackbar.show();
+    SnackBarHandler.create(parent, getString(R.string.twitter_uploading)).show();
     final File f3 = new File(Environment.getExternalStorageDirectory() + "/twitter_upload/");
     final File file =
         new File(Environment.getExternalStorageDirectory() + "/twitter_upload/" + "temp" + ".png");
@@ -1161,6 +1014,9 @@ public class SharingActivity extends ThemedActivity
   }
 
   private void shareToImgur() {
+    if (imgurApiInterface == null) {
+      imgurApiInterface = RetrofitClient.getRetrofitClient(IMGUR_BASE_URL).create(ImgurApi.class);
+    }
     final AlertDialog.Builder dialogBuilder =
         new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
     RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
@@ -1168,7 +1024,7 @@ public class SharingActivity extends ThemedActivity
     final RealmResults<AccountDatabase> result = query.findAll();
     if (result.size() != 0) {
       isPersonal = true;
-      imgurAuth = Constants.IMGUR_HEADER_USER + " " + result.get(0).getToken();
+      imgurAuth = IMGUR_HEADER_USER + " " + result.get(0).getToken();
     }
     AlertDialogsHelper.getTextDialog(
         SharingActivity.this, dialogBuilder, R.string.choose, R.string.imgur_select_mode, null);
@@ -1178,7 +1034,9 @@ public class SharingActivity extends ThemedActivity
           @Override
           public void onClick(DialogInterface dialogInterface, int i) {
             if (!isPersonal) {
-              Snackbar.make(parent, R.string.sign_from_account, Snackbar.LENGTH_SHORT).show();
+              SnackBarHandler.create(
+                      parent, getString(R.string.sign_from_account), Snackbar.LENGTH_SHORT)
+                  .show();
               return;
             } else {
               isPersonal = true;
@@ -1225,21 +1083,30 @@ public class SharingActivity extends ThemedActivity
     Bitmap bitmap = getBitmapFromPath(saveFilePath);
     final String imageString = getStringImage(bitmap);
     // sending image to server
-    StringRequest request =
-        new StringRequest(
-            Request.Method.POST,
-            Constants.IMGUR_IMAGE_UPLOAD_URL,
-            new Response.Listener<String>() {
+    ImgurPicUploadReq imgurPicUpload = new ImgurPicUploadReq();
+    imgurPicUpload.setImage(imageString);
+    if (caption != null && !caption.isEmpty()) {
+      imgurPicUpload.setCaption(caption);
+    }
+    String authorization;
+    if (isPersonal && imgurAuth != null) {
+      authorization = imgurAuth;
+    } else {
+      authorization = getClientAuth();
+    }
+    imgurApiInterface
+        .uploadImageToImgur(authorization, imgurPicUpload)
+        .enqueue(
+            new Callback<ImgurPicUploadResp>() {
               @Override
-              public void onResponse(String s) {
-                dialog.dismiss();
-                JSONObject jsonObject = null;
-
-                try {
-                  jsonObject = new JSONObject(s);
-                  Boolean success = jsonObject.getBoolean("success");
+              public void onResponse(
+                  Call<ImgurPicUploadResp> call, Response<ImgurPicUploadResp> response) {
+                if (response.body() != null && response.isSuccessful()) {
+                  dialog.dismiss();
+                  ImgurPicUploadResp imgurPicUploadResp = response.body();
+                  boolean success = imgurPicUploadResp.isSuccess();
                   if (success) {
-                    final String url = jsonObject.getJSONObject("data").getString("link");
+                    final String url = imgurPicUploadResp.getData().getLink();
 
                     if (isPersonal) {
                       imgurString = getString(R.string.upload_personal) + "\n" + url;
@@ -1284,52 +1151,21 @@ public class SharingActivity extends ThemedActivity
                         getAccentColor(),
                         alertDialog);
                   } else {
-                    Snackbar snackbar =
-                        SnackBarHandler.show(parent, getString(R.string.error_on_imgur));
-                    snackbar.show();
+                    SnackBarHandler.create(parent, getString(R.string.error_on_imgur)).show();
                     sendResult(FAIL);
                   }
-                } catch (JSONException e) {
-                  e.printStackTrace();
+                } else {
+                  dialog.dismiss();
+                  SnackBarHandler.create(parent, getString(R.string.error_volly)).show();
                 }
               }
-            },
-            new Response.ErrorListener() {
+
               @Override
-              public void onErrorResponse(VolleyError volleyError) {
+              public void onFailure(Call<ImgurPicUploadResp> call, Throwable t) {
                 dialog.dismiss();
-                Snackbar snackbar =
-                    SnackBarHandler.show(
-                        parent, getString(R.string.error_volly)); // add volleyError to check error
-                snackbar.show();
+                SnackBarHandler.create(parent, getString(R.string.error_volly)).show();
               }
-            }) {
-          @Override
-          protected Map<String, String> getParams() throws AuthFailureError {
-            Map<String, String> parameters = new HashMap<String, String>();
-            parameters.put("image", imageString);
-            if (caption != null && !caption.isEmpty()) parameters.put("title", caption);
-            return parameters;
-          }
-
-          @Override
-          public Map<String, String> getHeaders() throws AuthFailureError {
-            Map<String, String> headers = new HashMap<String, String>();
-            if (isPersonal) {
-              if (imgurAuth != null) {
-                headers.put(getString(R.string.header_auth), imgurAuth);
-              }
-            } else {
-              headers.put(getString(R.string.header_auth), getClientAuth());
-            }
-
-            return headers;
-          }
-        };
-    request.setRetryPolicy(
-        new DefaultRetryPolicy(50000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-    RequestQueue rQueue = Volley.newRequestQueue(SharingActivity.this);
-    rQueue.add(request);
+            });
   }
 
   /**
@@ -1365,9 +1201,7 @@ public class SharingActivity extends ThemedActivity
         is.close();
         fos.close();
       } catch (IOException e) {
-        Snackbar snackbar =
-            SnackBarHandler.show(parent, getString(R.string.error_copying_sample_file));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.error_copying_sample_file)).show();
         Log.e(LOG_TAG, getString(R.string.error_copying_sample_file), e);
       }
 
@@ -1383,34 +1217,36 @@ public class SharingActivity extends ThemedActivity
       Long timeStampLong = fileToUpload.lastModified() / 1000;
       String timeStamp = timeStampLong.toString();
 
-      UploadRemoteFileOperation uploadOperation =
-          new UploadRemoteFileOperation(
+      UploadFileRemoteOperation uploadOperation =
+          new UploadFileRemoteOperation(
               fileToUpload.getAbsolutePath(), remotePath, mimeType, timeStamp);
       uploadOperation.execute(mClient, this, mHandler);
       phimpmeProgressBarHandler.show();
 
     } else {
-      Snackbar snackbar =
-          SnackBarHandler.show(
+      SnackBarHandler.create(
               parent,
               context.getString(R.string.please_sign_into)
                   + str
-                  + context.getString(R.string.from_account_manager));
-      snackbar.show();
+                  + context.getString(R.string.from_account_manager))
+          .show();
     }
   }
 
   @Override
   protected void onActivityResult(int requestCode, int responseCode, Intent data) {
+    super.onActivityResult(requestCode, responseCode, data);
     if (requestCode == REQ_SELECT_PHOTO) {
       if (responseCode == RESULT_OK) {
         NotificationHandler.actionPassed(R.string.upload_complete);
-        Snackbar.make(parent, R.string.success_google, Snackbar.LENGTH_LONG).show();
+        SnackBarHandler.create(parent, getString(R.string.success_google), Snackbar.LENGTH_LONG)
+            .show();
         sendResult(SUCCESS);
         return;
       } else {
         NotificationHandler.actionFailed();
-        Snackbar.make(parent, R.string.error_google, Snackbar.LENGTH_LONG).show();
+        SnackBarHandler.create(parent, getString(R.string.error_google), Snackbar.LENGTH_LONG)
+            .show();
         sendResult(FAIL);
         return;
       }
@@ -1443,8 +1279,8 @@ public class SharingActivity extends ThemedActivity
   }
 
   private void startRefresh() {
-    ReadRemoteFolderOperation refreshOperation =
-        new ReadRemoteFolderOperation(FileUtils.PATH_SEPARATOR);
+    ReadFileRemoteOperation refreshOperation =
+        new ReadFileRemoteOperation(FileUtils.PATH_SEPARATOR);
     refreshOperation.execute(mClient, this, mHandler);
   }
 
@@ -1469,9 +1305,10 @@ public class SharingActivity extends ThemedActivity
               })
           .show();
     } else if (result.isSuccess()) {
-      Snackbar.make(parent, R.string.todo_operation_finished_in_success, Snackbar.LENGTH_LONG)
+      SnackBarHandler.create(
+              parent, getString(R.string.todo_operation_finished_in_success), Snackbar.LENGTH_LONG)
           .show();
-    } else if (operation instanceof UploadRemoteFileOperation) {
+    } else if (operation instanceof UploadFileRemoteOperation) {
       onSuccessfulUpload();
     }
   }
@@ -1514,15 +1351,11 @@ public class SharingActivity extends ThemedActivity
     protected void onPostExecute(Void result) {
       if (isPostedOnTwitter) {
         NotificationHandler.actionPassed(R.string.upload_complete);
-        Snackbar snackbar =
-            SnackBarHandler.show(parent, getString(R.string.tweet_posted_on_twitter));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.tweet_posted_on_twitter)).show();
         sendResult(SUCCESS);
       } else {
         NotificationHandler.actionFailed();
-        Snackbar snackbar =
-            SnackBarHandler.show(parent, getString(R.string.error_on_posting_twitter));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.error_on_posting_twitter)).show();
         sendResult(FAIL);
       }
     }
@@ -1574,12 +1407,10 @@ public class SharingActivity extends ThemedActivity
     protected void onPostExecute(Void result) {
       dialog.dismiss();
       if (success) {
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.posted_on_tumblr));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.posted_on_tumblr)).show();
         sendResult(Constants.SUCCESS);
       } else {
-        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.error_on_tumblr));
-        snackbar.show();
+        SnackBarHandler.create(parent, getString(R.string.error_on_tumblr)).show();
         sendResult(FAIL);
       }
     }

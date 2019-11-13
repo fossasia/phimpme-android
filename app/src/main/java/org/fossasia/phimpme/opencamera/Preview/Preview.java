@@ -28,8 +28,6 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
@@ -45,6 +43,8 @@ import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
+import androidx.core.content.ContextCompat;
+import com.google.android.material.snackbar.Snackbar;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,6 +68,7 @@ import org.fossasia.phimpme.opencamera.Preview.CameraSurface.CameraSurface;
 import org.fossasia.phimpme.opencamera.Preview.CameraSurface.MySurfaceView;
 import org.fossasia.phimpme.opencamera.Preview.CameraSurface.MyTextureView;
 import org.fossasia.phimpme.opencamera.UI.PopupView;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 /**
@@ -1450,7 +1451,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
                     applicationInterface.clearColorEffectPref();
                   }
                 } catch (Exception e) {
-                  Snackbar.make(
+                  SnackBarHandler.create(
                           activity.findViewById(android.R.id.content),
                           "Your device does not support any filters",
                           Snackbar.LENGTH_SHORT)

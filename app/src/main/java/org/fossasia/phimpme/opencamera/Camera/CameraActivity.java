@@ -48,9 +48,6 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.GestureDetector;
@@ -66,8 +63,11 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.google.android.material.snackbar.Snackbar;
 import com.mikepenz.iconics.view.IconicsImageView;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -92,6 +92,7 @@ import org.fossasia.phimpme.opencamera.UI.PopupView;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 /** The main Activity for Open Camera. */
 public class CameraActivity extends ThemedActivity
@@ -2835,7 +2836,7 @@ public class CameraActivity extends ThemedActivity
         ActivityCompat.requestPermissions(
             this, new String[] {Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
       } catch (SecurityException e) {
-        Snackbar.make(
+        SnackBarHandler.create(
                 findViewById(android.R.id.content),
                 "Please open camera in app once to allow permissions",
                 Snackbar.LENGTH_SHORT)

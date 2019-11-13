@@ -17,7 +17,7 @@
             android:layout_gravity="center_vertical"
             android:src="@drawable/image_edit_back"/>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/stickers_type_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             android:layout_gravity="center_vertical"
             android:src="@drawable/image_edit_back"/>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/stickers_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

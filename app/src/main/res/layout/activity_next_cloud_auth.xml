@@ -42,7 +42,7 @@
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin">
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/centeredRefreshButton"
             style="@style/ownCloud.Button"
             android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/zero">
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_layout_hostUrl"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/textlayout_margin"
@@ -93,7 +93,7 @@
                     <requestFocus />
                 </EditText>
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton
                 android:id="@+id/embeddedRefreshButton"
@@ -122,7 +122,7 @@
             android:text="@string/auth_testing_connection"
             android:textColor="@color/md_grey_500" />
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_oAuthEntryPoint_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -140,9 +140,9 @@
                 android:textColorHint="@color/login_text_hint_color"
                 android:visibility="gone" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_oAuthEntryPoint_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -160,9 +160,9 @@
                 android:textColorHint="@color/login_text_hint_color"
                 android:visibility="gone" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_account_username"
             android:layout_width="match_parent"
             android:layout_height="@dimen/textlayout_margin"
@@ -180,9 +180,9 @@
                 android:textColor="@color/login_text_hint_color"
                 android:textColorHint="@color/login_text_hint_color" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_account_password"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/alternate_half_padding"
@@ -201,7 +201,7 @@
                 android:inputType="textPassword"
                 android:textColor="@color/login_text_hint_color"
                 android:textColorHint="@color/login_text_hint_color" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/auth_status_text"

@@ -3,8 +3,8 @@ package org.fossasia.phimpme;
 import android.app.Application;
 import android.content.Context;
 import android.os.StrictMode;
-import android.support.multidex.MultiDex;
 import android.util.Log;
+import androidx.multidex.MultiDex;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.twitter.sdk.android.core.DefaultLogger;
@@ -68,12 +68,6 @@ public class MyApplication extends Application {
     // if (isPublished)
     //   Fabric.with(this, new Crashlytics());
 
-    /** Stetho initialization */
-    /*Stetho.initialize(
-    Stetho.newInitializerBuilder(this)
-            .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-            .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
-            .build());*/
   }
 
   public static RefWatcher getRefWatcher(Context context) {

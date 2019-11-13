@@ -4,15 +4,16 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
@@ -66,13 +67,13 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
 
     Glide.with(holder.imageView.getContext())
         .load(f.getUri())
-        .asBitmap()
+        //        .asBitmap()
         .signature(f.getSignature())
         .centerCrop()
-        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
         .thumbnail(0.5f)
         .placeholder(placeholder)
-        .animate(R.anim.fade_in)
+        .transition(new GenericTransitionOptions<>().transition(R.anim.fade_in))
         .into(holder.imageView);
     holder.icon.setVisibility(View.GONE);
     holder.path.setVisibility(View.GONE);

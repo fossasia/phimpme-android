@@ -13,13 +13,13 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.ActionMenuView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
@@ -128,14 +128,14 @@ public class PhotoActivity extends ThemedActivity {
       if (!TextUtils.isEmpty(FILE_PATH)) {
         Glide.with(this)
             .load(new File(FILE_PATH))
-            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+            .diskCacheStrategy(DiskCacheStrategy.DATA)
             .thumbnail(0.5f)
             .into(imageView);
         return;
       }
     }
     try {
-      SnackBarHandler.show(parent, R.string.image_invalid);
+      SnackBarHandler.create(parent, R.string.image_invalid).show();
     } catch (NullPointerException e) {
       e.printStackTrace();
     }
@@ -173,7 +173,7 @@ public class PhotoActivity extends ThemedActivity {
       intent.putExtra("requestCode", 1);
       startActivity(intent);
       finish();
-    } else SnackBarHandler.show(parent, R.string.image_invalid);
+    } else SnackBarHandler.create(parent, R.string.image_invalid).show();
   }
 
   public void saveOriginal() {

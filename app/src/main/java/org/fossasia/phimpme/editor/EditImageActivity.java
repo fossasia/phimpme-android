@@ -10,10 +10,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -21,6 +17,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import java.io.File;
@@ -202,6 +201,11 @@ public class EditImageActivity extends EditBaseActivity
       check = true;
       mainBitmap = savedInstanceState.getParcelable("Edited Bitmap");
       mOpTimes = savedInstanceState.getInt("numberOfEdits");
+      Fragment restoredAddTextFragment =
+          getSupportFragmentManager().getFragment(savedInstanceState, "addTextFragment");
+      if (restoredAddTextFragment != null) {
+        addTextFragment = (AddTextFragment) restoredAddTextFragment;
+      }
     }
     if (exitDialog) {
       onSaveTaskDone();
@@ -237,8 +241,7 @@ public class EditImageActivity extends EditBaseActivity
       loadImage(filePath);
       return;
     }
-    Snackbar snackbar = SnackBarHandler.show(parentLayout, getString(R.string.image_invalid));
-    snackbar.show();
+    SnackBarHandler.create(parentLayout, getString(R.string.image_invalid)).show();
   }
 
   /** Called from onCreate(). Initializes all view objects and fragments to be used. */
@@ -759,6 +762,9 @@ public class EditImageActivity extends EditBaseActivity
     outState.putInt("checkString", messageCheck);
     outState.putParcelable("Edited Bitmap", mainBitmap);
     outState.putInt("numberOfEdits", mOpTimes);
+    if (addTextFragment.isAdded()) {
+      getSupportFragmentManager().putFragment(outState, "addTextFragment", addTextFragment);
+    }
   }
 
   @Override

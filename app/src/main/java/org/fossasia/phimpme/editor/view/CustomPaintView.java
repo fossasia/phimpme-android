@@ -8,11 +8,11 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.RequiresApi;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
 
 /** Created by panyi on 17/2/11. */

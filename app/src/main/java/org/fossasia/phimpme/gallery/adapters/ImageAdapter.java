@@ -5,8 +5,7 @@ import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
 import android.content.Context;
 import android.graphics.Point;
-import android.net.Uri;
-import android.support.v7.widget.RecyclerView;
+import android.graphics.drawable.Drawable;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +14,12 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import java.util.ArrayList;
@@ -60,22 +62,25 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     holder.imageView.setTransitionName(context.getString(R.string.transition_photo));
     Glide.with(getContext())
         .load(media.get(position).getUri())
-        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+        .diskCacheStrategy(DiskCacheStrategy.DATA)
         .thumbnail(0.5f)
         .listener(
-            new RequestListener<Uri, GlideDrawable>() {
+            new RequestListener<Drawable>() {
               @Override
-              public boolean onException(
-                  Exception e, Uri model, Target<GlideDrawable> target, boolean isFirstResource) {
+              public boolean onLoadFailed(
+                  @Nullable GlideException e,
+                  Object model,
+                  Target<Drawable> target,
+                  boolean isFirstResource) {
                 return false;
               }
 
               @Override
               public boolean onResourceReady(
-                  GlideDrawable resource,
-                  Uri model,
-                  Target<GlideDrawable> target,
-                  boolean isFromMemoryCache,
+                  Drawable resource,
+                  Object model,
+                  Target<Drawable> target,
+                  DataSource dataSource,
                   boolean isFirstResource) {
                 startPostponedTransition(holder.imageView);
                 return false;

@@ -18,10 +18,10 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.speech.RecognizerIntent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.util.Base64;
 import android.view.View;
+import androidx.annotation.NonNull;
+import com.google.android.material.snackbar.Snackbar;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -141,7 +141,10 @@ public class Utils {
   public static boolean checkNetwork(Context context, @NonNull View view) {
     if (isInternetOn(context)) {
       return true;
-    } else Snackbar.make(view, R.string.internet_is_off, Snackbar.LENGTH_SHORT).show();
+    } else {
+      SnackBarHandler.create(view, "You are not connected to the internet", Snackbar.LENGTH_SHORT)
+          .show();
+    }
 
     return false;
   }
@@ -156,7 +159,7 @@ public class Utils {
     try {
       activity.startActivityForResult(intent, requestCode);
     } catch (ActivityNotFoundException a) {
-      SnackBarHandler.show(parentView, activity.getString(R.string.speech_not_supported));
+      SnackBarHandler.create(parentView, activity.getString(R.string.speech_not_supported)).show();
     }
   }
 }

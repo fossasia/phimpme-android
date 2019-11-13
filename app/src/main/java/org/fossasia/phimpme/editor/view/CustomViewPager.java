@@ -1,8 +1,8 @@
 package org.fossasia.phimpme.editor.view;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * 禁用ViewPager滑动事件

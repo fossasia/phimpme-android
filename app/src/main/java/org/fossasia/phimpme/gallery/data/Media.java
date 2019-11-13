@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
+import com.bumptech.glide.signature.ObjectKey;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.lang.GeoLocation;
@@ -32,7 +33,6 @@ import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.data.local.ImageDescModel;
 import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
 import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
-import org.fossasia.phimpme.gallery.util.MediaSignature;
 import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.jetbrains.annotations.TestOnly;
 
@@ -153,8 +153,8 @@ public class Media implements Parcelable, Serializable {
     return bitmap;
   }
 
-  public MediaSignature getSignature() {
-    return new MediaSignature(this);
+  public ObjectKey getSignature() {
+    return new ObjectKey(path + getDateModified());
   }
 
   // <editor-fold desc="Exif & More">

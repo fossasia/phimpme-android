@@ -367,7 +367,7 @@ public class MyPreferenceFragment extends PreferenceFragment
                   {
                     SettingsActivity main_activity =
                         (SettingsActivity) MyPreferenceFragment.this.getActivity();
-                    SnackBarHandler.show(parent, R.string.saf_select_save_location);
+                    SnackBarHandler.create(parent, R.string.saf_select_save_location).show();
                     main_activity.openFolderChooserDialogSAF(true);
                   }
                 } else {

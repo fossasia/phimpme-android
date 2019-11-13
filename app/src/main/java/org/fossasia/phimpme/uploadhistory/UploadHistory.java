@@ -11,16 +11,16 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
@@ -106,7 +106,6 @@ public class UploadHistory extends ThemedActivity {
     uploadHistoryRealmModelRealmQuery = realm.where(UploadHistoryRealmModel.class);
     if (uploadHistoryRealmModelRealmQuery.count() == 0) {
       emptyLayout.setVisibility(View.VISIBLE);
-      swipeRefreshLayout.setEnabled(false);
     } else {
       String choiceofdisply =
           preferenceUtil.getString(
@@ -330,7 +329,6 @@ public class UploadHistory extends ThemedActivity {
       if (result[0] && uploadHistoryRealmModelRealmQuery.count() == 0) {
         emptyLayout.setVisibility(View.VISIBLE);
         uploadHistoryRecyclerView.setVisibility(View.GONE);
-        swipeRefreshLayout.setEnabled(false);
       }
       invalidateOptionsMenu();
     }

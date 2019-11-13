@@ -8,13 +8,6 @@ public class Constants {
   public static final int REQUEST_SHARE_RESULT = 50;
   public static final String SHARE_RESULT = "share_result";
 
-  public static final String IMGUR_IMAGE_UPLOAD_URL = "https://api.imgur.com/3/image/";
-  public static String IMGUR_HEADER_CLIENt = "Client-ID";
-  public static String IMGUR_HEADER_USER = "Bearer";
-
-  // CloudRail App key
-  public static final String CLOUDRAIL_LICENSE_KEY = ""; /*Add your API KEY */
-
   /*Also add dropbox api key in manifest */
   public static final String DROPBOX_APP_KEY = "7fhwc9meece1m9g";
   public static final String DROPBOX_APP_SECRET = "m5567c8v5yt1qc1";

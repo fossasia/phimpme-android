@@ -5,9 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import androidx.annotation.ColorInt;
+import androidx.recyclerview.widget.RecyclerView;
 
 /** Created by dhanraj on 25/1/18. */
 public class CustomScrollBarRecyclerView extends RecyclerView {
