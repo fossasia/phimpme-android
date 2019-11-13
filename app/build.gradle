@@ -119,9 +119,6 @@ android {
 
 repositories {
     mavenCentral()
-    maven {
-        url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
-    }
     maven { url "https://jitpack.io" }
 }
 
@@ -222,9 +219,6 @@ dependencies {
 
     //flickr
     implementation "com.googlecode.flickrj-android:flickrj-android:2.1.0"
-
-    //realm
-    implementation 'com.uphyca:stetho_realm:2.0.0'
 
     //metadataextractor
     implementation 'com.drewnoakes:metadata-extractor:2.9.1'
