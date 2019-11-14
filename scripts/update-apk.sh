@@ -67,4 +67,4 @@ fi
 
 cd ..
 gem install fastlane
-fastlane supply --aab ./apk/phimpme-master-app.aab --skip_upload_apk true --track alpha --json_key ./scripts/fastlane.json --package_name $PACKAGE_NAME
+fastlane supply --aab ./apk/phimpme-master-app-release.aab --skip_upload_apk true --track alpha --json_key ./scripts/fastlane.json --package_name $PACKAGE_NAME
