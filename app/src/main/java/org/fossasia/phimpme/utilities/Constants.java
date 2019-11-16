@@ -7,6 +7,7 @@ public class Constants {
   public static int FAIL = 1;
   public static final int REQUEST_SHARE_RESULT = 50;
   public static final String SHARE_RESULT = "share_result";
+  public static final String DATA = "DATA";
 
   /*Also add dropbox api key in manifest */
   public static final String DROPBOX_APP_KEY = "7fhwc9meece1m9g";
@@ -33,7 +34,11 @@ public class Constants {
           + MY_IMGUR_CLIENT_ID
           + "&response_type=token";
 
-  public static final String PINTEREST_APP_ID = "4914573327424567067";
+  //  public static final String PINTEREST_APP_ID = "4914573327424567067";
+  public static final String PINTEREST_APP_ID = "5060239792999016722";
+  public static final String PINTEREST_APP_SECRET =
+      "bb2e4bfbb72dd12fd9cd6ec40627a3999eda262320178e63c10b6f74e10d4e5d";
+  public static final String PINTEREST_BASE_URL = "https://api.pinterest.com/v1/";
 
   public static final String PACKAGE_INSTAGRAM = "com.instagram.android";
   public static final String PACKAGE_WHATSAPP = "com.whatsapp";

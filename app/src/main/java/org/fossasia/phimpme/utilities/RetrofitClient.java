@@ -16,7 +16,7 @@ public class RetrofitClient {
       httpClientBuilder = new OkHttpClient.Builder();
       HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
       if (BuildConfig.DEBUG) {
-        interceptor.level(HttpLoggingInterceptor.Level.BASIC);
+        interceptor.level(HttpLoggingInterceptor.Level.BODY);
       } else {
         interceptor.level(HttpLoggingInterceptor.Level.NONE);
       }

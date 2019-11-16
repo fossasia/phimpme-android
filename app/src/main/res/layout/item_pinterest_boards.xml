@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:paddingTop="@dimen/large_padding"
+    android:paddingStart="@dimen/alternate_half_padding"
+    android:paddingEnd="@dimen/alternate_half_padding"
+    android:paddingBottom="@dimen/large_padding"
+    android:layout_marginBottom="@dimen/small_margin"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:src="@drawable/ic_pinterest_black"
+        android:layout_marginStart="@dimen/small_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textSize="@dimen/medium_text"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/small_margin"
+        tools:text= "Pinterst Board 1"
+        />
+
+</LinearLayout>

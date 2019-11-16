@@ -64,4 +64,8 @@ public class DatabaseHelper {
     item.deleteFromRealm();
     realm.commitTransaction();
   }
+
+  public AccountDatabase getAccountByName(String accountName) {
+    return realm.where(AccountDatabase.class).contains("name", accountName).findFirst();
+  }
 }

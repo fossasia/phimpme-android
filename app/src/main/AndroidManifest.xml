@@ -46,6 +46,11 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
         <activity
             android:name=".share.twitter.LoginActivity"
             android:screenOrientation="portrait">
@@ -392,8 +397,12 @@
             android:name="io.fabric.ApiKey"
             android:value="78c6ec5c18fcd10ffbfd28ae038f3311f2763889" />
 
-        <activity android:name=".editor.CompressImageActivity"></activity>
-        <activity android:name=".trashbin.TrashBinActivity"></activity>
+        <activity android:name=".editor.CompressImageActivity" />
+        <activity android:name=".trashbin.TrashBinActivity" />
+        <activity android:name=".share.pinterest.PinterestAuthActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".share.pinterest.PinterestShareActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

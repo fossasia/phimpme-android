@@ -1,18 +1,15 @@
 package org.fossasia.phimpme.accounts;
 
-import static com.pinterest.android.pdk.PDKClient.setDebugMode;
 import static org.fossasia.phimpme.R.string.no_account_signed_in;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
-import static org.fossasia.phimpme.utilities.Constants.PINTEREST_APP_ID;
 import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
 import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,13 +28,8 @@ import com.box.androidsdk.content.auth.BoxAuthentication;
 import com.box.androidsdk.content.models.BoxSession;
 import com.dropbox.core.android.Auth;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.pinterest.android.pdk.PDKCallback;
-import com.pinterest.android.pdk.PDKClient;
-import com.pinterest.android.pdk.PDKException;
-import com.pinterest.android.pdk.PDKResponse;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import io.realm.RealmQuery;
-import java.util.ArrayList;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
@@ -51,6 +43,7 @@ import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
 import org.fossasia.phimpme.share.owncloud.OwnCloudActivity;
+import org.fossasia.phimpme.share.pinterest.PinterestAuthActivity;
 import org.fossasia.phimpme.share.twitter.LoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
@@ -82,7 +75,6 @@ public class AccountActivity extends ThemedActivity
   private AccountViewModel accountViewModel;
 
   private TwitterAuthClient client;
-  private PDKClient pdkClient;
   private BoxSession sessionBox;
 
   @Override
@@ -103,9 +95,6 @@ public class AccountActivity extends ThemedActivity
     phimpmeProgressBarHandler.show();
     setUpRecyclerView();
     client = new TwitterAuthClient();
-    pdkClient = PDKClient.configureInstance(this, PINTEREST_APP_ID);
-    pdkClient.onConnect(this);
-    setDebugMode(true);
     configureBoxClient();
     initObserver();
   }
@@ -190,7 +179,7 @@ public class AccountActivity extends ThemedActivity
           break;
 
         case PINTEREST:
-          signInPinterest();
+          startActivity(new Intent(this, PinterestAuthActivity.class));
           break;
 
         case FLICKR:
@@ -284,37 +273,6 @@ public class AccountActivity extends ThemedActivity
     startActivity(i);
   }
 
-  private void signInPinterest() {
-    ArrayList<String> scopes = new ArrayList<>();
-    scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_PUBLIC);
-    scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_PUBLIC);
-    scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_RELATIONSHIPS);
-    scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_RELATIONSHIPS);
-
-    pdkClient.login(
-        this,
-        scopes,
-        new PDKCallback() {
-          @Override
-          public void onSuccess(PDKResponse response) {
-            Log.d(getClass().getName(), response.getData().toString());
-            accountViewModel.savePinterestToken(
-                response.getUser().getFirstName() + " " + response.getUser().getLastName());
-            finish();
-            startActivity(getIntent());
-            SnackBarHandler.create(coordinatorLayout, getString(R.string.account_logged_pinterest))
-                .show();
-          }
-
-          @Override
-          public void onFailure(PDKException exception) {
-            Log.e(getClass().getName(), exception.getDetailMessage());
-            SnackBarHandler.create(coordinatorLayout, getString(R.string.pinterest_signIn_fail))
-                .show();
-          }
-        });
-  }
-
   @Override
   public void onItemLongPress(View childView, int position) {
     // No need to be implemented
@@ -362,7 +320,6 @@ public class AccountActivity extends ThemedActivity
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     client.onActivityResult(requestCode, resultCode, data);
-    pdkClient.onOauthResponse(requestCode, resultCode, data);
     if ((requestCode == accountViewModel.OWNCLOUD_REQUEST_CODE
             && resultCode == accountViewModel.RESULT_OK)
         || (requestCode == accountViewModel.NEXTCLOUD_REQUEST_CODE

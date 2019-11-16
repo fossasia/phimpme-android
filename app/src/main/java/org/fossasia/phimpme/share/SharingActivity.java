@@ -81,10 +81,6 @@ import com.owncloud.android.lib.common.operations.RemoteOperationResult;
 import com.owncloud.android.lib.resources.files.FileUtils;
 import com.owncloud.android.lib.resources.files.ReadFileRemoteOperation;
 import com.owncloud.android.lib.resources.files.UploadFileRemoteOperation;
-import com.pinterest.android.pdk.PDKCallback;
-import com.pinterest.android.pdk.PDKClient;
-import com.pinterest.android.pdk.PDKException;
-import com.pinterest.android.pdk.PDKResponse;
 import com.tumblr.jumblr.JumblrClient;
 import com.tumblr.jumblr.types.PhotoPost;
 import com.tumblr.jumblr.types.User;
@@ -114,6 +110,7 @@ import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.share.flickr.FlickrHelper;
 import org.fossasia.phimpme.share.imgur.ImgurPicUploadReq;
 import org.fossasia.phimpme.share.imgur.ImgurPicUploadResp;
+import org.fossasia.phimpme.share.pinterest.PinterestShareActivity;
 import org.fossasia.phimpme.share.tumblr.TumblrClient;
 import org.fossasia.phimpme.share.twitter.HelperMethods;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
@@ -318,7 +315,11 @@ public class SharingActivity extends ThemedActivity
                   break;
 
                 case PINTEREST:
-                  shareToPinterest();
+                  Intent pinterestIntent =
+                      new Intent(SharingActivity.this, PinterestShareActivity.class);
+                  pinterestIntent.putExtra(Constants.DATA, saveFilePath);
+                  startActivity(pinterestIntent);
+                  finish();
                   break;
 
                 case MESSENGER:
@@ -800,75 +801,6 @@ public class SharingActivity extends ThemedActivity
                   text_caption.setText(caption);
                 }
                 passwordDialog.dismiss();
-              }
-            });
-  }
-
-  private void shareToPinterest() {
-    final AlertDialog.Builder dialogBuilder =
-        new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-    final EditText captionEditText = new EditText(getApplicationContext());
-
-    String link = context.getString(R.string.Pinterest_link);
-    AlertDialogsHelper.getInsertTextDialog(
-        SharingActivity.this, dialogBuilder, captionEditText, R.string.Pinterest_link, link);
-    dialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-    dialogBuilder.setPositiveButton(
-        getString(R.string.post_action).toUpperCase(),
-        new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int which) {
-            // This should br empty it will be overwrite later
-            // to avoid dismiss of the dialog on wrong password
-          }
-        });
-
-    final AlertDialog passwordDialog = dialogBuilder.create();
-    passwordDialog.show();
-    AlertDialogsHelper.setButtonTextColor(
-        new int[] {DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE},
-        getAccentColor(),
-        passwordDialog);
-    passwordDialog
-        .getButton(AlertDialog.BUTTON_POSITIVE)
-        .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                String captionText = captionEditText.getText().toString();
-                boardID = captionText;
-                postToPinterest(boardID);
-                passwordDialog.dismiss();
-              }
-            });
-  }
-
-  private void postToPinterest(final String boardID) {
-    SnackBarHandler.create(parent, getString(R.string.pinterest_image_uploading)).show();
-    NotificationHandler.make(
-        R.string.pinterest, R.string.upload_progress, R.drawable.ic_cloud_upload_black_24dp);
-    Bitmap image = getBitmapFromPath(saveFilePath);
-    PDKClient.getInstance()
-        .createPin(
-            caption,
-            boardID,
-            image,
-            null,
-            new PDKCallback() {
-              @Override
-              public void onSuccess(PDKResponse response) {
-                NotificationHandler.actionPassed(R.string.upload_complete);
-                Log.d(getClass().getName(), response.getData().toString());
-                SnackBarHandler.create(parent, getString(R.string.pinterest_post)).show();
-                sendResult(Constants.SUCCESS);
-              }
-
-              @Override
-              public void onFailure(PDKException exception) {
-                NotificationHandler.actionFailed();
-                Log.e(getClass().getName(), exception.getDetailMessage());
-                SnackBarHandler.create(parent, getString(R.string.Pinterest_fail)).show();
-                sendResult(FAIL);
               }
             });
   }

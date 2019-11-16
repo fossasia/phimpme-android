@@ -20,6 +20,7 @@ import android.net.NetworkInfo;
 import android.speech.RecognizerIntent;
 import android.util.Base64;
 import android.view.View;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import com.google.android.material.snackbar.Snackbar;
 import io.realm.Realm;
@@ -161,5 +162,9 @@ public class Utils {
     } catch (ActivityNotFoundException a) {
       SnackBarHandler.create(parentView, activity.getString(R.string.speech_not_supported)).show();
     }
+  }
+
+  public static void showToastShort(Context context, String message) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
   }
 }

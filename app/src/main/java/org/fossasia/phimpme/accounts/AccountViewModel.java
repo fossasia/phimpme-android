@@ -4,6 +4,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import io.realm.RealmQuery;
 import org.fossasia.phimpme.data.local.AccountDatabase;
+import org.fossasia.phimpme.share.pinterest.PinterestBoardsResp;
+import org.fossasia.phimpme.share.pinterest.PinterestUploadImgResp;
+import org.fossasia.phimpme.utilities.Constants;
 
 /** Created by @codedsun on 09/Oct/2019 */
 public class AccountViewModel extends ViewModel {
@@ -13,8 +16,12 @@ public class AccountViewModel extends ViewModel {
   final int RESULT_OK = 1;
 
   private AccountRepository accountRepository = new AccountRepository();
-  MutableLiveData<Boolean> error = new MutableLiveData<>();
+  public MutableLiveData<Boolean> error = new MutableLiveData<>();
   MutableLiveData<RealmQuery<AccountDatabase>> accountDetails = new MutableLiveData<>();
+  public MutableLiveData<PinterestBoardsResp> boards = new MutableLiveData<>();
+  public MutableLiveData<PinterestUploadImgResp> pinterestUploadImageResponse =
+      new MutableLiveData<>();
+  public MutableLiveData<String> pinterestUploadImageError = new MutableLiveData<>();
 
   public AccountViewModel() {}
 
@@ -68,5 +75,39 @@ public class AccountViewModel extends ViewModel {
   // to save imgur account details
   void saveImgurAccount(String username, String token) {
     accountRepository.saveUsernameAndToken(AccountDatabase.AccountName.IMGUR, username, token);
+  }
+
+  public void savePinterestAccount(String username, String token) {
+    accountRepository.saveUsernameAndToken(AccountDatabase.AccountName.PINTEREST, username, token);
+  }
+
+  public void getUserPinterestBoards() {
+    accountRepository.getPinterestBoards(
+        (status, data) -> {
+          if (status == Constants.SUCCESS) {
+            PinterestBoardsResp resp = (PinterestBoardsResp) data;
+            boards.postValue(resp);
+          } else {
+            error.postValue(true);
+          }
+        });
+  }
+
+  public void uploadImageToBoards(String image, String note, String board) {
+    accountRepository.uploadImageToPinterest(
+        (status, data) -> {
+          if (status == Constants.SUCCESS) {
+            pinterestUploadImageResponse.postValue((PinterestUploadImgResp) data);
+          } else {
+            if (data == null) {
+              pinterestUploadImageError.postValue("No account logged in");
+            } else {
+              pinterestUploadImageError.postValue(((PinterestUploadImgResp) data).getMessage());
+            }
+          }
+        },
+        image,
+        note,
+        board);
   }
 }
