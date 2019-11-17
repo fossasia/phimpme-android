@@ -3541,13 +3541,38 @@ public class LFMainActivity extends SharedMediaActivity {
       int index = media.get(i).getPath().lastIndexOf("/");
       String name = media.get(i).getPath().substring(index + 1);
       realm.beginTransaction();
+      Number currentIdNum  = realm.where(TrashBinRealmModel.class).max("id");
+      int nextId;
+      if(currentIdNum == null) {
+        nextId = 1;
+      } else {
+        nextId = currentIdNum.intValue() + 1;
+      }
+
       String trashpath = trashbinpath + "/" + name;
+
+
+      /* Used ID as PrimaryKey instead of filePath
+      * Since there might be cases that user deletes a file
+      * which has same name then that would cause a Duplicate PrimaryKey Exception
+      */
+
       TrashBinRealmModel trashBinRealmModel =
-          realm.createObject(TrashBinRealmModel.class, trashpath);
+
+          realm.createObject(TrashBinRealmModel.class, nextId);
+
+      //Sets the File Bin Path here
+      trashBinRealmModel.setTrashbinpath(trashpath);
+
       trashBinRealmModel.setOldpath(media.get(i).getPath());
+
+
       trashBinRealmModel.setDatetime(
           new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+
       trashBinRealmModel.setTimeperiod("null");
+
+
       realm.commitTransaction();
     }
   }
@@ -3661,7 +3686,6 @@ public class LFMainActivity extends SharedMediaActivity {
       }
       in.close();
 
-      Log.d(TAG, "bitmap size - width: " + bitmap.getWidth() + ", height: " + bitmap.getHeight());
       return bitmap;
     } catch (IOException e) {
       Log.e(TAG, e.getMessage(), e);
