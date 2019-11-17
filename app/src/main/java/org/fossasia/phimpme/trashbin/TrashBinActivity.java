@@ -14,7 +14,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -154,9 +153,7 @@ public class TrashBinActivity extends ThemedActivity
     ArrayList<TrashBinRealmModel> list = new ArrayList<>();
     final ArrayList<TrashBinRealmModel> toDelete = new ArrayList<>();
 
-
     for (int i = 0; i < trashBinRealmModelRealmQuery.count(); i++) {
-
 
       if (new File(trashBinRealmModelRealmQuery.findAll().get(i).getTrashbinpath()).exists()) {
         list.add(trashBinRealmModelRealmQuery.findAll().get(i));
@@ -173,7 +170,8 @@ public class TrashBinActivity extends ThemedActivity
             @Override
             public void execute(Realm realm) {
               RealmResults<TrashBinRealmModel> realmResults =
-                  realm.where(TrashBinRealmModel.class).equalTo("id", id).findAll();  //Deleting using the id since its the new PrimaryKey
+                  realm.where(TrashBinRealmModel.class).equalTo("id", id).findAll();
+              // Deleting using the id since its the new PrimaryKey
               realmResults.deleteAllFromRealm();
             }
           });
@@ -305,14 +303,12 @@ public class TrashBinActivity extends ThemedActivity
 
       if (binfolder.exists()) {
 
-        //Since bin is not empty we will perform recursive delete on the folder
+        // Since bin is not empty we will perform recursive delete on the folder
 
         String[] children = binfolder.list();
-        for (int i = 0; i < children.length; i++)
-        {
+        for (int i = 0; i < children.length; i++) {
           new File(binfolder, children[i]).delete();
         }
-
       }
       return null;
     }

@@ -450,18 +450,18 @@ public class Album implements Serializable {
           if (moveMedia(context, albummedia.get(i).getPath(), targetDir)) {
             String from = albummedia.get(i).getPath();
             scanFile(
-                    context,
-                    new String[] {
-                            from, StringUtils.getPhotoPathMoved(albummedia.get(i).getPath(), targetDir)
-                    },
-                    new MediaScannerConnection.OnScanCompletedListener() {
-                      @Override
-                      public void onScanCompleted(String s, Uri uri) {
-                        Log.d("scanFile", "onScanCompleted: " + s);
-                      }
-                    });
-            //This was Causing a change in the length of albummedia
-            //media.remove(albummedia.get(i));
+                context,
+                new String[] {
+                  from, StringUtils.getPhotoPathMoved(albummedia.get(i).getPath(), targetDir)
+                },
+                new MediaScannerConnection.OnScanCompletedListener() {
+                  @Override
+                  public void onScanCompleted(String s, Uri uri) {
+                    Log.d("scanFile", "onScanCompleted: " + s);
+                  }
+                });
+            // This was Causing a change in the length of albummedia
+            // media.remove(albummedia.get(i));
             n++;
           }
         }
