@@ -152,7 +152,9 @@ public class TrashBinActivity extends ThemedActivity
   private ArrayList<TrashBinRealmModel> getTrashObjects() {
     ArrayList<TrashBinRealmModel> list = new ArrayList<>();
     final ArrayList<TrashBinRealmModel> toDelete = new ArrayList<>();
+
     for (int i = 0; i < trashBinRealmModelRealmQuery.count(); i++) {
+
       if (new File(trashBinRealmModelRealmQuery.findAll().get(i).getTrashbinpath()).exists()) {
         list.add(trashBinRealmModelRealmQuery.findAll().get(i));
 
@@ -161,14 +163,15 @@ public class TrashBinActivity extends ThemedActivity
       }
     }
     for (int i = 0; i < toDelete.size(); i++) {
-      final String path = toDelete.get(i).getTrashbinpath();
+      final int id = toDelete.get(i).getId();
       Realm realm = Realm.getDefaultInstance();
       realm.executeTransaction(
           new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
               RealmResults<TrashBinRealmModel> realmResults =
-                  realm.where(TrashBinRealmModel.class).equalTo("trashbinpath", path).findAll();
+                  realm.where(TrashBinRealmModel.class).equalTo("id", id).findAll();
+              // Deleting using the id since its the new PrimaryKey
               realmResults.deleteAllFromRealm();
             }
           });
@@ -297,8 +300,15 @@ public class TrashBinActivity extends ThemedActivity
             }
           });
       File binfolder = new File(Environment.getExternalStorageDirectory() + "/" + ".nomedia");
+
       if (binfolder.exists()) {
-        binfolder.delete();
+
+        // Since bin is not empty we will perform recursive delete on the folder
+
+        String[] children = binfolder.list();
+        for (int i = 0; i < children.length; i++) {
+          new File(binfolder, children[i]).delete();
+        }
       }
       return null;
     }

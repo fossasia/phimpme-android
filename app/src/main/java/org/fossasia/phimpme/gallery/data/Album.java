@@ -460,7 +460,8 @@ public class Album implements Serializable {
                     Log.d("scanFile", "onScanCompleted: " + s);
                   }
                 });
-            media.remove(albummedia.get(i));
+            // This was Causing a change in the length of albummedia
+            // media.remove(albummedia.get(i));
             n++;
           }
         }
