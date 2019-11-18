@@ -25,8 +25,8 @@ def LOCAL_KEY_PRESENT = project.hasProperty('SIGNING_KEY_FILE') && rootProject.f
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
 
     defaultConfig {
         applicationId "org.fossasia.phimpme"
@@ -147,7 +147,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.0'
 
     //google and support
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation "androidx.appcompat:appcompat:$rootProject.supportLibraryVersion"
     implementation "androidx.vectordrawable:vectordrawable-animated:1.1.0"
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
     implementation "com.google.android.material:material:1.0.0"
@@ -185,10 +185,10 @@ dependencies {
     implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
     implementation 'com.mikepenz:community-material-typeface:1.5.54.2@aar'
     implementation 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
-    implementation 'com.mikepenz:ionicons-typeface:2.0.1.5-kotlin@aar'
+    implementation 'com.mikepenz:ionicons-typeface:+@aar'
 
     //ui
-    implementation 'de.hdodenhof:circleimageview:3.0.1'
+    implementation 'de.hdodenhof:circleimageview:2.0.0'
     implementation 'uz.shift:colorpicker:0.5@aar'
     implementation 'com.turingtechnologies.materialscrollbar:lib:10.0.3'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
@@ -225,7 +225,7 @@ dependencies {
 
     //tests
     testImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation 'com.google.code.findbugs:jsr305:3.0.2'
+    androidTestImplementation 'com.google.code.findbugs:jsr305:3.0.0'
 
     //opencv
     implementation project(':openCV')
