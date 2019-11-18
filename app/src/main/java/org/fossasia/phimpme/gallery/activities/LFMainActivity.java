@@ -106,6 +106,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.data.local.FavouriteImagesModel;
@@ -661,7 +662,7 @@ public class LFMainActivity extends SharedMediaActivity {
     rvAlbums = findViewById(R.id.grid_albums);
     rvMedia = findViewById(R.id.grid_photos);
 
-    overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
+    startSlideAnimation(1);
     SP = PreferenceUtil.getInstance(getApplicationContext());
     albumsMode = true;
     editMode = false;
@@ -728,6 +729,15 @@ public class LFMainActivity extends SharedMediaActivity {
     }
     invalidateOptionsMenu();
     firstLaunch = false;
+  }
+
+  private void startSlideAnimation(int currentMenuItem) {
+    if (((MyApplication) this.getApplication()).NavItem > currentMenuItem)
+      overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    else if (((MyApplication) this.getApplication()).NavItem < currentMenuItem)
+      overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    // Update the Global NavItem
+    ((MyApplication) this.getApplication()).NavItem = currentMenuItem;
   }
 
   private void displayCurrentAlbumMedia(boolean reload) {
