@@ -69,12 +69,6 @@ public class MyApplication extends Application {
     // if (isPublished)
     //   Fabric.with(this, new Crashlytics());
 
-    /** Stetho initialization */
-    /*Stetho.initialize(
-    Stetho.newInitializerBuilder(this)
-            .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-            .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
-            .build());*/
   }
 
   public static RefWatcher getRefWatcher(Context context) {
