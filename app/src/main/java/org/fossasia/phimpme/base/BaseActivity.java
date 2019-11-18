@@ -133,6 +133,7 @@ public abstract class BaseActivity extends AppCompatActivity
 
   @Override
   public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
+
     if (item.getItemId() != getNavigationMenuItemId()) {
       switch (item.getItemId()) {
         case R.id.navigation_camera:
@@ -148,8 +149,8 @@ public abstract class BaseActivity extends AppCompatActivity
           startActivity(accountIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
           break;
       }
+
       finish();
-      overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
     }
     return true;
   }
