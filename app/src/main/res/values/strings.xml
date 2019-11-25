@@ -1232,12 +1232,10 @@
     <string name="home_button">Find all your photos in the device</string>
     <string name="accounts_button">Add Multiple Accounts to share amazing photos</string>
     <string name="camera_button">Click Amazing Pictures</string>
-    <string name="ok_button">GOT IT</string>
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input.</string>
     <string name="paint_color_title">Paint Color</string>
     <string name="upload_history">Upload History</string>
     <string name="trash_bin">Trash Bin</string>
-    <string name="toggle_button">Toggle Button</string>
     <string name="empty_upload_msg">You haven\'t shared anything.</string>
     <string name="empty_trashbin_mssg">No Items present currently</string>
     <string name="trashbin_mssg">Only images deleted in the Phimpme Android app are present here.</string>
@@ -1258,6 +1256,7 @@
     <string name="text_view">TextView</string>
     <string name="version_one">v1.0</string>
     <string name="pdf">PDF</string>
+    <string name="first_time_showcase">first time showcase</string>
 
     <!-- Links -->
     <string name="phimpme_website">http://phimp.me/</string>
