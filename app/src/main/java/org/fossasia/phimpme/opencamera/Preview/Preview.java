@@ -44,6 +44,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 import androidx.core.content.ContextCompat;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetView;
 import com.google.android.material.snackbar.Snackbar;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -69,7 +71,6 @@ import org.fossasia.phimpme.opencamera.Preview.CameraSurface.MySurfaceView;
 import org.fossasia.phimpme.opencamera.Preview.CameraSurface.MyTextureView;
 import org.fossasia.phimpme.opencamera.UI.PopupView;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 /**
  * This class was originally named due to encapsulating the camera preview, but in practice it's
@@ -1422,20 +1423,18 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
             @Override
             public void onClick(View v) {
               SharedPreferences sharedPreferences = getDefaultSharedPreferences(activity);
-              Boolean firstClick =
-                  sharedPreferences.getBoolean(activity.getString(R.string.first_click), true);
-              if (firstClick) {
-                MaterialShowcaseView.resetSingleUse(activity, SHOWCASE_ID);
-                new MaterialShowcaseView.Builder(activity)
-                    .setTarget(toggle)
-                    .setTitleText(R.string.toggle_button)
-                    .setDismissText(R.string.ok_button)
-                    .setContentText(
-                        R.string.toggle_info) // optional but starting animations immediately in
-                    // onCreate can make them choppy
-                    .singleUse(
-                        SHOWCASE_ID) // provide a unique ID used to ensure it is only shown once
-                    .show();
+              if (sharedPreferences.getBoolean(activity.getString(R.string.first_click), true)) {
+                TapTargetView.showFor(
+                    activity,
+                    TapTarget.forView(toggle, getResources().getString(R.string.toggle_info))
+                        .cancelable(true)
+                        .outerCircleAlpha(0.7f)
+                        .textColor(R.color.white)
+                        .transparentTarget(true),
+                    null);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean(activity.getString(R.string.first_click), false);
+                editor.apply();
               } else {
                 try {
                   final List<String> colorEffect = getSupportedColorEffects();
@@ -1459,9 +1458,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
                   Log.e(TAG, "ColorEffect List Size Is Null ");
                 }
               }
-              SharedPreferences.Editor editor = sharedPreferences.edit();
-              editor.putBoolean(activity.getString(R.string.first_click), false);
-              editor.apply();
             }
           });
 
