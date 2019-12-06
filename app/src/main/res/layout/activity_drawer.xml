@@ -309,7 +309,7 @@
                         android:layout_height="wrap_content"
                         android:paddingBottom="@dimen/medium_spacing"
                         android:paddingTop="@dimen/medium_spacing"
-                        android:text="@string/about_support_rate"
+                        android:text="@string/rate_us"
                         android:textColor="@color/md_dark_background"
                         android:textSize="@dimen/medium_text"/>
                 </LinearLayout>
