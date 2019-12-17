@@ -554,7 +554,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
         @Override
         public boolean onLongClick(View v) {
-          final Album album = (Album) v.findViewById(R.id.album_name).getTag();
+          final Album album = (Album) v.findViewById(R.id.tv_album_name).getTag();
 
           if (checkForReveal) {
             enterReveal();
@@ -587,7 +587,7 @@ public class LFMainActivity extends SharedMediaActivity {
         @Override
         public void onClick(View v) {
           fromOnClick = true;
-          final Album album = (Album) v.findViewById(R.id.album_name).getTag();
+          final Album album = (Album) v.findViewById(R.id.tv_album_name).getTag();
           showAppBar();
           // int index = Integer.parseInt(v.findViewById(R.id.album_name).getTag().toString());
           if (editMode) {
