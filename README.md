@@ -13,12 +13,12 @@
 ## Screenshots
 
 <p float="left">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_1.png" width="288" />
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_2.png" width="288" /> 
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_3.png" width="288" />
-   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_4.png" width="288" />
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_5.png" width="288" /> 
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_6.png" width="288" />
+  <img src="docs/images/screenshots/ss_1.png" width="288" />
+  <img src="docs/images/screenshots/ss_2.png" width="288" /> 
+  <img src="docs/images/screenshots/ss_3.png" width="288" />
+   <img src="docs/images/screenshots/ss_4.png" width="288" />
+  <img src="docs/images/screenshots/ss_5.png" width="288" /> 
+  <img src="docs/images/screenshots/ss_6.png" width="288" />
 </p>
 
 Do you have many different apps on your Android Phone for the purpose of clicking, editing and sharing images? Hey, guess what, now you don't need all of those because `Phimp.me` is here, with all the features packaged into one. So go and clean your phone memory to save your space for other useful purposes.
