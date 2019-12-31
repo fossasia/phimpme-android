@@ -188,7 +188,7 @@ dependencies {
 
     //ui
     implementation 'de.hdodenhof:circleimageview:2.0.0'
-    implementation 'uz.shift:colorpicker:0.5@aar'
+    implementation 'me.jfenn.ColorPickerDialog:base:0.2.1'
     implementation 'com.turingtechnologies.materialscrollbar:lib:10.0.3'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
     implementation 'com.github.shchurov:horizontalwheelview:0.9.5'
