@@ -4,6 +4,7 @@
    contain the root `toctree` directive.
 Welcome to Phimp.me's documentation!
 =======================================
+.. mdinclude:: ../../README.md
 
 .. toctree::
    :maxdepth: 2
