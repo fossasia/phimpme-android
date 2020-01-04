@@ -88,6 +88,8 @@ We have the following branches
  * **gh-pages**
    Hosting the landing page [phimp.me](http://phimp.me)  
 
+> For reference https://fossasia.github.io/phimpme-android/ is the Gihub-Pages link for this Repo
+
 ## Development Setup
 
 Before you begin, you should have already downloaded the Android Studio SDK and set it up correctly. You can find a guide on how to do this here: [Setting up Android Studio](http://developer.android.com/sdk/installing/index.html?pkg=studio)
@@ -129,6 +131,17 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
     * Imgur: https://apidocs.imgur.com/
     * Box: https://developer.box.com
     * Dropbox: https://www.dropbox.com/developers
+  
+## Social 
+
+Phimp.me is a joint collaboration from the members of Fossasia. To follow up upon the updates of the org, Follow us on our official social media pages 🌐.
+- Facebook : https://www.facebook.com/fossasia
+- Twitter : https://twitter.com/fossasia
+- Github : https://github.com/fossasia
+- Youtube : https://www.youtube.com/fossasiaorg
+- LinkedIn : https://www.linkedin.com/company/fossasia
+
+> Official website : https://fossasia.org/
 
 ## License
 
