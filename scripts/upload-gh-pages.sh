@@ -3,12 +3,12 @@
 git config --global user.name "Travis CI"
 git config --global user.email "noreply+travis@fossasia.org"
 
-sudo pip install Sphinx
-sudo pip install m2r
-
 cd docs/sources
 
 make html
+mkdir _build/html/docs
+cp -r ../images _build/html/docs
+cp -r ../../fastlane _build/html
 
 # Copy image files.
 mkdir _build/html/docs
@@ -16,6 +16,7 @@ cp -r ../images _build/html/docs
 cp -r ../../fastlane _build/html
 
 git clone --quiet --branch=gh-pages https://fossasia:$GITHUB_API_KEY@github.com/fossasia/phimpme-android gh-pages > /dev/null
+
 cd gh-pages
 
 rm -rf *
