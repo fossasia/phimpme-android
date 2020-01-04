@@ -1,6 +1,6 @@
-<img height='175' src="./docs/images/logo.png" align="left" hspace="1" vspace="1">
+<img height='175' src="https://github.com/fossasia/phimpme-android/blob/development/docs/images/logo.png" align="left" hspace="1" vspace="1">
 
-<a href='https://play.google.com/store/apps/details?id=org.fossasia.phimpme'><img align='right' height='46' src='./docs/images/google_play_badge.png'></a>
+<a href='https://play.google.com/store/apps/details?id=org.fossasia.phimpme'><img align='right' height='46' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'></a>
 
 # Phimp.me Android
 
@@ -14,14 +14,13 @@
 ## Screenshots
 
 <p float="left">
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_1.png" width="288" />
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_2.png" width="288" /> 
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_3.png" width="288" />
-   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_4.png" width="288" />
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_5.png" width="288" /> 
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_6.png" width="288" />
+  <img src="https://lh3.googleusercontent.com/LN3r5Zlgq7-WGl0-oE8CjeXxT8szr1Ai_t_R3XRLS_nLVE_P8fdRRhAbMgaORW0AbHk=w1360-h657-rw" width="288" />
+  <img src="https://lh3.googleusercontent.com/d2jcoaw-zL9voig5ImbJzJ50DR-jKqdmQ7e_UhRZYDb4f5wTSJW5X8iCBa-qWummpjiU=w1360-h657-rw" width="288" /> 
+  <img src="https://lh3.googleusercontent.com/KSVqiEW_csMUYdQk6zJssu85lFxndyDi5P2y1cL9nkQwfWbfwU7-Z5MtxaY8gTK-jiU=w1360-h657-rw" width="288" />
+   <img src="https://lh3.googleusercontent.com/E4PAqNzuNJ0eZoxuDr0vxakp6llCZa-xCiY0SCszYefvcTOl1sVWqPlJ0mpM2PJ26g=w1360-h657-rw" width="288" />
+  <img src="https://lh3.googleusercontent.com/-_f8aDhP85Rexhh8-ESKPvDQC4VNYSnsLgPzMGjkuX-ueCpnzRZHh4JSn-2fSsFqHiOx=w1360-h657-rw" width="288" /> 
+  <img src="https://lh3.googleusercontent.com/JvKgAT9-8_X2YMSBboFbdRA7p5lgjNIWOR-lLFwpZEWh1iN6AKY0VqilFY-TLbm6c7M=w1360-h657-rw" width="288" />
 </p>
-
 
 Do you have many different apps on your Android Phone for the purpose of clicking, editing and sharing images? Hey, guess what, now you don't need all of those because `Phimp.me` is here, with all the features packaged into one. So go and clean your phone memory to save your space for other useful purposes.
 
