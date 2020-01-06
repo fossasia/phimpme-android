@@ -92,6 +92,7 @@ jobs:
         - pip install Sphinx
         - pip install git+https://github.com/bashtage/sphinx-material
         - pip install m2r
+        - pip install sphinx-git
       script: skip
       deploy:
         - provider: script

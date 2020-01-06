@@ -86,7 +86,7 @@ We have the following branches
    This branch contains automatically generated apk file for testing.
 
  * **gh-pages**
-   Hosting the landing page [phimp.me](http://phimp.me)  
+   For reference gh-pages branch is hosting the Gihub-Pages link for this Repo at https://fossasia.github.io/phimpme-android/
 
 ## Development Setup
 

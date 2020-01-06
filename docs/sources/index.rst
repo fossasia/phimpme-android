@@ -5,6 +5,10 @@
 
 .. mdinclude:: ../../README.md
 
+Change Log (Commits)
+=======
+.. git_changelog::
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
