@@ -154,8 +154,8 @@ dependencies {
     implementation "androidx.vectordrawable:vectordrawable:1.1.0"
     implementation "androidx.palette:palette:1.0.0"
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.browser:browser:1.0.0"
-    implementation "androidx.recyclerview:recyclerview:1.0.0"
+    implementation "androidx.browser:browser:1.2.0"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     //exoplayer
@@ -180,7 +180,8 @@ dependencies {
     implementation group: 'com.box', name: 'box-android-sdk', version: '5.0.0'
 
     //icons
-    implementation 'com.mikepenz:iconics-core:2.8.4@aar'
+    implementation 'com.mikepenz:iconics-core:4.0.2@aar'
+    implementation 'com.mikepenz:iconics-views:4.0.2@aar'
     implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
     implementation 'com.mikepenz:community-material-typeface:1.5.54.2@aar'
     implementation 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
@@ -224,7 +225,7 @@ dependencies {
 
     //tests
     testImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation 'com.google.code.findbugs:jsr305:3.0.0'
+    androidTestImplementation 'com.google.code.findbugs:jsr305:3.0.2'
 
     //opencv
     implementation project(':openCV')

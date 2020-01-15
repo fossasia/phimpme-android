@@ -19,7 +19,9 @@ import androidx.annotation.ColorRes;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.typeface.IIcon;
+import com.mikepenz.iconics.IconicsColor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -204,15 +206,15 @@ public class ThemeHelper {
   }
 
   public IconicsDrawable getToolbarIcon(IIcon icon) {
-    return new IconicsDrawable(context).icon(icon).color(Color.WHITE).sizeDp(18);
+    return new IconicsDrawable(context).icon(icon).color(IconicsColor.colorInt(Color.WHITE)).size(IconicsSize.dp(18));
   }
 
   public IconicsDrawable getIcon(IIcon icon) {
-    return new IconicsDrawable(context).icon(icon).color(getIconColor());
+    return new IconicsDrawable(context).icon(icon).color(IconicsColor.colorInt(getIconColor()));
   }
 
   public static IconicsDrawable getIcon(Context context, IIcon icon) {
-    return new IconicsDrawable(context).icon(icon).color(Color.WHITE);
+    return new IconicsDrawable(context).icon(icon).color(IconicsColor.colorInt(Color.WHITE));
   }
 
   public int getDrawerBackground() {

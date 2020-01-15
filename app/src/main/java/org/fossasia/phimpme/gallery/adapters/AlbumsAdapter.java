@@ -24,6 +24,8 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsColor;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 import java.util.ArrayList;
 import org.fossasia.phimpme.R;
@@ -139,8 +141,9 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     String textColor = theme.getBaseTheme() != ThemeHelper.LIGHT_THEME ? "#FAFAFA" : "#2b2b2b";
 
     if (a.isSelected()) {
-      holder.ivSelectedIcon.setColor(Color.WHITE);
-      holder.ivSelectedIcon.setIcon(CommunityMaterial.Icon.cmd_check_circle);
+      // TBog
+      holder.ivSelectedIcon.setIcon(new IconicsDrawable(holder.ivSelectedIcon.getContext()).icon(CommunityMaterial.Icon.cmd_check_circle)); //.setIcon(CommunityMaterial.Icon.cmd_check_circle);
+      holder.ivSelectedIcon.getIcon().color(IconicsColor.colorInt(Color.WHITE));//.setColor(Color.WHITE);
       holder.tvAlbumName.setBackgroundColor(Color.parseColor(hexPrimaryColor));
       holder.tvPhotosCount.setBackgroundColor(Color.parseColor(hexPrimaryColor));
       holder.ivPin.setBackgroundColor(Color.parseColor(hexPrimaryColor));

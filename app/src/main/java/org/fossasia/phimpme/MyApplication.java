@@ -5,6 +5,9 @@ import android.content.Context;
 import android.os.StrictMode;
 import android.util.Log;
 import androidx.multidex.MultiDex;
+
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.Iconics;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.twitter.sdk.android.core.DefaultLogger;
@@ -64,6 +67,10 @@ public class MyApplication extends Application {
             .deleteRealmIfMigrationNeeded()
             .build();
     Realm.setDefaultConfiguration(realmConfiguration);
+
+    Iconics.init(getApplicationContext());
+    Iconics.registerFont(new GoogleMaterial());
+
     super.onCreate();
     // if (isPublished)
     //   Fabric.with(this, new Crashlytics());

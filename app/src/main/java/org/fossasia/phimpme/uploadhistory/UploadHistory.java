@@ -24,7 +24,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.view.IconicsImageView;
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -195,7 +197,7 @@ public class UploadHistory extends ThemedActivity {
   }
 
   private void setUpUI() {
-    emptyIcon.setColor(getIconColor());
+    emptyIcon.getIcon().color(IconicsColor.colorInt(getIconColor()));
     emptyText.setTextColor(getAccentColor());
     parentView.setBackgroundColor(getBackgroundColor());
     setupToolbar();
@@ -360,8 +362,8 @@ public class UploadHistory extends ThemedActivity {
     toolbar.setNavigationIcon(
         new IconicsDrawable(this)
             .icon(CommunityMaterial.Icon.cmd_arrow_left)
-            .color(Color.WHITE)
-            .sizeDp(19));
+            .color(IconicsColor.colorInt(Color.WHITE))
+            .size(IconicsSize.dp(19)));
     toolbar.setNavigationOnClickListener(
         new View.OnClickListener() {
           @Override

@@ -70,6 +70,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.yalantis.ucrop.UCrop;
 import io.realm.Realm;
@@ -2327,12 +2328,15 @@ public class SingleMediaActivity extends SharedMediaActivity
     imgExif.setTextColor(textColor);
     TextView imgDesc = linearLayout.findViewById(R.id.image_desc);
     imgDesc.setTextColor(textColor);
+
+      IconicsColor iconicsTextColor = IconicsColor.colorInt(textColor);
+
     IconicsImageView iconicsImageView = linearLayout.findViewById(R.id.date_icon);
-    iconicsImageView.setColor(textColor);
+    iconicsImageView.getIcon().color(iconicsTextColor);
     IconicsImageView locationicon = linearLayout.findViewById(R.id.loca_icon);
-    locationicon.setColor(textColor);
+    locationicon.getIcon().color(iconicsTextColor);
     IconicsImageView detailsicon = linearLayout.findViewById(R.id.detail_icon);
-    detailsicon.setColor(textColor);
+    detailsicon.getIcon().color(iconicsTextColor);
     ImageButton imgBack = linearLayout.findViewById(R.id.img_desc_back_arrow);
 
     imgBack.setOnClickListener(

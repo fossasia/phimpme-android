@@ -29,7 +29,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.google.android.material.snackbar.Snackbar;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.IconicsSize;
+
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -463,8 +466,8 @@ public class TrashBinActivity extends ThemedActivity
     toolbar.setNavigationIcon(
         new IconicsDrawable(this)
             .icon(CommunityMaterial.Icon.cmd_arrow_left)
-            .color(Color.WHITE)
-            .sizeDp(19));
+            .color(IconicsColor.colorInt(Color.WHITE))
+            .size(IconicsSize.dp(19)));
     toolbar.setNavigationOnClickListener(
         new View.OnClickListener() {
           @Override

@@ -31,7 +31,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.google.android.material.snackbar.Snackbar;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.view.IconicsImageView;
 import me.jfenn.colorpickerdialog.dialogs.ColorPickerDialog;
 import me.jfenn.colorpickerdialog.views.picker.PresetPickerView;
@@ -606,12 +608,12 @@ public class SettingsActivity extends ThemedActivity {
     final IconicsImageView darkAmoledSelect =
         dialogLayout.findViewById(R.id.dark_amoled_basic_theme_select);
 
-    themeIconWhite.setIcon(getString(R.string.gmd_invert_colors));
-    themeIconDark.setIcon(getString(R.string.gmd_invert_colors));
-    themeIconDarkAmoled.setIcon(getString(R.string.gmd_invert_colors));
-    whiteSelect.setIcon(getString(R.string.gmd_done));
-    darkSelect.setIcon(getString(R.string.gmd_done));
-    darkAmoledSelect.setIcon(getString(R.string.gmd_done));
+    themeIconWhite.setIcon(new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_invert_colors)));
+    themeIconDark.setIcon(new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_invert_colors)));
+    themeIconDarkAmoled.setIcon(new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_invert_colors)));
+    whiteSelect.setIcon(new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_done)));
+    darkSelect.setIcon(new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_done)));
+    darkAmoledSelect.setIcon(new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_done)));
 
     switch (getBaseTheme()) {
       case ThemeHelper.LIGHT_THEME:
@@ -935,8 +937,8 @@ public class SettingsActivity extends ThemedActivity {
     toolbar.setNavigationIcon(
         new IconicsDrawable(this)
             .icon(CommunityMaterial.Icon.cmd_arrow_left)
-            .color(Color.WHITE)
-            .sizeDp(19));
+            .color(IconicsColor.colorInt(Color.WHITE))
+            .size(IconicsSize.dp(19)));
     toolbar.setNavigationOnClickListener(
         new View.OnClickListener() {
           @Override
@@ -953,22 +955,23 @@ public class SettingsActivity extends ThemedActivity {
 
     /** Icons * */
     color = getIconColor();
-    ((IconicsImageView) findViewById(R.id.ll_switch_picture_orientation_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.ll_switch_max_luminosity_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.ll_switch_full_resolution_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.traslucent_statusbar_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.custom_3thact_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.primary_color_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.accent_color_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.basic_theme_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.n_columns_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.nav_bar_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.excluded_album_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.auto_update_media_Icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.camera_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.map_provider_icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.media_viewer_swipe_direction_Icon)).setColor(color);
-    ((IconicsImageView) findViewById(R.id.reset_settings_Icon)).setColor(color);
+    IconicsColor iconColor = IconicsColor.colorInt(color);
+    ((IconicsImageView) findViewById(R.id.ll_switch_picture_orientation_icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.ll_switch_max_luminosity_icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.ll_switch_full_resolution_icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.traslucent_statusbar_icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.custom_3thact_icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.primary_color_icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.accent_color_icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.basic_theme_icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.n_columns_icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.nav_bar_icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.excluded_album_icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.auto_update_media_Icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.camera_icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.map_provider_icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.media_viewer_swipe_direction_Icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.reset_settings_Icon)).getIcon().color(iconColor);
 
     /** TextViews * */
     color = getTextColor();
@@ -1115,5 +1118,7 @@ public class SettingsActivity extends ThemedActivity {
         }
       }
     }
+    else
+      super.onActivityResult(requestCode, resultCode, resultData);
   }
 }

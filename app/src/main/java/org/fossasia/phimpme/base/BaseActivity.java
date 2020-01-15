@@ -17,6 +17,8 @@ import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.mikepenz.iconics.Iconics;
+
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.gallery.activities.LFMainActivity;

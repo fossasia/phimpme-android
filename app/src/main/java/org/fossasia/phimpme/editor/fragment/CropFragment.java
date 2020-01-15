@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.IconicsSize;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.fossasia.phimpme.MyApplication;
@@ -61,35 +63,35 @@ public class CropFragment extends BaseEditFragment {
             1f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_square)
-                .sizeDp(18)));
+                .size(IconicsSize.dp(18))));
     dataList.add(
         new RatioItem(
             getString(R.string.crop_3_2),
             3 / 2f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_3_2)
-                .sizeDp(18)));
+                .size(IconicsSize.dp(18))));
     dataList.add(
         new RatioItem(
             getString(R.string.crop_free),
             -1f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_free)
-                .sizeDp(18)));
+                .size(IconicsSize.dp(18))));
     dataList.add(
         new RatioItem(
             getString(R.string.crop_7_5),
             7 / 5f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_7_5)
-                .sizeDp(18)));
+                .size(IconicsSize.dp(18))));
     dataList.add(
         new RatioItem(
             getString(R.string.crop_16_9),
             16 / 9f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_16_9)
-                .sizeDp(18)));
+                .size(IconicsSize.dp(18))));
   }
 
   @Override

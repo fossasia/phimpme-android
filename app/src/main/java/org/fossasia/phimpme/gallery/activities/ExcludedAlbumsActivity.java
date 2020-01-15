@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsColor;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 import java.io.File;
 import java.util.ArrayList;
@@ -170,13 +172,13 @@ public class ExcludedAlbumsActivity extends ThemedActivity {
       holder.album_path.setText(excludedFolder.getAbsolutePath());
       holder.album_name.setText(excludedFolder.getName());
       holder.imgUnExclude.setTag(excludedFolder.getAbsolutePath());
-      holder.imgFolder.setIcon(GoogleMaterial.Icon.gmd_folder);
+      holder.imgFolder.setIcon(new IconicsDrawable(holder.imgFolder.getContext()).icon(GoogleMaterial.Icon.gmd_folder));//.setIcon(GoogleMaterial.Icon.gmd_folder);
 
       /** SET LAYOUT THEME* */
       holder.album_name.setTextColor(getTextColor());
       holder.album_path.setTextColor(getSubTextColor());
-      holder.imgFolder.setColor(getIconColor());
-      holder.imgUnExclude.setColor(getIconColor());
+      holder.imgFolder.getIcon().color(IconicsColor.colorInt(getIconColor()));//.setColor(getIconColor());
+      holder.imgUnExclude.getIcon().color(IconicsColor.colorInt(getIconColor()));//.setColor(getIconColor());
       holder.card_layout.setBackgroundColor(getCardBackgroundColor());
     }
 

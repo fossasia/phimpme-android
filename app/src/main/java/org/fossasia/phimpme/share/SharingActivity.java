@@ -71,6 +71,7 @@ import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.WriteMode;
 import com.google.android.material.snackbar.Snackbar;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.owncloud.android.lib.common.OwnCloudClient;
 import com.owncloud.android.lib.common.OwnCloudClientFactory;
@@ -252,7 +253,7 @@ public class SharingActivity extends ThemedActivity
             onBackPressed();
           }
         });
-    editFocus.setColor(getIconColor());
+    editFocus.getIcon().color(IconicsColor.colorInt(getIconColor()));
   }
 
   private void initView() {

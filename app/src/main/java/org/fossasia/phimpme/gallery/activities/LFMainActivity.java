@@ -84,6 +84,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.view.IconicsImageView;
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -1301,15 +1302,16 @@ public class LFMainActivity extends SharedMediaActivity {
     ((TextView) findViewById(R.id.Drawer_favourite_Item)).setTextColor(color);
     /** ICONS * */
     color = getIconColor();
-    defaultIcon.setColor(color);
-    drawerSettingIcon.setColor(color);
-    drawerAboutIcon.setColor(color);
-    hiddenIcon.setColor(color);
-    drawerShareIcon.setColor(color);
-    drawerRateIcon.setColor(color);
-    drawerUploadIcon.setColor(color);
-    drawerTrashIcon.setColor(color);
-    favicon.setColor(color);
+    IconicsColor iconicsIconColor = IconicsColor.colorInt(color);
+    defaultIcon.getIcon().color(iconicsIconColor);
+    drawerSettingIcon.getIcon().color(iconicsIconColor);
+    drawerAboutIcon.getIcon().color(iconicsIconColor);
+    hiddenIcon.getIcon().color(iconicsIconColor);
+    drawerShareIcon.getIcon().color(iconicsIconColor);
+    drawerRateIcon.getIcon().color(iconicsIconColor);
+    drawerUploadIcon.getIcon().color(iconicsIconColor);
+    drawerTrashIcon.getIcon().color(iconicsIconColor);
+    favicon.getIcon().color(iconicsIconColor);
     // Default setting
     if (localFolder)
       findViewById(R.id.ll_drawer_Default).setBackgroundColor(getHighlightedItemColor());
@@ -2633,10 +2635,11 @@ public class LFMainActivity extends SharedMediaActivity {
 
         /** Icons * */
         color = getIconColor();
-        ((IconicsImageView) dialogLayout.findViewById(R.id.affix_quality_icon)).setColor(color);
-        ((IconicsImageView) dialogLayout.findViewById(R.id.affix_format_icon)).setColor(color);
-        ((IconicsImageView) dialogLayout.findViewById(R.id.affix_vertical_icon)).setColor(color);
-        ((IconicsImageView) dialogLayout.findViewById(R.id.save_here_icon)).setColor(color);
+        IconicsColor iconicsIconColor = IconicsColor.colorInt(color);
+        ((IconicsImageView) dialogLayout.findViewById(R.id.affix_quality_icon)).getIcon().color(iconicsIconColor);
+        ((IconicsImageView) dialogLayout.findViewById(R.id.affix_format_icon)).getIcon().color(iconicsIconColor);
+        ((IconicsImageView) dialogLayout.findViewById(R.id.affix_vertical_icon)).getIcon().color(iconicsIconColor);
+        ((IconicsImageView) dialogLayout.findViewById(R.id.save_here_icon)).getIcon().color(iconicsIconColor);
 
         seekQuality
             .getProgressDrawable()
@@ -3714,15 +3717,17 @@ public class LFMainActivity extends SharedMediaActivity {
   }
 
   private void tint() {
+    IconicsColor iconicsPrimaryColor = IconicsColor.colorInt(getPrimaryColor());
+    IconicsColor iconicsIconColor = IconicsColor.colorInt(getIconColor());
     if (localFolder) {
-      defaultIcon.setColor(getPrimaryColor());
+      defaultIcon.getIcon().color(iconicsPrimaryColor);//.setColor(iconicsPrimaryColor);
       defaultText.setTextColor(getPrimaryColor());
-      hiddenIcon.setColor(getIconColor());
+      hiddenIcon.getIcon().color(iconicsIconColor);//.setColor(getIconColor());
       hiddenText.setTextColor(getTextColor());
     } else {
-      hiddenIcon.setColor(getPrimaryColor());
+      hiddenIcon.getIcon().color(iconicsPrimaryColor);//.setColor(getPrimaryColor());
       hiddenText.setTextColor(getPrimaryColor());
-      defaultIcon.setColor(getIconColor());
+      defaultIcon.getIcon().color(iconicsIconColor);//.setColor(getIconColor());
       defaultText.setTextColor(getTextColor());
     }
   }

@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.view.IconicsImageView;
 import java.io.File;
 import java.util.ArrayList;
@@ -115,10 +116,10 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
     ((TextView) contentView.findViewById(R.id.bottom_sheet_title)).setText(title);
 
     ((IconicsImageView) contentView.findViewById(R.id.create_new_folder))
-        .setColor(theme.getIconColor());
+        .getIcon().color(IconicsColor.colorInt(theme.getIconColor()));//.setColor(theme.getIconColor());
     ((TextView) contentView.findViewById(R.id.create_new_folder_text))
         .setTextColor(theme.getSubTextColor());
-    ((IconicsImageView) contentView.findViewById(R.id.done)).setColor(theme.getIconColor());
+    ((IconicsImageView) contentView.findViewById(R.id.done)).getIcon().color(IconicsColor.colorInt(theme.getIconColor()));//.setColor(theme.getIconColor());
 
     contentView
         .findViewById(R.id.done)
@@ -355,7 +356,7 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
                   + "color='"
                   + theme.getSubTextColor()
                   + "'> Media</font>"));
-      holder.imgFolder.setColor(theme.getIconColor());
+      holder.imgFolder.getIcon().color(IconicsColor.colorInt(theme.getIconColor()));//.setColor(theme.getIconColor());
       holder.imgFolder.setIcon(theme.getIcon(CommunityMaterial.Icon.cmd_folder));
 
       if (canGoBack() && position == 0) { // go to parent folder
