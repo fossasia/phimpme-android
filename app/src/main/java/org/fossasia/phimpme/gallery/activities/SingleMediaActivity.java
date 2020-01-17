@@ -377,7 +377,7 @@ public class SingleMediaActivity extends SharedMediaActivity
       //            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " +
       // getString(R.string.of) + " " + getAlbum().getMedia().size());
       if (bottomMenu.findItem(R.id.action_favourites).getIcon().getColorFilter() == null) {
-        if (!favsearch(getAlbum().getMedia(current_image_pos).getPath())) {
+        if (!(getAlbum().getMedia().size() > current_image_pos) || !favsearch(getAlbum().getMedia(current_image_pos).getPath())) {
           bottomMenu.findItem(R.id.action_favourites).getIcon().clearColorFilter();
         } else {
           bottomMenu
@@ -749,8 +749,9 @@ public class SingleMediaActivity extends SharedMediaActivity
   @Override
   public boolean onPrepareOptionsMenu(final Menu menu) {
 
-    if (getAlbum().getCurrentMedia().getPath().equals(getAlbum().getCoverPath()))
-      menu.findItem(R.id.action_cover).setTitle("Remove cover image");
+      if(getAlbum().getMedia().size() > getAlbum().getCurrentMediaIndex())
+        if (getAlbum().getCurrentMedia().getPath().equals(getAlbum().getCoverPath()))
+          menu.findItem(R.id.action_cover).setTitle("Remove cover image");
 
     if (allPhotoMode || favphotomode) {
       menu.findItem(R.id.action_cover).setVisible(false);
