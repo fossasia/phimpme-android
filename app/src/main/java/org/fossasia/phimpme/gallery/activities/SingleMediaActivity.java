@@ -69,7 +69,7 @@ import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.yalantis.ucrop.UCrop;
@@ -329,7 +329,7 @@ public class SingleMediaActivity extends SharedMediaActivity
     }
     setSupportActionBar(toolbar);
     toolbar.bringToFront();
-    toolbar.setNavigationIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_arrow_left));
+    toolbar.setNavigationIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_subdirectory_arrow_left));
     toolbar.setNavigationOnClickListener(
         new View.OnClickListener() {
           @Override

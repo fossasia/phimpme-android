@@ -182,10 +182,10 @@ dependencies {
     //icons
     implementation 'com.mikepenz:iconics-core:4.0.2@aar'
     implementation 'com.mikepenz:iconics-views:4.0.2@aar'
-    implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
-    implementation 'com.mikepenz:community-material-typeface:1.5.54.2@aar'
-    implementation 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
-    implementation 'com.mikepenz:ionicons-typeface:+@aar'
+    implementation 'com.mikepenz:google-material-typeface:3.0.1.4.original-kotlin@aar'
+    implementation 'com.mikepenz:community-material-typeface:3.7.95.3-kotlin@aar'
+    implementation 'com.mikepenz:fontawesome-typeface:5.9.0.0-kotlin@aar'
+    implementation 'com.mikepenz:ionicons-typeface:2.0.1.5-kotlin@aar'
 
     //ui
     implementation 'de.hdodenhof:circleimageview:2.0.0'

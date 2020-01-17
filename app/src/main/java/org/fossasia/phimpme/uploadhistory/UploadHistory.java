@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.IconicsSize;
@@ -361,7 +361,7 @@ public class UploadHistory extends ThemedActivity {
     toolbar.setBackgroundColor(getPrimaryColor());
     toolbar.setNavigationIcon(
         new IconicsDrawable(this)
-            .icon(CommunityMaterial.Icon.cmd_arrow_left)
+            .icon(CommunityMaterial.Icon.cmd_subdirectory_arrow_left)
             .color(IconicsColor.colorInt(Color.WHITE))
             .size(IconicsSize.dp(19)));
     toolbar.setNavigationOnClickListener(

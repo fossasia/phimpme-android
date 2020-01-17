@@ -18,9 +18,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.IconicsSize;
+import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 
 import java.util.ArrayList;
 import java.util.List;

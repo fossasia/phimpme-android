@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.view.IconicsImageView;
 import java.io.File;
@@ -290,7 +290,7 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
     setExploreMode(enabled);
     if (enabled) {
       displayContentFolder(Environment.getExternalStorageDirectory());
-      imgExploreMode.setIcon(theme.getIcon(CommunityMaterial.Icon.cmd_folder));
+      imgExploreMode.setIcon(theme.getIcon(CommunityMaterial.Icon.cmd_unfold_more_horizontal));
       exploreModePanel.setVisibility(View.VISIBLE);
     } else {
       currentFolderPath.setText(R.string.local_folder);
@@ -298,7 +298,7 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
           ((MyApplication) getActivity().getApplicationContext()).getAlbums().dispAlbums) {
         folders.add(new File(album.getPath()));
       }
-      imgExploreMode.setIcon(theme.getIcon(CommunityMaterial.Icon.cmd_compass_outline));
+      imgExploreMode.setIcon(theme.getIcon(CommunityMaterial.Icon.cmd_ruler_square_compass));
       exploreModePanel.setVisibility(View.GONE);
     }
     adapter.notifyDataSetChanged();
@@ -357,13 +357,13 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
                   + theme.getSubTextColor()
                   + "'> Media</font>"));
       holder.imgFolder.getIcon().color(IconicsColor.colorInt(theme.getIconColor()));//.setColor(theme.getIconColor());
-      holder.imgFolder.setIcon(theme.getIcon(CommunityMaterial.Icon.cmd_folder));
+      holder.imgFolder.setIcon(theme.getIcon(CommunityMaterial.Icon.cmd_unfold_more_horizontal));
 
       if (canGoBack() && position == 0) { // go to parent folder
         holder.folderName.setText("..");
         holder.folderCount.setText(
             Html.fromHtml("<font color='" + theme.getSubTextColor() + "'>Go to parent</font>"));
-        holder.imgFolder.setIcon(theme.getIcon(CommunityMaterial.Icon.cmd_arrow_up));
+        holder.imgFolder.setIcon(theme.getIcon(CommunityMaterial.Icon.cmd_vector_arrange_above));
       }
     }
 

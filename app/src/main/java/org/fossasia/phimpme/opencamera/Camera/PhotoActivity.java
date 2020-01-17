@@ -24,7 +24,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
+
 import java.io.File;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;

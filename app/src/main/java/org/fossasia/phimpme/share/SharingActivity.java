@@ -70,7 +70,7 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.WriteMode;
 import com.google.android.material.snackbar.Snackbar;
-import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.owncloud.android.lib.common.OwnCloudClient;
@@ -236,7 +236,7 @@ public class SharingActivity extends ThemedActivity
   private void setupUI() {
     toolbar.setTitle(R.string.shareto);
     toolbar.setBackgroundColor(themeHelper.getPrimaryColor());
-    toolbar.setNavigationIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_arrow_left));
+    toolbar.setNavigationIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_subdirectory_arrow_left));
     setSupportActionBar(toolbar);
     parent.setBackgroundColor(themeHelper.getBackgroundColor());
 

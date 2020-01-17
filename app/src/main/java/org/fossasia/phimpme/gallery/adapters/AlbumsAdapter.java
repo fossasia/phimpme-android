@@ -23,9 +23,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 import java.util.ArrayList;
 import org.fossasia.phimpme.R;
@@ -142,7 +142,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
 
     if (a.isSelected()) {
       // TBog
-      holder.ivSelectedIcon.setIcon(new IconicsDrawable(holder.ivSelectedIcon.getContext()).icon(CommunityMaterial.Icon.cmd_check_circle)); //.setIcon(CommunityMaterial.Icon.cmd_check_circle);
+      holder.ivSelectedIcon.setIcon(new IconicsDrawable(holder.ivSelectedIcon.getContext()).icon(CommunityMaterial.Icon.cmd_send_check)); //.setIcon(CommunityMaterial.Icon.cmd_check_circle);
       holder.ivSelectedIcon.getIcon().color(IconicsColor.colorInt(Color.WHITE));//.setColor(Color.WHITE);
       holder.tvAlbumName.setBackgroundColor(Color.parseColor(hexPrimaryColor));
       holder.tvPhotosCount.setBackgroundColor(Color.parseColor(hexPrimaryColor));
