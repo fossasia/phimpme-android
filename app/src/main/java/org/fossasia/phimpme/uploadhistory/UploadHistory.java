@@ -2,12 +2,13 @@ package org.fossasia.phimpme.uploadhistory;
 
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
+import static org.fossasia.phimpme.utilities.Constants.ICONICS_19dp;
+import static org.fossasia.phimpme.utilities.Constants.ICONICS_WHITE;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,10 +24,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.IconicsSize;
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -362,8 +362,8 @@ public class UploadHistory extends ThemedActivity {
     toolbar.setNavigationIcon(
         new IconicsDrawable(this)
             .icon(CommunityMaterial.Icon.cmd_subdirectory_arrow_left)
-            .color(IconicsColor.colorInt(Color.WHITE))
-            .size(IconicsSize.dp(19)));
+            .color(ICONICS_WHITE)
+            .size(ICONICS_19dp));
     toolbar.setNavigationOnClickListener(
         new View.OnClickListener() {
           @Override

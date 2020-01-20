@@ -1,6 +1,8 @@
 package org.fossasia.phimpme.gallery.activities;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static org.fossasia.phimpme.utilities.Constants.ICONICS_19dp;
+import static org.fossasia.phimpme.utilities.Constants.ICONICS_WHITE;
 
 import android.annotation.TargetApi;
 import android.app.FragmentManager;
@@ -30,10 +32,9 @@ import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.google.android.material.snackbar.Snackbar;
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.IconicsSize;
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 import me.jfenn.colorpickerdialog.dialogs.ColorPickerDialog;
 import me.jfenn.colorpickerdialog.views.picker.PresetPickerView;
@@ -608,12 +609,18 @@ public class SettingsActivity extends ThemedActivity {
     final IconicsImageView darkAmoledSelect =
         dialogLayout.findViewById(R.id.dark_amoled_basic_theme_select);
 
-    themeIconWhite.setIcon(new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_invert_colors)));
-    themeIconDark.setIcon(new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_invert_colors)));
-    themeIconDarkAmoled.setIcon(new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_invert_colors)));
-    whiteSelect.setIcon(new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_done)));
-    darkSelect.setIcon(new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_done)));
-    darkAmoledSelect.setIcon(new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_done)));
+    themeIconWhite.setIcon(
+        new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_invert_colors)));
+    themeIconDark.setIcon(
+        new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_invert_colors)));
+    themeIconDarkAmoled.setIcon(
+        new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_invert_colors)));
+    whiteSelect.setIcon(
+        new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_done)));
+    darkSelect.setIcon(
+        new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_done)));
+    darkAmoledSelect.setIcon(
+        new IconicsDrawable(themeIconWhite.getContext(), getString(R.string.gmd_done)));
 
     switch (getBaseTheme()) {
       case ThemeHelper.LIGHT_THEME:
@@ -937,8 +944,8 @@ public class SettingsActivity extends ThemedActivity {
     toolbar.setNavigationIcon(
         new IconicsDrawable(this)
             .icon(CommunityMaterial.Icon.cmd_subdirectory_arrow_left)
-            .color(IconicsColor.colorInt(Color.WHITE))
-            .size(IconicsSize.dp(19)));
+            .color(ICONICS_WHITE)
+            .size(ICONICS_19dp));
     toolbar.setNavigationOnClickListener(
         new View.OnClickListener() {
           @Override
@@ -956,9 +963,15 @@ public class SettingsActivity extends ThemedActivity {
     /** Icons * */
     color = getIconColor();
     IconicsColor iconColor = IconicsColor.colorInt(color);
-    ((IconicsImageView) findViewById(R.id.ll_switch_picture_orientation_icon)).getIcon().color(iconColor);
-    ((IconicsImageView) findViewById(R.id.ll_switch_max_luminosity_icon)).getIcon().color(iconColor);
-    ((IconicsImageView) findViewById(R.id.ll_switch_full_resolution_icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.ll_switch_picture_orientation_icon))
+        .getIcon()
+        .color(iconColor);
+    ((IconicsImageView) findViewById(R.id.ll_switch_max_luminosity_icon))
+        .getIcon()
+        .color(iconColor);
+    ((IconicsImageView) findViewById(R.id.ll_switch_full_resolution_icon))
+        .getIcon()
+        .color(iconColor);
     ((IconicsImageView) findViewById(R.id.traslucent_statusbar_icon)).getIcon().color(iconColor);
     ((IconicsImageView) findViewById(R.id.custom_3thact_icon)).getIcon().color(iconColor);
     ((IconicsImageView) findViewById(R.id.primary_color_icon)).getIcon().color(iconColor);
@@ -970,7 +983,9 @@ public class SettingsActivity extends ThemedActivity {
     ((IconicsImageView) findViewById(R.id.auto_update_media_Icon)).getIcon().color(iconColor);
     ((IconicsImageView) findViewById(R.id.camera_icon)).getIcon().color(iconColor);
     ((IconicsImageView) findViewById(R.id.map_provider_icon)).getIcon().color(iconColor);
-    ((IconicsImageView) findViewById(R.id.media_viewer_swipe_direction_Icon)).getIcon().color(iconColor);
+    ((IconicsImageView) findViewById(R.id.media_viewer_swipe_direction_Icon))
+        .getIcon()
+        .color(iconColor);
     ((IconicsImageView) findViewById(R.id.reset_settings_Icon)).getIcon().color(iconColor);
 
     /** TextViews * */
@@ -1117,8 +1132,6 @@ public class SettingsActivity extends ThemedActivity {
           editor.apply();
         }
       }
-    }
-    else
-      super.onActivityResult(requestCode, resultCode, resultData);
+    } else super.onActivityResult(requestCode, resultCode, resultData);
   }
 }

@@ -86,7 +86,8 @@ public class MediaStoreProvider {
         };
 
     String selection = MediaStore.Files.FileColumns.MEDIA_TYPE + "=? ";
-    String[] selectionArgs = new String[] {String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE)};
+    String[] selectionArgs =
+        new String[] {String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE)};
     String sortOrder = MediaStore.Files.FileColumns.PARENT;
 
     Cursor cur =
@@ -110,10 +111,8 @@ public class MediaStoreProvider {
             String path = StringUtils.getBucketPathByImagePath(media.getPath());
             boolean excluded = isExcluded(path, context);
             long curIdColumn = cur.getLong(idColumn);
-            if (!excluded && idSet.contains(curIdColumn))
-              excluded = true;
-            idSet.add(curIdColumn);
-            if (!excluded) {
+            if (!excluded && !idSet.contains(curIdColumn)) {
+              idSet.add(curIdColumn);
               Album album =
                   new Album(
                       context,

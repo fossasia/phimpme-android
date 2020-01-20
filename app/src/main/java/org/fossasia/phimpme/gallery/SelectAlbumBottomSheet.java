@@ -27,8 +27,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 import com.mikepenz.iconics.IconicsColor;
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
+import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 import java.io.File;
 import java.util.ArrayList;
@@ -115,11 +116,14 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
         .setBackgroundColor(theme.getCardBackgroundColor());
     ((TextView) contentView.findViewById(R.id.bottom_sheet_title)).setText(title);
 
+    IconicsColor iconicsIconColor = IconicsColor.colorInt(theme.getIconColor());
+
     ((IconicsImageView) contentView.findViewById(R.id.create_new_folder))
-        .getIcon().color(IconicsColor.colorInt(theme.getIconColor()));//.setColor(theme.getIconColor());
+        .getIcon()
+        .color(iconicsIconColor);
     ((TextView) contentView.findViewById(R.id.create_new_folder_text))
         .setTextColor(theme.getSubTextColor());
-    ((IconicsImageView) contentView.findViewById(R.id.done)).getIcon().color(IconicsColor.colorInt(theme.getIconColor()));//.setColor(theme.getIconColor());
+    ((IconicsImageView) contentView.findViewById(R.id.done)).getIcon().color(iconicsIconColor);
 
     contentView
         .findViewById(R.id.done)
@@ -356,8 +360,8 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
                   + "color='"
                   + theme.getSubTextColor()
                   + "'> Media</font>"));
-      holder.imgFolder.getIcon().color(IconicsColor.colorInt(theme.getIconColor()));//.setColor(theme.getIconColor());
-      holder.imgFolder.setIcon(theme.getIcon(CommunityMaterial.Icon.cmd_unfold_more_horizontal));
+      holder.imgFolder.getIcon().color(IconicsColor.colorInt(theme.getIconColor()));
+      holder.imgFolder.setIcon(theme.getIcon(GoogleMaterial.Icon.gmd_folder));
 
       if (canGoBack() && position == 0) { // go to parent folder
         holder.folderName.setText("..");

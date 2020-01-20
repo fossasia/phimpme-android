@@ -16,8 +16,8 @@ import butterknife.ButterKnife;
 import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 import java.util.ArrayList;
 import org.fossasia.phimpme.R;
@@ -80,7 +80,9 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
     holder.path.setVisibility(View.GONE);
 
     if (f.isSelected()) {
-      holder.icon.setIcon(new IconicsDrawable(holder.icon.getContext()).icon(CommunityMaterial.Icon.cmd_send_check));//.setIcon(CommunityMaterial.Icon.cmd_check);
+      IconicsDrawable iconicsDrawable =
+          new IconicsDrawable(holder.icon.getContext()).icon(GoogleMaterial.Icon.gmd_check);
+      holder.icon.setIcon(iconicsDrawable);
       holder.icon.setVisibility(View.VISIBLE);
       holder.imageView.setColorFilter(0x88000000, PorterDuff.Mode.SRC_ATOP);
       holder.layout.setPadding(15, 15, 15, 15);

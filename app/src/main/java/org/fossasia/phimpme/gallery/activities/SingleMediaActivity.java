@@ -69,8 +69,8 @@ import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 import com.mikepenz.iconics.IconicsColor;
+import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.yalantis.ucrop.UCrop;
 import io.realm.Realm;
@@ -377,7 +377,8 @@ public class SingleMediaActivity extends SharedMediaActivity
       //            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " +
       // getString(R.string.of) + " " + getAlbum().getMedia().size());
       if (bottomMenu.findItem(R.id.action_favourites).getIcon().getColorFilter() == null) {
-        if (!(getAlbum().getMedia().size() > current_image_pos) || !favsearch(getAlbum().getMedia(current_image_pos).getPath())) {
+        if (!(getAlbum().getMedia().size() > current_image_pos)
+            || !favsearch(getAlbum().getMedia(current_image_pos).getPath())) {
           bottomMenu.findItem(R.id.action_favourites).getIcon().clearColorFilter();
         } else {
           bottomMenu
@@ -749,9 +750,9 @@ public class SingleMediaActivity extends SharedMediaActivity
   @Override
   public boolean onPrepareOptionsMenu(final Menu menu) {
 
-      if(getAlbum().getMedia().size() > getAlbum().getCurrentMediaIndex())
-        if (getAlbum().getCurrentMedia().getPath().equals(getAlbum().getCoverPath()))
-          menu.findItem(R.id.action_cover).setTitle("Remove cover image");
+    if (getAlbum().getMedia().size() > getAlbum().getCurrentMediaIndex())
+      if (getAlbum().getCurrentMedia().getPath().equals(getAlbum().getCoverPath()))
+        menu.findItem(R.id.action_cover).setTitle("Remove cover image");
 
     if (allPhotoMode || favphotomode) {
       menu.findItem(R.id.action_cover).setVisible(false);
@@ -2330,7 +2331,7 @@ public class SingleMediaActivity extends SharedMediaActivity
     TextView imgDesc = linearLayout.findViewById(R.id.image_desc);
     imgDesc.setTextColor(textColor);
 
-      IconicsColor iconicsTextColor = IconicsColor.colorInt(textColor);
+    IconicsColor iconicsTextColor = IconicsColor.colorInt(textColor);
 
     IconicsImageView iconicsImageView = linearLayout.findViewById(R.id.date_icon);
     iconicsImageView.getIcon().color(iconicsTextColor);

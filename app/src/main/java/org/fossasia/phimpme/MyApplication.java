@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.StrictMode;
 import android.util.Log;
 import androidx.multidex.MultiDex;
-
 import com.mikepenz.iconics.Iconics;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -68,7 +67,6 @@ public class MyApplication extends Application {
     Realm.setDefaultConfiguration(realmConfiguration);
 
     Iconics.init(getApplicationContext());
-    //Iconics.registerFont(new GoogleMaterial());
 
     super.onCreate();
     // if (isPublished)

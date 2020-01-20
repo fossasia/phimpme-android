@@ -21,7 +21,6 @@ import androidx.fragment.app.DialogFragment;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
-
 import me.jfenn.colorpickerdialog.dialogs.ColorPickerDialog;
 import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
@@ -82,8 +81,11 @@ public class AddTextFragment extends BaseEditFragment
 
     mInputText = mainView.findViewById(R.id.text_input);
     mTextColorSelector = mainView.findViewById(R.id.text_color);
+    IconicsSize iconicsSize = IconicsSize.dp(24);
     mTextColorSelector.setImageDrawable(
-        new IconicsDrawable(activity).icon(GoogleMaterial.Icon.gmd_format_color_fill).size(IconicsSize.dp(24)));
+        new IconicsDrawable(activity)
+            .icon(GoogleMaterial.Icon.gmd_format_color_fill)
+            .size(iconicsSize));
 
     cancel.setOnClickListener(new BackToMenuClick());
     apply.setOnClickListener(

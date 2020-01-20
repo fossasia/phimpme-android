@@ -172,13 +172,15 @@ public class ExcludedAlbumsActivity extends ThemedActivity {
       holder.album_path.setText(excludedFolder.getAbsolutePath());
       holder.album_name.setText(excludedFolder.getName());
       holder.imgUnExclude.setTag(excludedFolder.getAbsolutePath());
-      holder.imgFolder.setIcon(new IconicsDrawable(holder.imgFolder.getContext()).icon(GoogleMaterial.Icon.gmd_folder));//.setIcon(GoogleMaterial.Icon.gmd_folder);
+      holder.imgFolder.setIcon(
+          new IconicsDrawable(holder.imgFolder.getContext()).icon(GoogleMaterial.Icon.gmd_folder));
 
       /** SET LAYOUT THEME* */
       holder.album_name.setTextColor(getTextColor());
       holder.album_path.setTextColor(getSubTextColor());
-      holder.imgFolder.getIcon().color(IconicsColor.colorInt(getIconColor()));//.setColor(getIconColor());
-      holder.imgUnExclude.getIcon().color(IconicsColor.colorInt(getIconColor()));//.setColor(getIconColor());
+      IconicsColor iconicsIconColor = IconicsColor.colorInt(getIconColor());
+      holder.imgFolder.getIcon().color(iconicsIconColor);
+      holder.imgUnExclude.getIcon().color(iconicsIconColor);
       holder.card_layout.setBackgroundColor(getCardBackgroundColor());
     }
 

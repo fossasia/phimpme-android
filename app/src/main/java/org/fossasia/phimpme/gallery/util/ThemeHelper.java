@@ -1,8 +1,10 @@
 package org.fossasia.phimpme.gallery.util;
 
+import static org.fossasia.phimpme.utilities.Constants.ICONICS_18dp;
+import static org.fossasia.phimpme.utilities.Constants.ICONICS_WHITE;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.ColorDrawable;
@@ -18,10 +20,9 @@ import android.widget.TextView;
 import androidx.annotation.ColorRes;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
-import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.IconicsSize;
-import com.mikepenz.iconics.typeface.IIcon;
 import com.mikepenz.iconics.IconicsColor;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.typeface.IIcon;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -206,7 +207,7 @@ public class ThemeHelper {
   }
 
   public IconicsDrawable getToolbarIcon(IIcon icon) {
-    return new IconicsDrawable(context).icon(icon).color(IconicsColor.colorInt(Color.WHITE)).size(IconicsSize.dp(18));
+    return new IconicsDrawable(context).icon(icon).color(ICONICS_WHITE).size(ICONICS_18dp);
   }
 
   public IconicsDrawable getIcon(IIcon icon) {
@@ -214,7 +215,7 @@ public class ThemeHelper {
   }
 
   public static IconicsDrawable getIcon(Context context, IIcon icon) {
-    return new IconicsDrawable(context).icon(icon).color(IconicsColor.colorInt(Color.WHITE));
+    return new IconicsDrawable(context).icon(icon).color(ICONICS_WHITE);
   }
 
   public int getDrawerBackground() {

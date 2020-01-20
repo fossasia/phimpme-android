@@ -1,5 +1,7 @@
 package org.fossasia.phimpme.gallery.adapters;
 
+import static org.fossasia.phimpme.utilities.Constants.ICONICS_WHITE;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -23,9 +25,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.mikepenz.iconics.IconicsColor;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.typeface.library.community.material.CommunityMaterial;
+import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 import java.util.ArrayList;
 import org.fossasia.phimpme.R;
@@ -141,9 +142,11 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     String textColor = theme.getBaseTheme() != ThemeHelper.LIGHT_THEME ? "#FAFAFA" : "#2b2b2b";
 
     if (a.isSelected()) {
-      // TBog
-      holder.ivSelectedIcon.setIcon(new IconicsDrawable(holder.ivSelectedIcon.getContext()).icon(CommunityMaterial.Icon.cmd_send_check)); //.setIcon(CommunityMaterial.Icon.cmd_check_circle);
-      holder.ivSelectedIcon.getIcon().color(IconicsColor.colorInt(Color.WHITE));//.setColor(Color.WHITE);
+      IconicsDrawable iconicsDrawable =
+          new IconicsDrawable(holder.ivSelectedIcon.getContext())
+              .icon(GoogleMaterial.Icon.gmd_check_circle);
+      holder.ivSelectedIcon.setIcon(iconicsDrawable);
+      holder.ivSelectedIcon.getIcon().color(ICONICS_WHITE);
       holder.tvAlbumName.setBackgroundColor(Color.parseColor(hexPrimaryColor));
       holder.tvPhotosCount.setBackgroundColor(Color.parseColor(hexPrimaryColor));
       holder.ivPin.setBackgroundColor(Color.parseColor(hexPrimaryColor));

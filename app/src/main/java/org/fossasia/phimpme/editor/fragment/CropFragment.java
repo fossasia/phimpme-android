@@ -1,5 +1,7 @@
 package org.fossasia.phimpme.editor.fragment;
 
+import static org.fossasia.phimpme.utilities.Constants.ICONICS_18dp;
+
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.res.Configuration;
@@ -19,9 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.IconicsSize;
 import com.mikepenz.iconics.typeface.library.googlematerial.GoogleMaterial;
-
 import java.util.ArrayList;
 import java.util.List;
 import org.fossasia.phimpme.MyApplication;
@@ -63,35 +63,35 @@ public class CropFragment extends BaseEditFragment {
             1f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_square)
-                .size(IconicsSize.dp(18))));
+                .size(ICONICS_18dp)));
     dataList.add(
         new RatioItem(
             getString(R.string.crop_3_2),
             3 / 2f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_3_2)
-                .size(IconicsSize.dp(18))));
+                .size(ICONICS_18dp)));
     dataList.add(
         new RatioItem(
             getString(R.string.crop_free),
             -1f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_free)
-                .size(IconicsSize.dp(18))));
+                .size(ICONICS_18dp)));
     dataList.add(
         new RatioItem(
             getString(R.string.crop_7_5),
             7 / 5f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_7_5)
-                .size(IconicsSize.dp(18))));
+                .size(ICONICS_18dp)));
     dataList.add(
         new RatioItem(
             getString(R.string.crop_16_9),
             16 / 9f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_16_9)
-                .size(IconicsSize.dp(18))));
+                .size(ICONICS_18dp)));
   }
 
   @Override

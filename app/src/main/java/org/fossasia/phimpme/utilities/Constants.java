@@ -1,5 +1,9 @@
 package org.fossasia.phimpme.utilities;
 
+import android.graphics.Color;
+import com.mikepenz.iconics.IconicsColor;
+import com.mikepenz.iconics.IconicsSize;
+
 /** Created by manuja on 14/5/17. */
 public class Constants {
 
@@ -39,4 +43,8 @@ public class Constants {
   public static final String PACKAGE_WHATSAPP = "com.whatsapp";
   public static final String PACKAGE_MESSENGER = "com.facebook.orca";
   public static final String PACKAGE_SNAPCHAT = "com.snapchat.android";
+
+  public static final IconicsColor ICONICS_WHITE = IconicsColor.colorInt(Color.WHITE);
+  public static final IconicsSize ICONICS_18dp = IconicsSize.dp(18);
+  public static final IconicsSize ICONICS_19dp = IconicsSize.dp(19);
 }

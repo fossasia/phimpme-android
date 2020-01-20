@@ -2636,10 +2636,18 @@ public class LFMainActivity extends SharedMediaActivity {
         /** Icons * */
         color = getIconColor();
         IconicsColor iconicsIconColor = IconicsColor.colorInt(color);
-        ((IconicsImageView) dialogLayout.findViewById(R.id.affix_quality_icon)).getIcon().color(iconicsIconColor);
-        ((IconicsImageView) dialogLayout.findViewById(R.id.affix_format_icon)).getIcon().color(iconicsIconColor);
-        ((IconicsImageView) dialogLayout.findViewById(R.id.affix_vertical_icon)).getIcon().color(iconicsIconColor);
-        ((IconicsImageView) dialogLayout.findViewById(R.id.save_here_icon)).getIcon().color(iconicsIconColor);
+        ((IconicsImageView) dialogLayout.findViewById(R.id.affix_quality_icon))
+            .getIcon()
+            .color(iconicsIconColor);
+        ((IconicsImageView) dialogLayout.findViewById(R.id.affix_format_icon))
+            .getIcon()
+            .color(iconicsIconColor);
+        ((IconicsImageView) dialogLayout.findViewById(R.id.affix_vertical_icon))
+            .getIcon()
+            .color(iconicsIconColor);
+        ((IconicsImageView) dialogLayout.findViewById(R.id.save_here_icon))
+            .getIcon()
+            .color(iconicsIconColor);
 
         seekQuality
             .getProgressDrawable()
@@ -3720,14 +3728,14 @@ public class LFMainActivity extends SharedMediaActivity {
     IconicsColor iconicsPrimaryColor = IconicsColor.colorInt(getPrimaryColor());
     IconicsColor iconicsIconColor = IconicsColor.colorInt(getIconColor());
     if (localFolder) {
-      defaultIcon.getIcon().color(iconicsPrimaryColor);//.setColor(iconicsPrimaryColor);
+      defaultIcon.getIcon().color(iconicsPrimaryColor);
       defaultText.setTextColor(getPrimaryColor());
-      hiddenIcon.getIcon().color(iconicsIconColor);//.setColor(getIconColor());
+      hiddenIcon.getIcon().color(iconicsIconColor);
       hiddenText.setTextColor(getTextColor());
     } else {
-      hiddenIcon.getIcon().color(iconicsPrimaryColor);//.setColor(getPrimaryColor());
+      hiddenIcon.getIcon().color(iconicsPrimaryColor);
       hiddenText.setTextColor(getPrimaryColor());
-      defaultIcon.getIcon().color(iconicsIconColor);//.setColor(getIconColor());
+      defaultIcon.getIcon().color(iconicsIconColor);
       defaultText.setTextColor(getTextColor());
     }
   }
