@@ -168,7 +168,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="@dimen/big_spacing"
                         android:layout_marginEnd="@dimen/big_spacing"
-                        app:iiv_icon="faw_trash_o"/>
+                        app:iiv_icon="gmd_delete"/>
 
                     <TextView
                         android:id="@+id/Drawer_TrashBin_Item"
