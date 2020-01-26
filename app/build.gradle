@@ -189,7 +189,7 @@ dependencies {
     //ui
     implementation 'de.hdodenhof:circleimageview:2.0.0'
     implementation 'me.jfenn.ColorPickerDialog:base:0.2.1'
-    implementation 'com.turingtechnologies.materialscrollbar:lib:10.0.3'
+    implementation 'com.turingtechnologies.materialscrollbar:lib:10.1.4'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
     implementation 'com.github.shchurov:horizontalwheelview:0.9.5'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
