@@ -212,7 +212,7 @@ dependencies {
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
     //tumblr
-    implementation('com.tumblr:jumblr:0.0.11') {
+    implementation('com.tumblr:jumblr:0.0.13') {
         exclude module: 'scribe'
     }
 
