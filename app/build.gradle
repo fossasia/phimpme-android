@@ -174,7 +174,7 @@ dependencies {
         transitive = true;
     }*/
 
-    implementation 'com.koushikdutta.ion:ion:2.1.7'
+    implementation 'com.koushikdutta.ion:ion:3.0.8'
     implementation 'org.jetbrains:annotations-java5:15.0'
     implementation 'com.android.support:multidex:1.0.3'
     implementation group: 'com.box', name: 'box-android-sdk', version: '5.0.0'
