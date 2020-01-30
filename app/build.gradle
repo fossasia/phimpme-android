@@ -144,7 +144,7 @@ dependencies {
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.3.1'
 
     //google and support
     implementation "androidx.appcompat:appcompat:$rootProject.supportLibraryVersion"
