@@ -187,7 +187,7 @@ dependencies {
     implementation 'com.mikepenz:ionicons-typeface:+@aar'
 
     //ui
-    implementation 'de.hdodenhof:circleimageview:2.0.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'me.jfenn.ColorPickerDialog:base:0.2.1'
     implementation 'com.turingtechnologies.materialscrollbar:lib:10.1.4'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
