@@ -273,8 +273,7 @@
         <activity
             android:name=".gallery.activities.AboutActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/about"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:label="@string/about">
         </activity>
 
         <activity
@@ -339,7 +338,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="org.fossasia.phimpme" />
-                <data android:scheme="pdk4910600717739247160" />
+                <data android:scheme="pdk4914573327424567067" />
             </intent-filter>
         </activity>
         <activity

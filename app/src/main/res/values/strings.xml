@@ -813,53 +813,13 @@
     <string name="about_version">Version</string>
     <string name="connect_to_us">Connect to us</string>
 
-    <string name="about_license">License</string>
-    <string name="about_license_sub">Check GNU GENERAL PUBLIC License terms used on Phimp.me.</string>
-
-    <string name="about_library_license">Library Licenses</string>
-    <string name="about_library_license_sub">Check third-party libs used on Phimp.me.</string>
-
-    <string name="about_authors">Authors</string>
-    <string name="about_author_donald_description">
-        I\'m 19 years old. I\'m a young software developer, I like CS in general, at most I love
-        learn doing stuff with Linux and Android. I also like TV Series.
-    </string>
-    <string name="about_author_gilbert_description">
-        I\'m 20 years old. I love music, video games and drawing.
-        I\'m also really into computer science, programming and design.
-    </string>
-    <string name="about_googleplus" translatable="false">Google+</string>
-    <string name="send_via">send via&#8230;</string>
-    <string name="send_email">SEND EMAIL</string>
-
-    <string name="send_mail_error">There are no email clients installed.</string>
     <string name="about_special_thanks">Special thanks</string>
-    <string name="about_special_thanks_open_camera">to <a href="http://opencamera.sourceforge.net/">OpenCamera</a> for the
+    <string name="about_special_thanks_open_camera">Special thanks to OpenCamera for the
         awesome camera.
     </string>
-    <string name="about_special_thanks_leafpic">to <a href="https://github.com/HoraApps/LeafPic">LeafPic</a> for the
+    <string name="about_special_thanks_leafpic">Special thanks to LeafPic for the
         gallery.
     </string>
-    <string name="about_special_thanks_you_sub">
-
-    </string>
-
-    <string name="about_fb_connect">Facebook</string>
-    <string name="about_fb_connect_sub">Connect to us on Facebook.</string>
-    <string name="about_twitter_connect">Twitter</string>
-    <string name="about_twitter_connect_sub">Follow us on Twitter.</string>
-    <string name="about_website_connect">Phimp.me</string>
-    <string name="about_website_connect_sub">Visit our website here.</string>
-
-
-    <string name="about_support_report_bug">Report bug</string>
-    <string name="about_support_report_bug_sub">Report bug or request new features.</string>
-
-    <string name="about_support_rate">Rate Us</string>
-    <string name="about_support_rate_sub">Leave us a positive rating if you like Phimp.me.</string>
-
-    <string name="about_support_github">GitHub</string>
-    <string name="about_support_github_sub">Fork the repo and push changes or submit new issues.</string>
 
     <!--PHOTO DETAILS-->
     <string name="path">Path</string>
@@ -912,6 +872,7 @@
     <string name="tags">Tags</string>
     <string name="timeline">Timeline</string>
     <string name="wallpapers">Wallpapers</string>
+    <string name="rate_us">Rate Us</string>
     <string name="donate">Donate</string>
     <string name="github" translatable="false">GitHub</string>
 
@@ -968,10 +929,7 @@
     <string name="sub_scaling_image_view_sub">
         (TESTING) It allows you to have a better zoom management and a clear image but it isn\'t really optimized right now.
     </string>
-    <string name="about_support">Support Development</string>
-    <string name="about_fossasia">Developed by <a href="http://fossasia.org/">FOSSASIA</a>
-        <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributors</a>.
-    </string>
+
     <string name="title_activity_accounts">AccountsActivity</string>
 
     <!--EDITING IMAGE-->
@@ -1274,12 +1232,10 @@
     <string name="home_button">Find all your photos in the device</string>
     <string name="accounts_button">Add Multiple Accounts to share amazing photos</string>
     <string name="camera_button">Click Amazing Pictures</string>
-    <string name="ok_button">GOT IT</string>
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input.</string>
     <string name="paint_color_title">Paint Color</string>
     <string name="upload_history">Upload History</string>
     <string name="trash_bin">Trash Bin</string>
-    <string name="toggle_button">Toggle Button</string>
     <string name="empty_upload_msg">You haven\'t shared anything.</string>
     <string name="empty_trashbin_mssg">No Items present currently</string>
     <string name="trashbin_mssg">Only images deleted in the Phimpme Android app are present here.</string>
@@ -1300,6 +1256,7 @@
     <string name="text_view">TextView</string>
     <string name="version_one">v1.0</string>
     <string name="pdf">PDF</string>
+    <string name="first_time_showcase">first time showcase</string>
 
     <!-- Links -->
     <string name="phimpme_website">http://phimp.me/</string>
@@ -1318,6 +1275,7 @@
     <string name="photoview_github">http://github.com/chrisbanes/PhotoView</string>
     <string name="circleimageview_github">https://github.com/hdodenhof/CircleImageView</string>
     <string name="horizontalwheelview_github">https://github.com/shchurov/HorizontalWheelView</string>
+    <string name="github_phimpme">fossasia?utf8=✓&amp;q=phimpme</string>
 
     <string name="version_title">Version:</string>
     <string name="error_title">Error:</string>
@@ -1431,12 +1389,6 @@
     <string name="text_plain">text/plain</string>
     <string name="market">market://details?id=</string>
     <string name="playstore">https://play.google.com/store/apps/details?id=</string>
-    <string name="twitter_phimpme">twitter://user?screen_name=phimpme</string>
-    <string name="twitter_phimpme_">https://twitter.com/#!/phimpme</string>
-    <string name="fb_1">com.facebook.katana</string>
-    <string name="fb_2">fb://facewebmodal/f?href=</string>
-    <string name="fb_3">https://www.facebook.com/phimpmeapp</string>
-    <string name="fb_4">fb://page/</string>
-    <string name="phimpmeapp">phimpmeapp</string>
-    <string name="fb_">https://www.facebook.com/phimpmeapp</string>
+    <string name="twitter_phimpme">phimpme</string>
+    <string name="facebook_phimpme">phimpmeapp</string>
 </resources>

@@ -1,9 +1,9 @@
 package org.fossasia.phimpme.base;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,16 +13,16 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.gallery.activities.LFMainActivity;
+import org.fossasia.phimpme.gallery.util.PermissionUtils;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public abstract class BaseActivity extends AppCompatActivity
     implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -62,12 +62,11 @@ public abstract class BaseActivity extends AppCompatActivity
     nav_cam = findViewById(R.id.navigation_camera);
     nav_acc = findViewById(R.id.navigation_accounts);
 
-    int checkStoragePermission =
-        ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
-    if (checkStoragePermission == PackageManager.PERMISSION_GRANTED)
-      presentShowcaseSequence(); // one second delay
-
     SP = PreferenceUtil.getInstance(getApplicationContext());
+
+    if (PermissionUtils.checkPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+        && SP.getBoolean(getResources().getString(R.string.first_time_showcase), true))
+      presentShowcaseSequence();
   }
 
   @Override
@@ -76,52 +75,45 @@ public abstract class BaseActivity extends AppCompatActivity
     isSWNavBarChecked = SP.getBoolean(getString(R.string.preference_colored_nav_bar), true);
   }
 
-  private void presentShowcaseSequence() {
-
-    ShowcaseConfig config = new ShowcaseConfig();
-    config.setDelay(500); // half second between each showcase view
-
-    MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_ID);
-
-    sequence.setOnItemShownListener(
-        new MaterialShowcaseSequence.OnSequenceItemShownListener() {
-          @Override
-          public void onShow(MaterialShowcaseView itemView, int position) {
-            // Toast.makeText(itemView.getContext(), "Item #" + position,
-            // Toast.LENGTH_SHORT).show();
-          }
-        });
-
-    sequence.setConfig(config);
-
-    sequence.addSequenceItem(
-        nav_home,
-        getResources().getString(R.string.home_button),
-        getResources().getString(R.string.ok_button));
-
-    sequence.addSequenceItem(
-        new MaterialShowcaseView.Builder(this)
-            .setTarget(nav_cam)
-            .setDismissText(getResources().getString(R.string.ok_button))
-            .setContentText(getResources().getString(R.string.camera_button))
-            .setDismissOnTouch(true)
-            .build());
-
-    sequence.addSequenceItem(
-        new MaterialShowcaseView.Builder(this)
-            .setTarget(nav_acc)
-            .setDismissText(getResources().getString(R.string.ok_button))
-            .setContentText(getResources().getString(R.string.accounts_button))
-            .setDismissOnTouch(true)
-            .build());
-
-    sequence.start();
-  }
-
   @Override
   protected void onStart() {
     super.onStart();
     updateNavigationBarState();
+  }
+
+  private void presentShowcaseSequence() {
+    new TapTargetSequence(this)
+        .targets(
+            TapTarget.forView(nav_home, getResources().getString(R.string.home_button))
+                .cancelable(true)
+                .outerCircleAlpha(0.7f)
+                .textColor(R.color.white)
+                .transparentTarget(true),
+            TapTarget.forView(nav_cam, getResources().getString(R.string.camera_button))
+                .cancelable(true)
+                .outerCircleAlpha(0.7f)
+                .textColor(R.color.white)
+                .transparentTarget(true),
+            TapTarget.forView(nav_acc, getResources().getString(R.string.accounts_button))
+                .outerCircleAlpha(0.7f)
+                .textColor(R.color.white)
+                .transparentTarget(true))
+        .listener(
+            new TapTargetSequence.Listener() {
+              @Override
+              public void onSequenceFinish() {
+                SP.putBoolean(getResources().getString(R.string.first_time_showcase), false);
+              }
+
+              @Override
+              public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {}
+
+              @Override
+              public void onSequenceCanceled(TapTarget lastTarget) {
+                SP.putBoolean(getResources().getString(R.string.first_time_showcase), false);
+              }
+            })
+        .start();
   }
 
   // Remove inter-activity transition to avoid screen tossing on tapping bottom navigation items
