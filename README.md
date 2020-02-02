@@ -11,6 +11,9 @@
 |------------|-----------------|-------------|-----------------|-----------------|-----------------|
 | [![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=master)](https://travis-ci.org/fossasia/phimpme-android) | [![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=development)](https://travis-ci.org/fossasia/phimpme-android) | [![codecov](https://codecov.io/gh/fossasia/phimpme-android/branch/master/graph/badge.svg)](https://codecov.io/gh/fossasia/phimpme-android) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4584003e734343b3b8ce94bcae6e9ca4)](https://www.codacy.com/app/harshithdwivedi/phimpme-android?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fossasia/phimpme-android&amp;utm_campaign=Badge_Grade) | [![Gitter Room](https://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-blue.svg)](https://gitter.im/fossasia/phimpme) | [![Twitter Follow](https://img.shields.io/twitter/follow/phimpme.svg?style=social&label=Follow&maxAge=2592000?style=flat-square)](https://twitter.com/phimpme) |
 
+## Download from Play Store
+<img src="docs/images/phimp-me-qrcode.png">
+
 ## Screenshots
 
 <p float="left">
@@ -83,7 +86,7 @@ We have the following branches
    This branch contains automatically generated apk file for testing.
 
  * **gh-pages**
-   Hosting the landing page [phimp.me](http://phimp.me)  
+   For reference gh-pages branch is hosting the Gihub-Pages link for this Repo at https://fossasia.github.io/phimpme-android/
 
 ## Development Setup
 
