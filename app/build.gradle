@@ -208,7 +208,7 @@ dependencies {
     implementation "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
 
     //leak canary
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
     //tumblr
