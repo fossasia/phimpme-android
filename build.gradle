@@ -51,6 +51,6 @@ ext {
     nextCloudVersion = "1.5.0"
     lifecycleVersion = "2.2.0"
     glideVersion = "4.11.0"
-    retrofitVersion = "2.6.2"
+    retrofitVersion = "2.7.1"
 }
 
