@@ -200,7 +200,7 @@ dependencies {
     //twitter
     implementation "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
     implementation "org.twitter4j:twitter4j-core:3.0.5"
-    implementation "org.twitter4j:twitter4j-media-support:3.0.5"
+    implementation "org.twitter4j:twitter4j-media-support:4.0.6"
 
     implementation 'com.dropbox.core:dropbox-core-sdk:3.1.1'
 
