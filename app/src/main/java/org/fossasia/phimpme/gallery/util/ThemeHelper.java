@@ -363,7 +363,7 @@ public class ThemeHelper {
         .setColorFilter(sw.isChecked() ? color : getSubTextColor(), PorterDuff.Mode.MULTIPLY);
     sw.getTrackDrawable()
         .setColorFilter(
-                sw.isChecked() ? ColorPalette.getTransparentColor(color, 100) : getUpdatedSwitchColor(),
+            sw.isChecked() ? ColorPalette.getTransparentColor(color, 100) : getUpdatedSwitchColor(),
             PorterDuff.Mode.MULTIPLY);
   }
 
