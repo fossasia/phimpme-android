@@ -169,7 +169,7 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     implementation "com.github.bumptech.glide:gifencoder-integration:$rootProject.glideVersion"
-    implementation 'com.yalantis:ucrop:1.5.0'
+    implementation 'com.yalantis:ucrop:2.2.0-native'
     /*implementation('com.crashlytics.sdk.android:crashlytics:2.9.3@aar') {
         transitive = true;
     }*/
