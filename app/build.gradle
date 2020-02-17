@@ -224,7 +224,7 @@ dependencies {
 
     //tests
     testImplementation "junit:junit:$rootProject.junitVersion"
-    androidTestImplementation 'com.google.code.findbugs:jsr305:3.0.0'
+    androidTestImplementation 'com.google.code.findbugs:jsr305:3.0.2'
 
     //opencv
     implementation project(':openCV')
