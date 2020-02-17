@@ -192,7 +192,7 @@ dependencies {
     implementation 'com.turingtechnologies.materialscrollbar:lib:10.1.4'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     implementation 'com.github.shchurov:horizontalwheelview:0.9.5'
-    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 
     //photoview
     implementation 'com.github.chrisbanes:PhotoView:1.2.6'
