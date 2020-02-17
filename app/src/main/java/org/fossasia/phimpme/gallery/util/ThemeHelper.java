@@ -132,7 +132,7 @@ public class ThemeHelper {
         color = getColor(R.color.md_dark_background);
         break;
       case AMOLED_THEME:
-        color = getColor(R.color.md_brown_300);
+        color = getColor(R.color.md_blue_grey_900);
         break;
       case LIGHT_THEME:
       default:
