@@ -46,12 +46,14 @@
     </style>
 
     <!--AMOLED DARK MENU THEME-->
-    <style name="AmoledDarkActionBarMenu" parent="Base.ThemeOverlay.AppCompat.ActionBar">
+    <style name="AmoledDarkActionBarMenu" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:popupMenuStyle">@style/MyApp.PopupMenu.Dark</item>
     </style>
 
-    <style name="MyApp.PopupMenu.DarkAmoled" parent="Base.ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:popupBackground">@drawable/ic_empty_amoled</item>
+    <style name="MyApp.PopupMenu.DarkAmoled" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:backgroundTint" tools:targetApi="lollipop">
+            @color/cardview_dark_background
+        </item>
     </style>
 
     <style name="MyToolbar" parent="Widget.AppCompat.Toolbar">
