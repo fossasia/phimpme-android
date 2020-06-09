@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/accounts_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,14 +14,21 @@
         android:id="@+id/accounts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottombar"
-        android:layout_below="@id/toolbar">
+        android:layout_above="@id/bottombar"
+        android:layout_below="@id/toolbar"
+        android:nestedScrollingEnabled="true">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/accounts_recycler_view"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/toolbar" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/accounts_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/toolbar"
+                android:persistentDrawingCache="scrolling" />
+        </ScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
