@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/vn.mbm.phimp.me"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -109,36 +111,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingStart="@dimen/large_padding"
-                    android:paddingEnd="@dimen/large_padding"
+                    android:layout_marginStart="@dimen/margin_16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:visibility="gone">
 
-                    <uz.shift.colorpicker.LineColorPicker 
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                    <me.jfenn.colorpickerdialog.views.picker.PresetPickerView
                         android:id="@+id/pickerTransparent"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/size_60"
-                        app:orientation="horizontal"
-                        app:selectedColorIndex="0" />
+                        android:layout_height="wrap_content"
+                        />
                 </RelativeLayout>
             </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/container_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:orientation="vertical"
-                android:paddingStart="@dimen/large_padding"
-                android:paddingEnd="@dimen/large_padding">
-
-                <uz.shift.colorpicker.LineColorPicker xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/pickerTransparent"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/size_60"
-                    app:orientation="horizontal"
-                    app:selectedColorIndex="0" />
-            </RelativeLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

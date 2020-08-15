@@ -32,8 +32,8 @@ android {
         applicationId "org.fossasia.phimpme"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 13
-        versionName '1.10.0'
+        versionCode 14
+        versionName '1.11.0'
         multiDexEnabled true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
@@ -144,17 +144,17 @@ dependencies {
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.4.1'
 
     //google and support
     implementation "androidx.appcompat:appcompat:$rootProject.supportLibraryVersion"
     implementation "androidx.vectordrawable:vectordrawable-animated:1.1.0"
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
-    implementation "com.google.android.material:material:1.0.0"
+    implementation "com.google.android.material:material:1.1.0"
     implementation "androidx.vectordrawable:vectordrawable:1.1.0"
     implementation "androidx.palette:palette:1.0.0"
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.browser:browser:1.0.0"
+    implementation "androidx.browser:browser:1.2.0"
     implementation "androidx.recyclerview:recyclerview:1.0.0"
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
@@ -164,19 +164,18 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
 
     //utils
-    implementation 'com.github.deano2390:MaterialShowcaseView:1.2.0@aar'
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.0'
     implementation "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     implementation "com.github.bumptech.glide:gifencoder-integration:$rootProject.glideVersion"
     implementation 'com.yalantis:ucrop:1.5.0'
-    implementation 'de.psdev.licensesdialog:licensesdialog:1.8.0'
     /*implementation('com.crashlytics.sdk.android:crashlytics:2.9.3@aar') {
         transitive = true;
     }*/
 
-    implementation 'com.koushikdutta.ion:ion:2.1.7'
-    implementation 'org.jetbrains:annotations-java5:15.0'
+    implementation 'com.koushikdutta.ion:ion:3.0.8'
+    implementation 'org.jetbrains:annotations-java5:18.0.0'
     implementation 'com.android.support:multidex:1.0.3'
     implementation group: 'com.box', name: 'box-android-sdk', version: '5.0.0'
 
@@ -188,10 +187,10 @@ dependencies {
     implementation 'com.mikepenz:ionicons-typeface:+@aar'
 
     //ui
-    implementation 'de.hdodenhof:circleimageview:2.0.0'
-    implementation 'uz.shift:colorpicker:0.5@aar'
-    implementation 'com.turingtechnologies.materialscrollbar:lib:10.0.3'
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'me.jfenn.ColorPickerDialog:base:0.2.1'
+    implementation 'com.turingtechnologies.materialscrollbar:lib:10.1.4'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     implementation 'com.github.shchurov:horizontalwheelview:0.9.5'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
 
@@ -201,7 +200,7 @@ dependencies {
     //twitter
     implementation "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
     implementation "org.twitter4j:twitter4j-core:3.0.5"
-    implementation "org.twitter4j:twitter4j-media-support:3.0.5"
+    implementation "org.twitter4j:twitter4j-media-support:4.0.6"
 
     implementation 'com.dropbox.core:dropbox-core-sdk:3.1.1'
 
@@ -209,11 +208,11 @@ dependencies {
     implementation "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
 
     //leak canary
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
     //tumblr
-    implementation('com.tumblr:jumblr:0.0.11') {
+    implementation('com.tumblr:jumblr:0.0.13') {
         exclude module: 'scribe'
     }
 
@@ -235,6 +234,9 @@ dependencies {
 
     //compressor
     implementation 'id.zelory:compressor:2.1.0'
+
+    //about page
+    implementation 'com.github.medyo:android-about-page:1.2.5'
 
 }
 

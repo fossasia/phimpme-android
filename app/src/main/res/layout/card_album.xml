@@ -1,114 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/vn.mbn.phimp.me"
-    xmlns:app2="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/album_card"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="@drawable/ripple"
-    app:cardCornerRadius="@dimen/zero"
+    android:layout_margin="@dimen/alternate_half_margin"
+    app:cardCornerRadius="8dp"
     app:cardElevation="@dimen/card_elevation">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/header_album_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/selected_icon"
+            android:layout_width="@dimen/size_26dp"
+            android:layout_height="@dimen/size_26dp"
+            android:elevation="@dimen/alternate_margin"
+            android:visibility="gone"
+            app:iiv_color="@color/md_white_1000"
+            app:iiv_icon="gmd_check_circle"
+            tools:targetApi="lollipop"
+            android:paddingStart="@dimen/size_4"
+            android:paddingEnd="@dimen/size_4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
-            <com.mikepenz.iconics.view.IconicsImageView
-                android:id="@+id/selected_icon"
-                android:layout_width="@dimen/size_40dp"
-                android:layout_height="@dimen/size_40dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:elevation="@dimen/alternate_margin"
-                android:visibility="gone"
-                app:iiv_color="@color/md_white_1000"
-                app:iiv_icon="gmd-check"
-                tools:targetApi="lollipop" />
 
-            <org.fossasia.phimpme.gallery.views.SquareImageView
-                android:id="@+id/album_preview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop" />
+        <ImageView
+            android:id="@+id/iv_album_preview"
+            android:layout_width="0dp"
+            android:layout_height="140dp"
+            tools:src="@mipmap/ic_launcher"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_album_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            tools:text="Album Name"
+            android:paddingStart="@dimen/size_8"
+            android:paddingEnd="@dimen/size_8"
+            android:paddingTop="@dimen/size_4"
+            android:paddingBottom="@dimen/size_4"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/iv_album_preview"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_pin"
+            />
 
-        <LinearLayout
-            android:id="@+id/linear_card_text"
+        <ImageView
+            android:id="@+id/iv_pin"
+            android:layout_width="24dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            android:padding="@dimen/alternate_half_padding"
+            tools:visibility="visible"
+            tools:src="@drawable/pin_black"
+            app:layout_constraintBottom_toBottomOf="@id/tv_album_name"
+            app:layout_constraintTop_toTopOf="@id/tv_album_name"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_album_photos_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:orientation="vertical">
+            tools:text="1 Photos"
+            android:maxLines="1"
+            android:textSize="@dimen/moderate_text"
+            android:paddingStart="@dimen/size_8"
+            android:paddingEnd="@dimen/size_8"
+            android:paddingTop="@dimen/size_4"
+            android:paddingBottom="@dimen/size_4"
+            app:layout_constraintEnd_toStartOf="@id/iv_storage_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_album_name"
+            />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/iv_storage_icon"
+            android:layout_width="24dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:padding="@dimen/alternate_half_padding"
+            tools:src="@drawable/ic_sd_storage_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_album_photos_count"
+            app:layout_constraintTop_toTopOf="@id/tv_album_photos_count"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-                <TextView
-                    android:id="@+id/album_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_toStartOf="@+id/icon_pinned"
-                    android:maxLines="1"
-                    android:paddingEnd="@dimen/sub_big_spacing"
-                    android:paddingLeft="@dimen/alternate_margin"
-                    android:paddingRight="@dimen/sub_big_spacing"
-                    android:paddingStart="@dimen/alternate_margin"
-                    android:paddingTop="@dimen/alternate_margin"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/medium_text" />
 
-                <ImageView
-                    android:id="@+id/icon_pinned"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:paddingLeft="@dimen/alternate_padding"
-                    android:paddingStart="@dimen/alternate_padding"
-                    android:paddingTop="@dimen/alternate_padding"
-                    android:visibility="invisible"
-                    app2:srcCompat="@drawable/pin_black" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/album_photos_count"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:paddingBottom="@dimen/alternate_padding"
-                    android:paddingEnd="@dimen/alternate_padding"
-                    android:paddingStart="@dimen/alternate_padding"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/sub_medium_text" />
-
-                <ImageView
-                    android:id="@+id/storage_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:paddingLeft="@dimen/alternate_padding"
-                    android:paddingEnd="@dimen/alternate_padding"
-                    android:paddingStart="@dimen/alternate_padding"
-                    android:paddingTop="@dimen/alternate_padding" />
-
-            </RelativeLayout>
-        </LinearLayout>
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -1,9 +1,6 @@
 package org.fossasia.phimpme.editor.fragment;
 
-import static android.graphics.Color.WHITE;
-
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -20,11 +17,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+import me.jfenn.colorpickerdialog.dialogs.ColorPickerDialog;
 import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
@@ -32,8 +28,6 @@ import org.fossasia.phimpme.editor.font.FontPickerDialog;
 import org.fossasia.phimpme.editor.task.StickerTask;
 import org.fossasia.phimpme.editor.view.TextStickerView;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
-import uz.shift.colorpicker.LineColorPicker;
-import uz.shift.colorpicker.OnColorChangedListener;
 
 public class AddTextFragment extends BaseEditFragment
     implements TextWatcher, FontPickerDialog.FontPickerDialogListener {
@@ -155,49 +149,16 @@ public class AddTextFragment extends BaseEditFragment
   }
 
   private void textColorDialog() {
-    final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-    final View dialogLayout =
-        getActivity().getLayoutInflater().inflate(R.layout.color_piker_accent, null);
-    final LineColorPicker colorPicker = dialogLayout.findViewById(R.id.color_picker_accent);
-    final TextView dialogTitle = dialogLayout.findViewById(R.id.cp_accent_title);
-    dialogTitle.setText(R.string.text_color_title);
-    colorPicker.setColors(ColorPalette.getAccentColors(activity.getApplicationContext()));
-    changeTextColor(WHITE);
-    colorPicker.setOnColorChangedListener(
-        new OnColorChangedListener() {
-          @Override
-          public void onColorChanged(int c) {
-            mTextColorSelector.setColorFilter(c);
-            dialogTitle.setBackgroundColor(c);
-            changeTextColor(colorPicker.getColor());
-          }
-        });
-    dialogBuilder.setView(dialogLayout);
-    dialogBuilder.setNeutralButton(
-        getString(R.string.cancel).toUpperCase(),
-        new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int which) {
-            mTextColorSelector.setColorFilter(WHITE);
-            changeTextColor(WHITE);
-            dialog.cancel();
-          }
-        });
-    dialogBuilder.setPositiveButton(
-        getString(R.string.ok_action).toUpperCase(),
-        new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int which) {
-            changeTextColor(colorPicker.getColor());
-          }
-        });
-    dialogBuilder.setOnDismissListener(
-        new DialogInterface.OnDismissListener() {
-          @Override
-          public void onDismiss(DialogInterface dialog) {
-            dialog.dismiss();
-          }
-        });
-    dialogBuilder.show();
+    final ColorPickerDialog colorPickerDialog =
+        new ColorPickerDialog()
+            .withPresets(ColorPalette.getAccentColors(activity.getApplicationContext()))
+            .withTitle(getString(R.string.text_color_title))
+            .withListener(
+                (pickerView, color) -> {
+                  mTextColorSelector.setColorFilter(color);
+                  changeTextColor(color);
+                });
+    colorPickerDialog.show(getChildFragmentManager(), "ColorPicker");
   }
 
   private void changeTextColor(int newColor) {
