@@ -1,38 +1,29 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.realm_version = '6.1.0'
-
     repositories {
-        jcenter()
-        maven { url 'https://jitpack.io' }
-
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
-
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
         google()
+        jcenter()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.2'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.4'
-        classpath "io.realm:realm-gradle-plugin:$realm_version"
-        classpath "gradle.plugin.com.github.b3er.local.properties:local-properties-plugin:1.1"
+        classpath 'io.realm:realm-gradle-plugin:6.1.0'
+        classpath 'gradle.plugin.com.github.b3er.local.properties:local-properties-plugin:1.1'
     }
 }
 
 allprojects {
     repositories {
+        google()
         jcenter()
         mavenCentral()
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
+        maven { url "https://jitpack.io" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
 
     ext {
@@ -40,17 +31,3 @@ allprojects {
         TRAVIS_BUILD = System.getenv("TRAVIS") == "true" && KEYSTORE_FILE.exists()
     }
 }
-
-ext {
-    supportLibraryVersion = '1.1.0'
-    butterknifeVersion = '10.2.1'
-    junitVersion = "4.12"
-    twitterVersion = "3.3.0"
-    stethoVersion = "1.5.0"
-    showcaseVersion = "5.4.3"
-    nextCloudVersion = "1.5.0"
-    lifecycleVersion = "2.2.0"
-    glideVersion = "4.11.0"
-    retrofitVersion = "2.7.2"
-}
-
