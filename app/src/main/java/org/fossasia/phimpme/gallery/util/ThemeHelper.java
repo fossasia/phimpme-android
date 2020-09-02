@@ -344,11 +344,12 @@ public class ThemeHelper {
 
   public void updateSwitchColor(SwitchCompat sw, int color) {
     sw.getThumbDrawable()
-        .setColorFilter(sw.isChecked() ? color : getSubTextColor(), PorterDuff.Mode.MULTIPLY);
+        .setColorFilter(new PorterDuffColorFilter(
+                sw.isChecked() ? color : getSubTextColor(), PorterDuff.Mode.MULTIPLY));
     sw.getTrackDrawable()
-        .setColorFilter(
+        .setColorFilter(new PorterDuffColorFilter(
             sw.isChecked() ? ColorPalette.getTransparentColor(color, 100) : getBackgroundColor(),
-            PorterDuff.Mode.MULTIPLY);
+            PorterDuff.Mode.MULTIPLY));
   }
 
   public void setScrollViewColor(ScrollView scr) {
@@ -391,8 +392,8 @@ public class ThemeHelper {
       Drawable[] drawables = new Drawable[2];
       drawables[0] = ContextCompat.getDrawable(editText.getContext(), mCursorDrawableRes);
       drawables[1] = ContextCompat.getDrawable(editText.getContext(), mCursorDrawableRes);
-      drawables[0].setColorFilter(color, PorterDuff.Mode.SRC_IN);
-      drawables[1].setColorFilter(color, PorterDuff.Mode.SRC_IN);
+      drawables[0].setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
+      drawables[1].setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN));
       fCursorDrawable.set(editor, drawables);
     } catch (final Throwable ignored) {
     }

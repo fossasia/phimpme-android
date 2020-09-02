@@ -18,6 +18,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -382,7 +383,7 @@ public class SingleMediaActivity extends SharedMediaActivity
           bottomMenu
               .findItem(R.id.action_favourites)
               .getIcon()
-              .setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
+              .setColorFilter(new PorterDuffColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN));
         }
       }
       mViewPager.setOnPageChangeListener(
@@ -420,7 +421,8 @@ public class SingleMediaActivity extends SharedMediaActivity
                 bottomMenu
                     .findItem(R.id.action_favourites)
                     .getIcon()
-                    .setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
+                    .setColorFilter(new PorterDuffColorFilter(
+                            getAccentColor(), PorterDuff.Mode.SRC_IN));
               }
               pathForDescription = getAlbum().getMedia().get(position).getPath();
             }
@@ -438,7 +440,7 @@ public class SingleMediaActivity extends SharedMediaActivity
           bottomMenu
               .findItem(R.id.action_favourites)
               .getIcon()
-              .setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
+              .setColorFilter(new PorterDuffColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN));
         }
       }
       mViewPager.setOnPageChangeListener(
@@ -474,7 +476,8 @@ public class SingleMediaActivity extends SharedMediaActivity
                 bottomMenu
                     .findItem(R.id.action_favourites)
                     .getIcon()
-                    .setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
+                    .setColorFilter(new PorterDuffColorFilter(
+                            getAccentColor(), PorterDuff.Mode.SRC_IN));
               }
               pathForDescription = listAll.get(position).getPath();
             }
@@ -1663,7 +1666,8 @@ public class SingleMediaActivity extends SharedMediaActivity
           } else {
             fav.setDescription(" ");
           }
-          item.getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
+          item.getIcon().setColorFilter(new PorterDuffColorFilter(
+                  getAccentColor(), PorterDuff.Mode.SRC_IN));
           realm.commitTransaction();
           final Snackbar snackbar =
               SnackBarHandler.showWithBottomMargin(
@@ -2063,7 +2067,8 @@ public class SingleMediaActivity extends SharedMediaActivity
     editxtDescription
         .getBackground()
         .mutate()
-        .setColorFilter(activity.getTextColor(), PorterDuff.Mode.SRC_ATOP);
+        .setColorFilter(new PorterDuffColorFilter(
+                activity.getTextColor(), PorterDuff.Mode.SRC_ATOP));
     editxtDescription.setTextColor(activity.getTextColor());
 
     realm = Realm.getDefaultInstance();
@@ -2488,7 +2493,7 @@ public class SingleMediaActivity extends SharedMediaActivity
     editTextTimeInterval
         .getBackground()
         .mutate()
-        .setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
+        .setColorFilter(new PorterDuffColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP));
     editTextTimeInterval.setTextColor(getTextColor());
     editTextTimeInterval.setHintTextColor(getSubTextColor());
     setCursorDrawableColor(editTextTimeInterval, getTextColor());

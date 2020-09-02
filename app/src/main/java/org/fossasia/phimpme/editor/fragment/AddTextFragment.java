@@ -121,7 +121,7 @@ public class AddTextFragment extends BaseEditFragment
 
   private void showFontChoiceBox() {
     DialogFragment dialogFragment = FontPickerDialog.newInstance(this);
-    dialogFragment.show(getFragmentManager(), "fontPicker");
+    dialogFragment.show(getChildFragmentManager(), "fontPicker");
   }
 
   @Override

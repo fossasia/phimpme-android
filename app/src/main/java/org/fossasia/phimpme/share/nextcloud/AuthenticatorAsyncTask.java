@@ -54,7 +54,7 @@ public class AuthenticatorAsyncTask extends AsyncTask<Object, Void, RemoteOperat
 
       // Operation - try credentials
       ExistenceCheckRemoteOperation operation =
-          new ExistenceCheckRemoteOperation(REMOTE_PATH, mContext, SUCCESS_IF_ABSENT);
+          new ExistenceCheckRemoteOperation(REMOTE_PATH, SUCCESS_IF_ABSENT);
       result = operation.execute(client);
 
       if (operation.wasRedirected()) {

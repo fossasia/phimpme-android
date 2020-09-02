@@ -27,6 +27,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -242,7 +243,8 @@ public class SharingActivity extends ThemedActivity
     text_caption.setOnClickListener(this);
     editFocus.setOnClickListener(this);
 
-    text_caption.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
+    text_caption.getBackground().mutate().setColorFilter(new PorterDuffColorFilter(
+            getTextColor(), PorterDuff.Mode.SRC_ATOP));
     text_caption.setTextColor(getTextColor());
     text_caption.setHintTextColor(getSubTextColor());
     toolbar.setNavigationOnClickListener(
@@ -471,7 +473,7 @@ public class SharingActivity extends ThemedActivity
 
     @Override
     protected void onPreExecute() {
-      sessionBox.authenticate();
+      sessionBox.authenticate(getApplicationContext());
       NotificationHandler.make(
           R.string.box, R.string.upload_progress, R.drawable.ic_cloud_upload_black_24dp);
       mFileApi = new BoxApiFile(sessionBox);

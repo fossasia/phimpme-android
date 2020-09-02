@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -254,7 +255,8 @@ public class EditImageActivity extends EditBaseActivity
     bitmapsForUndo = new ArrayList<>();
     progressBar
         .getIndeterminateDrawable()
-        .setColorFilter(ColorPalette.getLighterColor(getPrimaryColor()), PorterDuff.Mode.SRC_ATOP);
+        .setColorFilter(new PorterDuffColorFilter(
+                ColorPalette.getLighterColor(getPrimaryColor()), PorterDuff.Mode.SRC_ATOP));
 
     cancel.setOnClickListener(this);
     save.setOnClickListener(this);

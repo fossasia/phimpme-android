@@ -18,7 +18,7 @@ import androidx.test.annotation.UiThreadTest;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.gallery.activities.LFMainActivity;
 import org.hamcrest.Description;

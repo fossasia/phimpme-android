@@ -1608,7 +1608,7 @@ public class LFMainActivity extends SharedMediaActivity {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.menu_albums, menu);
     MenuItem menuitem = menu.findItem(R.id.search_action);
-    searchView = (SearchView) MenuItemCompat.getActionView(menuitem);
+    searchView = (SearchView) menuitem.getActionView();
     searchView.setOnQueryTextFocusChangeListener(
         new View.OnFocusChangeListener() {
           @Override
@@ -2317,7 +2317,8 @@ public class LFMainActivity extends SharedMediaActivity {
             excludeDialogLayout.findViewById(R.id.text_dialog_message);
         final Spinner spinnerParents = excludeDialogLayout.findViewById(R.id.parents_folder);
 
-        spinnerParents.getBackground().setColorFilter(getIconColor(), PorterDuff.Mode.SRC_ATOP);
+        spinnerParents.getBackground().setColorFilter(new PorterDuffColorFilter(
+                getIconColor(), PorterDuff.Mode.SRC_ATOP));
 
         ((CardView) excludeDialogLayout.findViewById(R.id.message_card))
             .setCardBackgroundColor(getCardBackgroundColor());
