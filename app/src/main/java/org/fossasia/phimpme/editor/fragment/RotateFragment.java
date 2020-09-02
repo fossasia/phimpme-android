@@ -201,7 +201,7 @@ public class RotateFragment extends BaseEditFragment {
       Bitmap originBit = params[0];
       Bitmap result =
           Bitmap.createBitmap(
-              (int) imageRect.width(), (int) imageRect.height(), Bitmap.Config.ARGB_4444);
+              (int) imageRect.width(), (int) imageRect.height(), Bitmap.Config.ARGB_8888);
       Canvas canvas = new Canvas(result);
       int w = originBit.getWidth() >> 1;
       int h = originBit.getHeight() >> 1;

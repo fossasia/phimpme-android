@@ -24,6 +24,7 @@ import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.os.Environment;
@@ -248,7 +249,11 @@ public class BitmapUtils {
   public void printscreen_share(View v, Activity context) {
     View view1 = context.getWindow().getDecorView();
     Display display = context.getWindowManager().getDefaultDisplay();
-    view1.layout(0, 0, display.getWidth(), display.getHeight());
+    Point point = new Point();
+    display.getSize(point);
+    int width = point.x;
+    int height = point.y;
+    view1.layout(0, 0, width, height);
     view1.setDrawingCacheEnabled(true);
     Bitmap bitmap = Bitmap.createBitmap(view1.getDrawingCache());
   }

@@ -21,7 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -99,7 +99,7 @@ public class AccountActivity extends ThemedActivity
     toolbar.setBackgroundColor(themeHelper.getPrimaryColor());
     bottomNavigationView.setBackgroundColor(themeHelper.getPrimaryColor());
     getSupportActionBar().setTitle(R.string.title_account);
-    accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
+    accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
     phimpmeProgressBarHandler.show();
     setUpRecyclerView();
     client = new TwitterAuthClient();

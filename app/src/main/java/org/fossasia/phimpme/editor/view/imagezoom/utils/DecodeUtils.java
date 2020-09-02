@@ -241,8 +241,6 @@ public class DecodeUtils {
     options.inPreferredConfig = Bitmap.Config.ARGB_8888;
     options.inDither = false;
     options.inJustDecodeBounds = false;
-    options.inPurgeable = true;
-    options.inInputShareable = true;
     options.inTempStorage = new byte[16 * 1024];
     return options;
   }

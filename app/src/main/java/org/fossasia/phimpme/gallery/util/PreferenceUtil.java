@@ -2,7 +2,8 @@ package org.fossasia.phimpme.gallery.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+
+import androidx.preference.PreferenceManager;
 
 /** Created by dnld on 31/07/16. */
 public class PreferenceUtil {

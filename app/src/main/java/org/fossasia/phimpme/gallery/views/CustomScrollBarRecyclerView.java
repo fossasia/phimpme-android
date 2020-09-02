@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import androidx.annotation.ColorInt;
@@ -32,7 +33,7 @@ public class CustomScrollBarRecyclerView extends RecyclerView {
   /** Called by Android {@link android.view.View#onDrawScrollBars(Canvas)} */
   protected void onDrawHorizontalScrollBar(
       Canvas canvas, Drawable scrollBar, int l, int t, int r, int b) {
-    scrollBar.setColorFilter(scrollBarColor, PorterDuff.Mode.SRC_ATOP);
+    scrollBar.setColorFilter(new PorterDuffColorFilter(scrollBarColor, PorterDuff.Mode.SRC_ATOP));
     scrollBar.setBounds(l, t, r, b);
     scrollBar.draw(canvas);
   }
@@ -40,7 +41,7 @@ public class CustomScrollBarRecyclerView extends RecyclerView {
   /** Called by Android {@link android.view.View#onDrawScrollBars(Canvas)} */
   protected void onDrawVerticalScrollBar(
       Canvas canvas, Drawable scrollBar, int l, int t, int r, int b) {
-    scrollBar.setColorFilter(scrollBarColor, PorterDuff.Mode.SRC_ATOP);
+    scrollBar.setColorFilter(new PorterDuffColorFilter(scrollBarColor, PorterDuff.Mode.SRC_ATOP));
     scrollBar.setBounds(l, t, r, b);
     scrollBar.draw(canvas);
   }

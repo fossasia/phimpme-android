@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.net.Uri;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -66,7 +67,8 @@ public class AlertDialogsHelper {
     editText
         .getBackground()
         .mutate()
-        .setColorFilter(activity.getTextColor(), PorterDuff.Mode.SRC_IN);
+        .setColorFilter(new PorterDuffColorFilter(
+                activity.getTextColor(), PorterDuff.Mode.SRC_IN));
     editText.setTextColor(activity.getTextColor());
 
     try {
@@ -160,7 +162,8 @@ public class AlertDialogsHelper {
         .setCardBackgroundColor(activity.getCardBackgroundColor());
     ((ProgressBar) dialogLayout.findViewById(R.id.progress_dialog_loading))
         .getIndeterminateDrawable()
-        .setColorFilter(activity.getPrimaryColor(), PorterDuff.Mode.SRC_ATOP);
+        .setColorFilter(new PorterDuffColorFilter(
+                activity.getPrimaryColor(), PorterDuff.Mode.SRC_ATOP));
 
     dialogTitle.setText(title);
     dialogMessage.setText(message);

@@ -19,6 +19,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
+import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.ProgressBar;
@@ -63,9 +64,9 @@ public class IndeterminateProgressDialog extends DialogFragment {
           public void onShow(DialogInterface dialog) {
             ProgressBar v = progressDialog.findViewById(android.R.id.progress);
             v.getIndeterminateDrawable()
-                .setColorFilter(
+                .setColorFilter(new PorterDuffColorFilter(
                     getResources().getColor(R.color.colorAccent),
-                    android.graphics.PorterDuff.Mode.MULTIPLY);
+                    android.graphics.PorterDuff.Mode.MULTIPLY));
           }
         });
 

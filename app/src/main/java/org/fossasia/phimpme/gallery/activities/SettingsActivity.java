@@ -1,7 +1,5 @@
 package org.fossasia.phimpme.gallery.activities;
 
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
-
 import android.annotation.TargetApi;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
@@ -27,6 +25,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.preference.PreferenceManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.google.android.material.snackbar.Snackbar;
@@ -1069,7 +1068,7 @@ public class SettingsActivity extends ThemedActivity {
   public boolean isUsingSAF() {
     // check Android version just to be safe
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      SharedPreferences sharedPreferences = getDefaultSharedPreferences(getApplicationContext());
+      SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
       if (sharedPreferences.getBoolean(PreferenceKeys.getUsingSAFPreferenceKey(), false)) {
         return true;
       }
@@ -1098,14 +1097,14 @@ public class SettingsActivity extends ThemedActivity {
                 & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         // Check for the freshest data.
         getContentResolver().takePersistableUriPermission(treeUri, takeFlags);
-        SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(PreferenceKeys.getSaveLocationSAFPreferenceKey(), treeUri.toString());
         editor.apply();
 
       } else {
         // cancelled - if the user had yet to set a save location, make sure we switch SAF back off
-        SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String uri =
             sharedPreferences.getString(PreferenceKeys.getSaveLocationSAFPreferenceKey(), "");
         if (uri.length() == 0) {

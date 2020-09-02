@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -116,7 +117,8 @@ public class CompressImageActivity extends ThemedActivity {
     TextView title = dialogLayout.findViewById(R.id.compress_title);
     title.setBackgroundColor(getPrimaryColor());
     SeekBar percentsize = dialogLayout.findViewById(R.id.seekBar);
-    percentsize.getThumb().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
+    percentsize.getThumb().setColorFilter(new PorterDuffColorFilter(
+            getAccentColor(), PorterDuff.Mode.SRC_IN));
     percentsize.setProgress(0);
     final TextView percent = dialogLayout.findViewById(R.id.textview2);
     percentsize.setOnSeekBarChangeListener(
