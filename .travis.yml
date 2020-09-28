@@ -103,3 +103,8 @@ jobs:
 
 notifications:
   slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
+
+branches:
+  only:
+    - master
+    - development
