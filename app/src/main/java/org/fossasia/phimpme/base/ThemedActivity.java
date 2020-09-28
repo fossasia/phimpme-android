@@ -18,7 +18,6 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.context.IconicsContextWrapper;
 import com.mikepenz.iconics.typeface.IIcon;
 import java.util.ArrayList;
 import org.fossasia.phimpme.R;
@@ -60,12 +59,6 @@ public class ThemedActivity extends BaseActivity {
       setNavigationBarColor(getPrimaryColor());
       setNavBarColor();
     }
-  }
-
-  @Override
-  protected void attachBaseContext(Context newBase) {
-    // NOTE: icons stuff
-    super.attachBaseContext(IconicsContextWrapper.wrap(newBase));
   }
 
   @TargetApi(Build.VERSION_CODES.LOLLIPOP)
