@@ -202,7 +202,7 @@ dependencies {
     implementation "org.twitter4j:twitter4j-core:4.0.7"
     implementation "org.twitter4j:twitter4j-media-support:4.0.6"
 
-    implementation 'com.dropbox.core:dropbox-core-sdk:3.1.1'
+    implementation 'com.dropbox.core:dropbox-core-sdk:3.1.5'
 
     //next cloud
     implementation "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
