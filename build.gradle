@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.realm_version = '6.1.0'
+    ext.realm_version = '7.0.7'
 
     repositories {
         jcenter()
@@ -42,8 +42,8 @@ allprojects {
 }
 
 ext {
-    supportLibraryVersion = '1.1.0'
-    butterknifeVersion = '10.2.1'
+    supportLibraryVersion = '1.2.0'
+    butterknifeVersion = '10.2.3'
     junitVersion = "4.12"
     twitterVersion = "3.3.0"
     stethoVersion = "1.5.0"
@@ -51,6 +51,6 @@ ext {
     nextCloudVersion = "1.5.0"
     lifecycleVersion = "2.2.0"
     glideVersion = "4.11.0"
-    retrofitVersion = "2.7.2"
+    retrofitVersion = "2.9.0"
 }
 
