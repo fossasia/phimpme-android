@@ -135,7 +135,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     // Core library
-    androidTestImplementation 'androidx.test:core:1.2.0'
+    androidTestImplementation 'androidx.test:core:1.3.0'
 
     // AndroidJUnitRunner and JUnit Rules
     androidTestImplementation 'androidx.test:runner:1.2.0'
@@ -144,7 +144,7 @@ dependencies {
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.4.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 
     //google and support
     implementation "androidx.appcompat:appcompat:$rootProject.supportLibraryVersion"
@@ -174,8 +174,8 @@ dependencies {
         transitive = true;
     }*/
 
-    implementation 'com.koushikdutta.ion:ion:3.0.8'
-    implementation 'org.jetbrains:annotations-java5:19.0.0'
+    implementation 'com.koushikdutta.ion:ion:3.0.9'
+    implementation 'org.jetbrains:annotations-java5:20.1.0'
     implementation 'com.android.support:multidex:1.0.3'
     implementation group: 'com.box', name: 'box-android-sdk', version: '5.0.0'
 
