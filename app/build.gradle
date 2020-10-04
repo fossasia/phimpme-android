@@ -159,7 +159,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
 
     //exoplayer
-    implementation 'com.google.android.exoplayer:exoplayer:r1.5.7'
+    implementation 'com.google.android.exoplayer:exoplayer:2.12.0'
 
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
 
@@ -175,7 +175,7 @@ dependencies {
     }*/
 
     implementation 'com.koushikdutta.ion:ion:3.0.9'
-    implementation 'org.jetbrains:annotations-java5:19.0.0'
+    implementation 'org.jetbrains:annotations-java5:20.1.0'
     implementation 'com.android.support:multidex:1.0.3'
     implementation group: 'com.box', name: 'box-android-sdk', version: '5.0.0'
 
