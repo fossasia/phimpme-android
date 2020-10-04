@@ -180,7 +180,7 @@ dependencies {
     implementation group: 'com.box', name: 'box-android-sdk', version: '5.0.0'
 
     //icons
-    implementation 'com.mikepenz:iconics-core:2.8.4@aar'
+    implementation 'com.mikepenz:iconics-core:5.0.3@aar'
     implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
     implementation 'com.mikepenz:community-material-typeface:1.5.54.2@aar'
     implementation 'com.mikepenz:fontawesome-typeface:5.9.0.0-kotlin@aar'
