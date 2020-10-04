@@ -67,7 +67,7 @@ public class StickerItem {
       deleteBit = BitmapFactory.decodeResource(context.getResources(), R.drawable.sticker_delete);
     }
     if (rotateBit == null) {
-      rotateBit = BitmapFactory.decodeResource(context.getResources(), R.drawable.sticker_rotate);
+      rotateBit = BitmapFactory.decodeResource(context.getResources(), R.drawable.sticker_resize);
     }
   }
 

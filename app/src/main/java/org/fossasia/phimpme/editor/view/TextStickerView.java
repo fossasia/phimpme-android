@@ -101,7 +101,7 @@ public class TextStickerView extends View {
     debugPaint.setColor(Color.parseColor("#66ff0000"));
 
     mDeleteBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.sticker_delete);
-    mRotateBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.sticker_rotate);
+    mRotateBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.sticker_resize);
 
     mDeleteRect.set(0, 0, mDeleteBitmap.getWidth(), mDeleteBitmap.getHeight());
     mRotateRect.set(0, 0, mRotateBitmap.getWidth(), mRotateBitmap.getHeight());
