@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/album_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/alternate_half_margin"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="@dimen/card_elevation">
+    app:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -27,31 +26,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             />
-
-
-        <ImageView
-            android:id="@+id/iv_album_preview"
-            android:layout_width="0dp"
-            android:layout_height="140dp"
-            tools:src="@mipmap/ic_launcher"
-            android:scaleType="centerCrop"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/iv_album_previe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            />
+            app:cardCornerRadius="@dimen/size_8">
 
+            <ImageView
+                android:id="@+id/iv_album_preview"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                tools:src="@mipmap/ic_launcher"
+                android:scaleType="centerCrop"
+
+                />
+        </androidx.cardview.widget.CardView>
         <TextView
             android:id="@+id/tv_album_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
             tools:text="Album Name"
+            android:fontFamily="sans-serif-medium"
             android:paddingStart="@dimen/size_8"
             android:paddingEnd="@dimen/size_8"
             android:paddingTop="@dimen/size_4"
-            android:paddingBottom="@dimen/size_4"
             android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/iv_album_preview"
+            app:layout_constraintTop_toBottomOf="@id/iv_album_previe"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/iv_pin"
             />
@@ -77,7 +81,6 @@
             android:textSize="@dimen/moderate_text"
             android:paddingStart="@dimen/size_8"
             android:paddingEnd="@dimen/size_8"
-            android:paddingTop="@dimen/size_4"
             android:paddingBottom="@dimen/size_4"
             app:layout_constraintEnd_toStartOf="@id/iv_storage_icon"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -98,4 +101,4 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</LinearLayout>

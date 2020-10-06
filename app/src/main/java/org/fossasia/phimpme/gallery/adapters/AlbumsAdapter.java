@@ -136,7 +136,13 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
 
     String hexPrimaryColor = String.format("#%06X", (0xFFFFFF & theme.getPrimaryColor()));
 
-    String textColor = theme.getBaseTheme() != ThemeHelper.LIGHT_THEME ? "#FAFAFA" : "#2b2b2b";
+    String nameTextColor;
+    String countTextColor;
+    if (theme.getBaseTheme() == ThemeHelper.LIGHT_THEME) nameTextColor = "#2b2b2b";
+    else {
+      nameTextColor = "#FAFAFA";
+    }
+    countTextColor = "#B4BAC0";
 
     if (a.isSelected()) {
       holder.ivSelectedIcon.setColor(Color.WHITE);
@@ -147,24 +153,22 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
       holder.ivAlbumPreview.setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
       holder.ivSelectedIcon.setVisibility(View.VISIBLE);
       if (theme.getBaseTheme() == ThemeHelper.LIGHT_THEME) {
-        textColor = "#FAFAFA";
+        nameTextColor = "#2b2b2b"; countTextColor = "#B4BAC0";
       }
     } else {
       holder.ivAlbumPreview.clearColorFilter();
       holder.ivSelectedIcon.setVisibility(View.GONE);
-      holder.tvAlbumName.setBackgroundColor(
-          ColorPalette.getTransparentColor(theme.getBackgroundColor(), 200));
-      holder.tvPhotosCount.setBackgroundColor(
-          ColorPalette.getTransparentColor(theme.getBackgroundColor(), 200));
+      holder.tvAlbumName.setBackgroundColor(theme.getBackgroundColor());
+      holder.tvPhotosCount.setBackgroundColor(theme.getBackgroundColor());
       holder.ivPin.setBackgroundColor(
           ColorPalette.getTransparentColor(theme.getBackgroundColor(), 200));
     }
-    holder.tvAlbumName.setTextColor(Color.parseColor(textColor));
-    holder.tvPhotosCount.setTextColor(Color.parseColor(textColor));
+    holder.tvAlbumName.setTextColor(Color.parseColor(nameTextColor));
+    holder.tvPhotosCount.setTextColor(Color.parseColor(countTextColor));
 
     holder.tvAlbumName.setText(a.getName());
     holder.tvPhotosCount.setText(
-        a.getCount() + " " + holder.tvPhotosCount.getContext().getString(R.string.media));
+        a.getCount() + " " ;
   }
 
   public void setOnClickListener(View.OnClickListener lis) {
