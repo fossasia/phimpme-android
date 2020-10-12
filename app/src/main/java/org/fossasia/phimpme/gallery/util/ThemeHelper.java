@@ -125,22 +125,6 @@ public class ThemeHelper {
     return color;
   }
 
-  public int getUpdatedSwitchColor() {
-    int color;
-    switch (baseTheme) {
-      case DARK_THEME:
-        color = getColor(R.color.md_dark_background);
-        break;
-      case AMOLED_THEME:
-        color = getColor(R.color.md_blue_grey_900);
-        break;
-      case LIGHT_THEME:
-      default:
-        color = getColor(R.color.md_light_background);
-    }
-    return color;
-  }
-
   public int getInvertedBackgroundColor() {
     int color;
     switch (baseTheme) {
@@ -363,7 +347,7 @@ public class ThemeHelper {
         .setColorFilter(sw.isChecked() ? color : getSubTextColor(), PorterDuff.Mode.MULTIPLY);
     sw.getTrackDrawable()
         .setColorFilter(
-            sw.isChecked() ? ColorPalette.getTransparentColor(color, 100) : getUpdatedSwitchColor(),
+            sw.isChecked() ? ColorPalette.getTransparentColor(color, 100) : getBackgroundColor(),
             PorterDuff.Mode.MULTIPLY);
   }
 
