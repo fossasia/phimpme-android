@@ -86,14 +86,10 @@ public class MediaStoreProvider {
           MediaStore.Files.FileColumns.PARENT, MediaStore.Images.Media.BUCKET_DISPLAY_NAME
         };
 
-    String selection, selectionArgs[];
-
-    selection =
-        MediaStore.Files.FileColumns.MEDIA_TYPE
-            + "=? ) GROUP BY ( "
-            + MediaStore.Files.FileColumns.PARENT
-            + " ";
-    selectionArgs = new String[] {String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE)};
+    String selection = MediaStore.Files.FileColumns.MEDIA_TYPE + "=? ";
+    String[] selectionArgs =
+        new String[] {String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE)};
+    String sortOrder = MediaStore.Files.FileColumns.PARENT;
 
     Cursor cur =
         context
@@ -103,18 +99,21 @@ public class MediaStoreProvider {
                 projection,
                 selection,
                 selectionArgs,
-                null);
+                sortOrder);
 
     if (cur != null) {
       if (cur.moveToFirst()) {
         int idColumn = cur.getColumnIndex(MediaStore.Files.FileColumns.PARENT);
         int nameColumn = cur.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+        HashSet<Long> idSet = new HashSet<>();
         do {
           Media media = getLastMedia(context, cur.getLong(idColumn));
           if (media != null && media.getPath() != null) {
             String path = StringUtils.getBucketPathByImagePath(media.getPath());
             boolean excluded = isExcluded(path, context);
-            if (!excluded) {
+            long curIdColumn = cur.getLong(idColumn);
+            if (!excluded && !idSet.contains(curIdColumn)) {
+              idSet.add(curIdColumn);
               Album album =
                   new Album(
                       context,
