@@ -44,7 +44,7 @@ allprojects {
 ext {
     supportLibraryVersion = '1.2.0'
     butterknifeVersion = '10.2.3'
-    junitVersion = "4.12"
+    junitVersion = "4.13.1"
     twitterVersion = "3.3.0"
     stethoVersion = "1.5.0"
     showcaseVersion = "5.4.3"
