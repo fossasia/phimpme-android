@@ -1,0 +1,9 @@
+.. mdinclude:: ../README.md
+
+Sources
+=======
+
+.. toctree::
+   :maxdepth: 1
+
+   sources/index
