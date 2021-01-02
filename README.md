@@ -117,7 +117,7 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
      - *Note:* If you receive a Gradle sync error titled, "executing external native build for ndkBuild ...User\Project\phimpme-android\app\src\main\jni\Android.mk",Then you go to the file *"app/build.gradle"* and make those lines *"externalNativeBuild {
                                                                                                                                                                                                                                               ndkBuild {
                                                                                                                                                                                                                                                   path 'src/main/jni/Android.mk'
-                                                                                                                                                                                                                                              }
+                                                                                                                                                                                                                                              }"* comment.
                     
 
 7. If build error still persist, try replacing ndk with ndk version 18b from [ndk-archives](https://developer.android.com/ndk/downloads/older_releases) .  Once all build errors have been resolved, you should be all set to build the app and test it.
