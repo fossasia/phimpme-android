@@ -114,6 +114,12 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
      - Copy all the files from *"OpenCV-android-sdk/sdk/native/staticlibs"* to *"phimpme-android/app/src/main/staticlibs"* (create directory if it doesn't exist)
      - Now build your project. If your build fails then try deleting these build directories *"phimpme-android/app/.externalNativeBuild"* and *"phimpme-android/app/build"*, if they exist and run the build again.
 
+     - *Note:* If you receive a Gradle sync error titled, "executing external native build for ndkBuild ...User\Project\phimpme-android\app\src\main\jni\Android.mk",Then you go to the file *"app/build.gradle"* and make those lines *"externalNativeBuild {
+                                                                                                                                                                                                                                              ndkBuild {
+                                                                                                                                                                                                                                                  path 'src/main/jni/Android.mk'
+                                                                                                                                                                                                                                              }
+                                                                                                                                                                                                                                          }"* comment. 
+                                                                                                                                                                                                                                          
 7. If build error still persist, try replacing ndk with ndk version 18b from [ndk-archives](https://developer.android.com/ndk/downloads/older_releases) .  Once all build errors have been resolved, you should be all set to build the app and test it.
 
 8. To Build the app, go to *Build > Make Project* (or alternatively press the Make Project icon in the toolbar).
