@@ -118,8 +118,8 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
                                                                                                                                                                                                                                               ndkBuild {
                                                                                                                                                                                                                                                   path 'src/main/jni/Android.mk'
                                                                                                                                                                                                                                               }
-                                                                                                                                                                                                                                          }"* comment. 
-                                                                                                                                                                                                                                          
+                    
+
 7. If build error still persist, try replacing ndk with ndk version 18b from [ndk-archives](https://developer.android.com/ndk/downloads/older_releases) .  Once all build errors have been resolved, you should be all set to build the app and test it.
 
 8. To Build the app, go to *Build > Make Project* (or alternatively press the Make Project icon in the toolbar).
