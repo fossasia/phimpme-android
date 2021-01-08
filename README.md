@@ -18,10 +18,10 @@
 
 <p float="left">
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_1.png" width="288" />
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_2.png" width="288" /> 
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_2.png" width="288" />
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_3.png" width="288" />
    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_4.png" width="288" />
-  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_5.png" width="288" /> 
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_5.png" width="288" />
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_6.png" width="288" />
 </p>
 
@@ -119,6 +119,21 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
 8. To Build the app, go to *Build > Make Project* (or alternatively press the Make Project icon in the toolbar).
 
 9. If the app was built successfully, you can test it by running it on either a real device or an emulated one by going to *Run > Run 'app'* or pressing the Run icon in the toolbar.
+
+    - *Note:* Disable automatic initialization for all components in case of runtime error `Unable to get provider androidx.startup.InitializationProvider` on running app on device or emulator.
+
+     - add dependency
+     `implementation "androidx.startup:startup-runtime:1.0.0"`
+
+     - include in manifest
+     ```<merge>
+     <application>
+     <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            tools:node="remove" />
+     </merge>
+     </application>
 
 10. **To enable the sharing features to a different account, add API_KEY/ APP_ID associated with accounts**. Add the Keys in `constant.java` and `strings.xml`. Following are the links to developer pages of account. Go there to create apps and get keys.
     * Nextcloud: https://docs.nextcloud.com/server/stable/developer_manual/
