@@ -132,8 +132,8 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             tools:node="remove" />
-     </merge>
      </application>
+     </merge>
 
 10. **To enable the sharing features to a different account, add API_KEY/ APP_ID associated with accounts**. Add the Keys in `constant.java` and `strings.xml`. Following are the links to developer pages of account. Go there to create apps and get keys.
     * Nextcloud: https://docs.nextcloud.com/server/stable/developer_manual/
