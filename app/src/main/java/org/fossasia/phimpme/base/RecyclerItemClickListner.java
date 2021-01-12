@@ -80,9 +80,8 @@ public class RecyclerItemClickListner implements RecyclerView.OnItemTouchListene
 
     @Override
     public boolean onDown(MotionEvent event) {
-      // Best practice to always return true here.
-      // http://developer.android.com/training/gestures/detector.html#detect
-      return true;
+      // returning true here will stop scroll event in recyclerview, return false instead
+      return false;
     }
   }
 }
