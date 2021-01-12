@@ -58,7 +58,7 @@ This is an Open Source project and we would be happy to see contributors who rep
 
 ### Branch Policy
 We have the following branches
- * **development**
+ * **Development**
      All development goes on in this branch. If you're making a contribution,
      you are supposed to make a pull request to _development_.
      Make sure it passes a build check on Travis
