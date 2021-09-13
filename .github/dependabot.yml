@@ -1,0 +1,37 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "21:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: com.diffplug.gradle.spotless
+    versions:
+    - 5.10.0
+    - 5.10.1
+    - 5.10.2
+    - 5.11.0
+    - 5.11.1
+    - 5.12.0
+    - 5.12.1
+  - dependency-name: com.google.android.exoplayer:exoplayer
+    versions:
+    - 2.13.0
+    - 2.13.1
+    - 2.13.2
+  - dependency-name: com.mikepenz:iconics-core
+    versions:
+    - 5.2.5
+    - 5.2.6
+    - 5.2.7
+  - dependency-name: pl.droidsonroids.gif:android-gif-drawable
+    versions:
+    - 1.2.22
+  - dependency-name: io.realm:realm-gradle-plugin
+    versions:
+    - 10.3.1
+  - dependency-name: com.android.tools.build:gradle
+    versions:
+    - 4.1.2
