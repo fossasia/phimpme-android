@@ -195,7 +195,7 @@ dependencies {
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 
     //photoview
-    implementation 'com.github.chrisbanes:PhotoView:1.2.6'
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
     //twitter
     implementation "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
