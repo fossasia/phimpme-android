@@ -19,7 +19,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
-        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.4'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.5'
         classpath "io.realm:realm-gradle-plugin:$realm_version"
         classpath "gradle.plugin.com.github.b3er.local.properties:local-properties-plugin:1.1"
     }

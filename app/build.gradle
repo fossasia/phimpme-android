@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.4'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.5'
     }
 }
 
@@ -159,7 +159,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
 
     //exoplayer
-    implementation 'com.google.android.exoplayer:exoplayer:2.14.2'
+    implementation 'com.google.android.exoplayer:exoplayer:2.15.1'
 
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
 
