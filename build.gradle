@@ -42,7 +42,7 @@ allprojects {
 }
 
 ext {
-    supportLibraryVersion = '1.4.0'
+    supportLibraryVersion = '1.4.1'
     butterknifeVersion = '10.2.3'
     junitVersion = "4.13.2"
     twitterVersion = "3.3.0"
