@@ -50,7 +50,7 @@ ext {
     showcaseVersion = "5.4.3"
     nextCloudVersion = "1.5.0"
     lifecycleVersion = "2.2.0"
-    glideVersion = "4.12.0"
+    glideVersion = "4.13.0"
     retrofitVersion = "2.9.0"
 }
 
