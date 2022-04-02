@@ -1,11 +1,5 @@
 package org.fossasia.phimpme.gallery.activities;
 
-import static org.fossasia.phimpme.gallery.data.base.SortingMode.DATE;
-import static org.fossasia.phimpme.gallery.data.base.SortingMode.NAME;
-import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
-import static org.fossasia.phimpme.gallery.data.base.SortingMode.SIZE;
-import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
-
 import android.Manifest;
 import android.animation.Animator;
 import android.annotation.TargetApi;
@@ -142,6 +136,12 @@ import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.Constants;
 import org.fossasia.phimpme.utilities.NotificationHandler;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
+
+import static org.fossasia.phimpme.gallery.data.base.SortingMode.DATE;
+import static org.fossasia.phimpme.gallery.data.base.SortingMode.NAME;
+import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
+import static org.fossasia.phimpme.gallery.data.base.SortingMode.SIZE;
+import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 public class LFMainActivity extends SharedMediaActivity {
 
@@ -1819,7 +1819,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 && !hidden
                 && getAlbums().getSelectedCount() == 1);
     menu.findItem(R.id.delete_action)
-        .setVisible((!albumsMode || editMode) && (!all_photos || editMode));
+        .setVisible(editMode);
     if (fav_photos) {
       menu.findItem(R.id.delete_action).setVisible(editMode);
     }
