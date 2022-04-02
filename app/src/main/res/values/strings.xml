@@ -1389,6 +1389,7 @@
     <string name="text_plain">text/plain</string>
     <string name="market">market://details?id=</string>
     <string name="playstore">https://play.google.com/store/apps/details?id=</string>
+    <string name="sd_card_root_name">SdCard</string>
     <string name="twitter_phimpme">phimpme</string>
     <string name="facebook_phimpme">phimpmeapp</string>
 </resources>

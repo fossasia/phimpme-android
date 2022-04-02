@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.gallery.data.Album;
 import org.fossasia.phimpme.gallery.data.CustomAlbumsHelper;
 import org.fossasia.phimpme.gallery.data.Media;
@@ -117,8 +118,10 @@ public class MediaStoreProvider {
                   new Album(
                       context,
                       path,
-                      curIdColumn,
-                      cur.getString(nameColumn),
+                      cur.getLong(idColumn),
+                      cur.getString(nameColumn) == null
+                          ? context.getString(R.string.sd_card_root_name)
+                          : cur.getString(nameColumn),
                       getAlbumCount(context, cur.getLong(idColumn)));
               if (album.addMedia(getLastMedia(context, album.getId()))) list.add(album);
             }
