@@ -1042,9 +1042,17 @@ public class SingleMediaActivity extends SharedMediaActivity
     String trashbinpath = Environment.getExternalStorageDirectory() + "/" + ".nomedia";
     realm = Realm.getDefaultInstance();
     realm.beginTransaction();
+    Number currentIdNum = realm.where(TrashBinRealmModel.class).max("id");
+    int nextId;
+    if (currentIdNum == null) {
+      nextId = 1;
+    } else {
+      nextId = currentIdNum.intValue() + 1;
+    }
     String name = mediaPath.substring(mediaPath.lastIndexOf("/") + 1);
     String trashpath = trashbinpath + "/" + name;
-    TrashBinRealmModel trashBinRealmModel = realm.createObject(TrashBinRealmModel.class, trashpath);
+    TrashBinRealmModel trashBinRealmModel = realm.createObject(TrashBinRealmModel.class, nextId);
+    trashBinRealmModel.setTrashbinpath(trashpath);
     trashBinRealmModel.setOldpath(mediaPath);
     trashBinRealmModel.setDatetime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
     trashBinRealmModel.setTimeperiod("null");
