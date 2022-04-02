@@ -23,6 +23,7 @@ public class MyApplication extends Application {
   private HandlingAlbums albums = null;
   public static Context applicationContext;
   private RefWatcher refWatcher;
+  public int NavItem = 1;
 
   public Album getAlbum() {
     return albums.dispAlbums.size() > 0 ? albums.getCurrentAlbum() : Album.getEmptyAlbum();

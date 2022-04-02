@@ -78,6 +78,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.gallery.activities.LFMainActivity;
@@ -180,7 +181,7 @@ public class CameraActivity extends ThemedActivity
     }
     super.onCreate(savedInstanceState);
     ButterKnife.bind(this);
-    overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
+    startSlideAnimation(0);
     ButterKnife.bind(this);
     PreferenceManager.setDefaultValues(
         this, R.xml.preferences, false); // initialise any unset preferences to their default values
@@ -886,6 +887,16 @@ public class CameraActivity extends ThemedActivity
     }
   }
 
+  private void startSlideAnimation(int currentMenuItem) {
+
+    if (((MyApplication) this.getApplication()).NavItem > currentMenuItem)
+      overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    else if (((MyApplication) this.getApplication()).NavItem < currentMenuItem)
+      overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    // Update the Global NavItem
+    ((MyApplication) this.getApplication()).NavItem = currentMenuItem;
+  }
+
   private void defaultBrightness() {
     WindowManager.LayoutParams layout = getWindow().getAttributes();
     layout.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
@@ -1404,7 +1415,6 @@ public class CameraActivity extends ThemedActivity
     Intent intent = new Intent(this, LFMainActivity.class);
     startActivity(intent);
     finish();
-    overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
   }
 
   public boolean usingKitKatImmersiveMode() {

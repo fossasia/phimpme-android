@@ -38,6 +38,7 @@ import com.pinterest.android.pdk.PDKResponse;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import io.realm.RealmQuery;
 import java.util.ArrayList;
+import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
@@ -92,7 +93,7 @@ public class AccountActivity extends ThemedActivity
     ActivitySwitchHelper.setContext(this);
     setSupportActionBar(toolbar);
     parentLayout.setBackgroundColor(getBackgroundColor());
-    overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
+    startSlideAnimation(2);
     phimpmeProgressBarHandler = new PhimpmeProgressBarHandler(this);
     ThemeHelper themeHelper = new ThemeHelper(this);
     toolbar.setPopupTheme(getPopupToolbarStyle());
@@ -108,6 +109,15 @@ public class AccountActivity extends ThemedActivity
     setDebugMode(true);
     configureBoxClient();
     initObserver();
+  }
+
+  private void startSlideAnimation(int currentMenuItem) {
+    if (((MyApplication) this.getApplication()).NavItem > currentMenuItem)
+      overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    else if (((MyApplication) this.getApplication()).NavItem < currentMenuItem)
+      overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    // Update the Global NavItem
+    ((MyApplication) this.getApplication()).NavItem = currentMenuItem;
   }
 
   private void initObserver() {
@@ -348,7 +358,6 @@ public class AccountActivity extends ThemedActivity
     Intent intent = new Intent(this, LFMainActivity.class);
     startActivity(intent);
     finish();
-    overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
   }
 
   private void boxAuthentication() {
