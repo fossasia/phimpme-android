@@ -48,7 +48,7 @@ ext {
     twitterVersion = "3.3.0"
     stethoVersion = "1.5.0"
     showcaseVersion = "5.4.3"
-    nextCloudVersion = "2.9.1"
+    nextCloudVersion = "2.10.1"
     lifecycleVersion = "2.2.0"
     glideVersion = "4.13.1"
     retrofitVersion = "2.9.0"
