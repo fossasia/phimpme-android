@@ -150,7 +150,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$rootProject.supportLibraryVersion"
     implementation "androidx.vectordrawable:vectordrawable-animated:1.1.0"
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
-    implementation "com.google.android.material:material:1.5.0"
+    implementation "com.google.android.material:material:1.7.0"
     implementation "androidx.vectordrawable:vectordrawable:1.1.0"
     implementation "androidx.palette:palette:1.0.0"
     implementation "androidx.cardview:cardview:1.0.0"
