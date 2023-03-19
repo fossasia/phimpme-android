@@ -140,3 +140,4 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
 
 This project is currently licensed under the GNU General Public License v3. A copy of [LICENSE](LICENSE.md) is to be present along with the source code. To obtain the software under a different license, please contact [FOSSASIA](https://fossasia.org/).
 
+On a good stage and it works properly
